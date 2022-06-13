@@ -4,6 +4,7 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-admin.component';
 import { DashboardUserComponent } from './components/dashboard-user/dashboard-user.component';
 import { RegisterComponent } from './components/register/register.component';
+import { RecoverPasswordComponent} from './components/recover-password/recover-password.component'
 import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
 const routes: Routes = [
@@ -15,11 +16,12 @@ const routes: Routes = [
   {
     path: 'dashboard-admin',
     component: DashboardAdminComponent,
-    ...canActivate(() => redirectUnauthorizedTo(['/register']))
+    ...canActivate(() => redirectUnauthorizedTo(['/login']))
   },
   { 
     path: 'dashboard-user', 
-    component: DashboardUserComponent 
+    component: DashboardUserComponent,
+    ...canActivate(() => redirectUnauthorizedTo(['/login']))
   },
   { 
     path: 'register', 
@@ -28,6 +30,10 @@ const routes: Routes = [
   { 
     path: 'login', 
     component: LoginComponent 
+  },
+  { 
+    path: 'recover-password', 
+    component: RecoverPasswordComponent 
   }
 ];
 

@@ -19,6 +19,8 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 
 import  {HttpClientModule}  from "@angular/common/http";
+import { RecoverPasswordComponent } from './components/recover-password/recover-password.component';
+import { ModalGeneralComponent } from './components/modal-general/modal-general.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import  {HttpClientModule}  from "@angular/common/http";
     LoginComponent,
     RegisterComponent,
     DashboardAdminComponent,
-    DashboardUserComponent
+    DashboardUserComponent,
+    RecoverPasswordComponent,
+    ModalGeneralComponent
   ],
   imports: [
     BrowserModule,

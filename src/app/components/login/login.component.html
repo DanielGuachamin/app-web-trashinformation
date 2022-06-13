@@ -8,34 +8,21 @@
                 <mat-label>Email</mat-label>
                 <input matInput type="text" class="form-control" formControlName="email">
                 <mat-icon matPrefix>account_circle</mat-icon>
-              </mat-form-field>
-              <mat-form-field appearance="fill">
+                <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">{{getErrorMessageEmail()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
                 <mat-label>Contraseña</mat-label>
                 <input matInput type="password" class="form-control" formControlName="password">
                 <mat-icon matPrefix>lock</mat-icon>
-              </mat-form-field>
-              <button mat-raised-button color="primary" type="submit" value="Enviar">Iniciar Sesión</button>
-              <div class="dividir-formulario-botones"></div>
-              <button mat-button >Recuperar contraseña</button>
-              <button mat-raised-button color="primary" type="submit" value="Enviar">Registrarme</button>
+                <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">{{getErrorMessagePassword()}}</mat-error>
+            </mat-form-field>
+            <button mat-raised-button color="primary" >Iniciar Sesión</button>
         </form>
-    </div>
+        <div class="dividir-formulario-botones"></div>
+        <div class="botones-accion-login">
+            <button mat-button (click)="openRecover()">Recuperar contraseña</button>
+            <button mat-raised-button color="primary" (click)="openRegister()">Registrarme</button>
+        </div>
 
+    </div>
 </div>
-
-
-
-<!-- Codigo para inicio de sesion referencia
-<h2>Inicio de sesion de usuario</h2>
-<form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input type="text" class="form-control" formControlName="email">
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Password</label>
-        <input type="password" class="form-control" formControlName="password">
-    </div>
-    <input type="submit" value="Enviar">
-</form>
--->
