@@ -11,6 +11,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-admin.component';
 import { DashboardUserComponent } from './components/dashboard-user/dashboard-user.component';
+import { ModalGeneralComponent } from './components/modal-general/modal-general.component';
 
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
@@ -20,7 +21,8 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
 
 import  {HttpClientModule}  from "@angular/common/http";
 import { RecoverPasswordComponent } from './components/recover-password/recover-password.component';
-import { ModalGeneralComponent } from './components/modal-general/modal-general.component';
+import { FilterPipe } from './pipes/filter.pipe';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { ModalGeneralComponent } from './components/modal-general/modal-general.
     DashboardAdminComponent,
     DashboardUserComponent,
     RecoverPasswordComponent,
-    ModalGeneralComponent
+    ModalGeneralComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,

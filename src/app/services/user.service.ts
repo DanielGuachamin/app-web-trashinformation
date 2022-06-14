@@ -17,7 +17,7 @@ export class UserService {
   user: any;
   authuser = getAuth().currentUser;
 
-  register ({email, password} : any){
+  register (email:any, password:any){
     return new Promise((resolve, reject) => {
       createUserWithEmailAndPassword(this.auth, email, password)
           .then(userData => {
