@@ -20,6 +20,7 @@ export class DashboardAdminComponent implements OnInit {
     this.userControl.getUser().subscribe(users => {
       console.log(users);
     })
+    
   }
 
   onClick(){

@@ -3,9 +3,8 @@ import {Auth,
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
   signOut, 
-  onAuthStateChanged, 
-  getAuth,
-  sendPasswordResetEmail} from '@angular/fire/auth';
+  sendPasswordResetEmail,
+  getAuth} from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,8 @@ export class UserService {
   constructor(private auth:Auth) { }
 
   user: any;
-  authuser = getAuth().currentUser;
+  authUser= getAuth();
+  currentUser: any = this.authUser.currentUser;
 
   register (email:any, password:any){
     return new Promise((resolve, reject) => {
@@ -30,28 +30,12 @@ export class UserService {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  isAuth() {
-    return onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-        console.log(uid);
-        // ...
-      } else {
-        // User is signed out
-        // ...
-      }
-    });
-    
-  }
-
-  logout(){
-    return signOut(this.auth).then(() => {
-      // Sign-out successful.
-    }).catch((error) => {
+  async logout(){
+    try {
+      await signOut(this.auth);
+    } catch (error) {
       console.log(error);
-    });
+    }
   }
 
   recoverPassword(email:string){
@@ -68,4 +52,9 @@ export class UserService {
         console.log(errorMessage)
       });
   }
+
+  get getUser(){
+    return this.currentUser;
+  }
+
 }

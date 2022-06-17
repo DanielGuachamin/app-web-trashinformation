@@ -21,8 +21,8 @@
         </mat-form-field>
         <mat-form-field appearance="legacy">
           <mat-label>Apellido</mat-label>
-          <input matInput type="text" class="form-control" formControlName="lastname">
-          <mat-error *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)">{{getErrorMessageNameLastname()}}</mat-error>
+          <input matInput type="text" class="form-control" formControlName="lastName">
+          <mat-error *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">{{getErrorMessageNameLastname()}}</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="legacy">
@@ -36,16 +36,23 @@
           <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">{{getErrorMessagePassword()}}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="legacy">
+          <mat-label>Fecha de nacimiento</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="birthdate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="birthdate.invalid && (birthdate.dirty || birthdate.touched)">{{getErrorMessageBirthday()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="legacy">
           <mat-label>Dirección de domicilio</mat-label>
-          <mat-select class="form-control" formControlName="direction">
+          <mat-select class="form-control" formControlName="direccionBase">
             <mat-option value="San Carlos">San Carlos</mat-option>
            <mat-option value="Cotocollao">Cotocollao</mat-option>
           </mat-select>
-          <mat-error *ngIf="direction.invalid && (direction.dirty || direction.touched)">{{getErrorMessageDirection()}}</mat-error>
+          <mat-error *ngIf="direccionBase.invalid && (direccionBase.dirty || direccionBase.touched)">{{getErrorMessageDirection()}}</mat-error>
         </mat-form-field>
 
        
-        <button mat-raised-button color="primary" [disabled]="email.invalid || password.invalid || name.invalid || lastname.invalid || direction.invalid">Registrarme</button>
+        <button mat-raised-button color="primary" [disabled]="email.invalid || password.invalid || name.invalid || lastName.invalid || direccionBase.invalid || birthdate.invalid">Registrarme</button>
       </form>
     </div>
   </div>

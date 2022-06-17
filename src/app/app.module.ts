@@ -7,10 +7,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-admin.component';
-import { DashboardUserComponent } from './components/dashboard-user/dashboard-user.component';
+import { LoginComponent } from './components/authpages/login/login.component';
+import { RegisterComponent } from './components/authpages/register/register.component';
+import { RecoverPasswordComponent } from './components/authpages/recover-password/recover-password.component';
+
+import { DashboardAdminComponent } from './components/adminpages/dashboard-admin/dashboard-admin.component';
+import { DashboardUserComponent } from './components/userpages/dashboard-user/dashboard-user.component';
 import { ModalGeneralComponent } from './components/modal-general/modal-general.component';
 
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
@@ -20,8 +22,8 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 
 import  {HttpClientModule}  from "@angular/common/http";
-import { RecoverPasswordComponent } from './components/recover-password/recover-password.component';
 import { FilterPipe } from './pipes/filter.pipe';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @NgModule({
@@ -48,7 +50,7 @@ import { FilterPipe } from './pipes/filter.pipe';
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

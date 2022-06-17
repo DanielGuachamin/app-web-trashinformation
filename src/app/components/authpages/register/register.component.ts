@@ -43,15 +43,18 @@ export class RegisterComponent implements OnInit {
         Validators.minLength(6),
         Validators.pattern(this.alfabetWithOutSpacePattern)
       ]),
-      lastname: new FormControl('', [
+      lastName: new FormControl('', [
         Validators.required,
         Validators.minLength(6),
         Validators.pattern(this.alfabetWithOutSpacePattern)
       ]),
-      direction: new FormControl('', [
+      direccionBase: new FormControl('', [
         Validators.required
       ]),
-      rol: new FormControl('finalUser')
+      birthdate: new FormControl('', [
+        Validators.required
+      ]),
+      profilePic: new FormControl('')
     })
   }
 
@@ -62,7 +65,14 @@ export class RegisterComponent implements OnInit {
     this.userService.register(this.formReg.get('email').value, this.formReg.get('password').value)
       .then(async response => {
         this.formReg.removeControl('password');
+        const getDate = this.getDate()
+        this.formReg.controls['birthdate'].setValue(getDate)
         await this.userControl.addUser(this.formReg.value)
+        this.formReg.addControl('rol', new FormControl(''))
+        const rol = 'cliente'
+        this.formReg.controls['rol'].setValue(rol)
+        this.formReg.removeControl('direccionBase');
+        await this.userControl.addUserRol(this.formReg.value)
         this.router.navigate(['/login']);
       })
       .catch(error => console.error(error));
@@ -81,13 +91,30 @@ export class RegisterComponent implements OnInit {
     return this.formReg.get('name');
   }
 
-  get lastname(){
-    return this.formReg.get('lastname');
+  get lastName(){
+    return this.formReg.get('lastName');
   }
 
-  get direction(){
-    return this.formReg.get('direction');
+  get direccionBase(){
+    return this.formReg.get('direccionBase');
   }
+
+  get birthdate(){
+    return this.formReg.get('birthdate');
+  }
+
+  getDate(){
+    let momentResponse = this.formReg.value
+    momentResponse = JSON.parse(JSON.stringify(momentResponse))
+    momentResponse = momentResponse.birthdate
+    momentResponse = momentResponse.slice(0,-14)
+    let split = momentResponse.split('-')
+    momentResponse = split[2] + '-' + split[1] + '-' + split[0]
+    return momentResponse
+  }
+     
+    
+  
 
   getErrorMessageEmail() {
     if (this.email.hasError('required')) {
@@ -111,7 +138,11 @@ export class RegisterComponent implements OnInit {
   }
 
   getErrorMessageDirection(){
-    return this.direction.hasError('required') ? 'Debe seleccionar un sector de domicilio' : '';
+    return this.direccionBase.hasError('required') ? 'Debe seleccionar un sector de domicilio' : '';
+  }
+
+  getErrorMessageBirthday(){
+    return this.birthdate.hasError('required') ? 'Debe seleccionar una fecha de nacimiento' : '';
   }
 
   closeRegister() {

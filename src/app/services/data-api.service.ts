@@ -11,12 +11,17 @@ export class DataApiService {
   constructor(private firestore: Firestore) { }
 
   addUser(user: User){
-    const userRef = collection(this.firestore, 'users');
+    const userRef = collection(this.firestore, 'Personas');
+    return addDoc(userRef, user);
+  }
+
+  addUserRol(user: User){
+    const userRef = collection(this.firestore, 'Roles');
     return addDoc(userRef, user);
   }
 
   getUser(): Observable<User[]> {
-    const userRef = collection(this.firestore, 'users');
+    const userRef = collection(this.firestore, 'Personas');
     return collectionData(userRef, {idField: 'email'}) as Observable<User[]>;
   }
 

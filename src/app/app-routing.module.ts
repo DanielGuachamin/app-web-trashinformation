@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { DashboardAdminComponent } from './components/dashboard-admin/dashboard-admin.component';
-import { DashboardUserComponent } from './components/dashboard-user/dashboard-user.component';
-import { RegisterComponent } from './components/register/register.component';
-import { RecoverPasswordComponent} from './components/recover-password/recover-password.component'
+import { LoginComponent } from './components/authpages/login/login.component';
+import { DashboardAdminComponent } from './components/adminpages/dashboard-admin/dashboard-admin.component';
+import { DashboardUserComponent } from './components/userpages/dashboard-user/dashboard-user.component';
+import { RegisterComponent } from './components/authpages/register/register.component';
+import { RecoverPasswordComponent} from './components/authpages/recover-password/recover-password.component'
+//import { AuthenticationGuard } from './guards/authentication.guard';
+
 import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
 const routes: Routes = [
@@ -16,11 +18,14 @@ const routes: Routes = [
   {
     path: 'dashboard-admin',
     component: DashboardAdminComponent,
+    //canActivate: [AuthenticationGuard],
     ...canActivate(() => redirectUnauthorizedTo(['/login']))
+    
   },
   { 
     path: 'dashboard-user', 
     component: DashboardUserComponent,
+    //canActivate: [AuthenticationGuard],
     ...canActivate(() => redirectUnauthorizedTo(['/login']))
   },
   { 
