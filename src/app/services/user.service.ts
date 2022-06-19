@@ -1,36 +1,67 @@
 import { Injectable } from '@angular/core';
-import {Auth, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut, 
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
   sendPasswordResetEmail,
+  onAuthStateChanged,
   getAuth} from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
 
-  constructor(private auth:Auth) { }
+ 
+  constructor(private auth: Auth) {
+  
+  }
 
-  user: any;
-  authUser= getAuth();
-  currentUser: any = this.authUser.currentUser;
-
-  register (email:any, password:any){
+  getCurrentUser(){
     return new Promise((resolve, reject) => {
-      createUserWithEmailAndPassword(this.auth, email, password)
-          .then(userData => {
-          resolve(userData)
-        }).catch(err => console.log(reject(err)))
+      const unsubscribe = onAuthStateChanged(this.auth,
+        user => {
+          unsubscribe();
+          console.log('estado de usuario desde servicio', user)
+          resolve(user);
+          
+        },
+        () => {
+          reject();
+        }
+      );
     });
   }
 
-  login({email, password} : any){
+  register(email: any, password: any) {
+    return new Promise((resolve, reject) => {
+      createUserWithEmailAndPassword(this.auth, email, password)
+        .then((userData) => {
+          resolve(userData);
+        })
+        .catch((err) => console.log(reject(err)));
+    });
+  }
+
+  isAuth() {
+    const userAuth = getAuth();
+    const userLooged = userAuth.currentUser;
+    return userLooged != null;
+  }
+
+  seeEmailUserAuth() {
+    const userAuth = getAuth();
+    const userLooged = userAuth.currentUser;
+    const emailUserLooged = userLooged?.email;
+    return emailUserLooged;
+  }
+
+  login({ email, password }: any) {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  async logout(){
+  async logout() {
     try {
       await signOut(this.auth);
     } catch (error) {
@@ -38,8 +69,8 @@ export class UserService {
     }
   }
 
-  recoverPassword(email:string){
-    return sendPasswordResetEmail(this.auth, email) 
+  recoverPassword(email: string) {
+    return sendPasswordResetEmail(this.auth, email)
       .then(() => {
         // Password reset email sent!
         // ..
@@ -49,12 +80,7 @@ export class UserService {
         const errorMessage = error.message;
 
         console.log(errorCode);
-        console.log(errorMessage)
+        console.log(errorMessage);
       });
   }
-
-  get getUser(){
-    return this.currentUser;
-  }
-
 }

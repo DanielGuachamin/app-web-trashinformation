@@ -5,28 +5,22 @@ import { DashboardAdminComponent } from './components/adminpages/dashboard-admin
 import { DashboardUserComponent } from './components/userpages/dashboard-user/dashboard-user.component';
 import { RegisterComponent } from './components/authpages/register/register.component';
 import { RecoverPasswordComponent} from './components/authpages/recover-password/recover-password.component'
-//import { AuthenticationGuard } from './guards/authentication.guard';
+import { AuthenticationGuard } from './guards/authentication.guard';
+import { AdminVerificationGuard } from './guards/admin-verification.guard';
+import { ClientVerificationGuard } from './guards/client-verification.guard';
 
-import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
+
 
 const routes: Routes = [
-  { 
-    path: '', 
-    pathMatch: 'full', 
-    redirectTo: '/login' 
-  },
   {
     path: 'dashboard-admin',
     component: DashboardAdminComponent,
-    //canActivate: [AuthenticationGuard],
-    ...canActivate(() => redirectUnauthorizedTo(['/login']))
-    
+    canActivate: [AuthenticationGuard, AdminVerificationGuard]
   },
   { 
     path: 'dashboard-user', 
     component: DashboardUserComponent,
-    //canActivate: [AuthenticationGuard],
-    ...canActivate(() => redirectUnauthorizedTo(['/login']))
+    canActivate: [AuthenticationGuard, ClientVerificationGuard]
   },
   { 
     path: 'register', 
@@ -39,7 +33,17 @@ const routes: Routes = [
   { 
     path: 'recover-password', 
     component: RecoverPasswordComponent 
-  }
+  },
+  { 
+    path: '', 
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  { 
+    path: '**', 
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
 ];
 
 @NgModule({

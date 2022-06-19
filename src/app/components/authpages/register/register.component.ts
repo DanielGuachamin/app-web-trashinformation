@@ -40,12 +40,12 @@ export class RegisterComponent implements OnInit {
       ]),
       name: new FormControl('', [
         Validators.required,
-        Validators.minLength(6),
+        Validators.minLength(3),
         Validators.pattern(this.alfabetWithOutSpacePattern)
       ]),
       lastName: new FormControl('', [
         Validators.required,
-        Validators.minLength(6),
+        Validators.minLength(4),
         Validators.pattern(this.alfabetWithOutSpacePattern)
       ]),
       direccionBase: new FormControl('', [
@@ -62,17 +62,20 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(){
     
+    
     this.userService.register(this.formReg.get('email').value, this.formReg.get('password').value)
       .then(async response => {
         this.formReg.removeControl('password');
         const getDate = this.getDate()
+        const getPick = this.getPickAPI()
         this.formReg.controls['birthdate'].setValue(getDate)
-        await this.userControl.addUser(this.formReg.value)
+        this.formReg.controls['profilePic'].setValue(getPick)
+        await this.userControl.addUser(this.formReg.value, this.formReg.get('email').value)
         this.formReg.addControl('rol', new FormControl(''))
         const rol = 'cliente'
         this.formReg.controls['rol'].setValue(rol)
         this.formReg.removeControl('direccionBase');
-        await this.userControl.addUserRol(this.formReg.value)
+        await this.userControl.addUserRol(this.formReg.value, this.formReg.get('email').value)
         this.router.navigate(['/login']);
       })
       .catch(error => console.error(error));
@@ -113,6 +116,12 @@ export class RegisterComponent implements OnInit {
     return momentResponse
   }
      
+  getPickAPI(){
+    const formName = this.formReg.get('name').value;
+    const formLastName = this.formReg.get('lastName').value
+    let urlPick = `https://ui-avatars.com/api/?background=0B2460&color=fff&size=600&font-size=0.4&name=${formName}+${formLastName}`
+    return urlPick
+  }
     
   
 

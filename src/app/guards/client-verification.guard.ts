@@ -1,41 +1,32 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { UserService } from 'src/app/services/user.service';
 import { DataApiService } from '../services/data-api.service';
+import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationGuard implements CanActivate {
+export class ClientVerificationGuard implements CanActivate {
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private userControl: DataApiService) {}
+
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      
-      return this.getUserAuth() as unknown as Observable<boolean | UrlTree>
-      
+    return this.verifiedUserRol() as unknown as Observable<boolean | UrlTree>;
   }
 
-  async getUserAuth(): Promise<Boolean>{
+  async verifiedUserRol(): Promise<Boolean>{
     const isAuth:any = await this.userService.getCurrentUser()
-    console.log('Estado de usuario desde guard',isAuth)
-    if(isAuth){
-      return true
-    }
-    return false
-    /*
     const rol = await this.userControl.searchUserRol(isAuth.email)
     console.log('Desde guardian', rol)
-    if(rol === 'admin'){
-      this.router.navigate(['/dashboard-admin'])
+    if(rol === 'cliente'){
+      return true
     }else{
-      this.router.navigate(['/dashboard-user'])
+      return false
     }
-    */
   }
-
   
 }

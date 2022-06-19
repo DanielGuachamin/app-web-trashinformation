@@ -23,7 +23,6 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
 
 import  {HttpClientModule}  from "@angular/common/http";
 import { FilterPipe } from './pipes/filter.pipe';
-import { CookieService } from 'ngx-cookie-service';
 
 
 @NgModule({
@@ -50,7 +49,7 @@ import { CookieService } from 'ngx-cookie-service';
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
   ],
-  providers: [CookieService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

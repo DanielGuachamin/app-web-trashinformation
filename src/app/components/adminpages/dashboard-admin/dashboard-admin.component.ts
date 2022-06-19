@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { UserService } from 'src/app/services/user.service';
 
+
 @Component({
   selector: 'app-dashboard-admin',
   templateUrl: './dashboard-admin.component.html',
@@ -17,9 +18,12 @@ export class DashboardAdminComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    //this.checkRolAdmin()
+    /*
     this.userControl.getUser().subscribe(users => {
       console.log(users);
     })
+    */
     
   }
 
@@ -29,6 +33,16 @@ export class DashboardAdminComponent implements OnInit {
         this.router.navigate(['/login']);
       })
       .catch(error => console.log(error));
+  }
+
+  async checkRolAdmin(){
+    
+    const email = this.userService.seeEmailUserAuth()
+    const rol = await this.userControl.searchUserRol(email)
+      console.log('Este usuario tiene rol desde dashboard-admin: ', rol)
+      if(rol === 'cliente'){
+        this.router.navigate(['/dashboard-user'])
+      }
   }
 
 }

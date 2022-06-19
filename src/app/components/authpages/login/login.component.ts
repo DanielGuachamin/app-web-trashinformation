@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DataApiService } from 'src/app/services/data-api.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -13,7 +14,6 @@ export class LoginComponent implements OnInit {
   emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   passwordPattern: any = /^(?=.*[a-z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{6,15}/;
-
 
   createFormGroup(){
     return new FormGroup({
@@ -33,22 +33,45 @@ export class LoginComponent implements OnInit {
 
   formLogin: FormGroup;
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(
+    private userService: UserService, 
+    private router: Router,
+    private userControl: DataApiService ) {
     this.formLogin = this.createFormGroup();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    
+  }
 
   onSubmit() {
     if (this.formLogin.valid) {
       this.userService.login(this.formLogin.value)
-        .then(response => {
-          console.log(response);
-          this.router.navigate(['/dashboard-admin']);
+        .then((response: any) => {
+          console.log(response)
+          this.redirectAdminOrUser()
         })
         .catch(error => console.log(error));
     } else {
       console.log('No funciona');
+    }
+  }
+
+  async redirectAdminOrUser(){
+    if(this.userService.isAuth()){
+      console.log('si esta autenticado')
+      const email = this.formLogin.get('email').value
+      const rol = await this.userControl.searchUserRol(email)
+      
+      if(rol === 'admin'){
+        this.router.navigate(['/dashboard-admin'])
+      }else{
+        this.router.navigate(['/dashboard-user'])
+      }
+    }
+    else{
+      console.log('no esta autenticado')
+      this.router.navigate(['/login']);
     }
   }
 
