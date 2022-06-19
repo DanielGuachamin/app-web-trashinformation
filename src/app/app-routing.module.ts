@@ -8,6 +8,12 @@ import { RecoverPasswordComponent} from './components/authpages/recover-password
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { AdminVerificationGuard } from './guards/admin-verification.guard';
 import { ClientVerificationGuard } from './guards/client-verification.guard';
+import { PublicAuthenticationGuard } from './guards/public-authentication.guard';
+import { NewsAdminComponent } from './components/adminpages/dashboard-admin/news-admin/news-admin.component';
+import { VideosAdminComponent } from './components/adminpages/dashboard-admin/videos-admin/videos-admin.component';
+import { RecommendationsAdminComponent } from './components/adminpages/dashboard-admin/recommendations-admin/recommendations-admin.component';
+import { ContactsAdminComponent } from './components/adminpages/dashboard-admin/contacts-admin/contacts-admin.component';
+import { SuggestionsAdminComponent } from './components/adminpages/dashboard-admin/suggestions-admin/suggestions-admin.component';
 
 
 
@@ -15,6 +21,28 @@ const routes: Routes = [
   {
     path: 'dashboard-admin',
     component: DashboardAdminComponent,
+    children: [
+      {
+        path: '',
+        component: NewsAdminComponent
+      },
+      {
+        path: 'videos-admin',
+        component: VideosAdminComponent
+      },
+      {
+        path: 'recommendations-admin',
+        component: RecommendationsAdminComponent
+      },
+      {
+        path: 'contacts-admin',
+        component: ContactsAdminComponent
+      },
+      {
+        path: 'suggestions-admin',
+        component: SuggestionsAdminComponent
+      }
+    ],
     canActivate: [AuthenticationGuard, AdminVerificationGuard]
   },
   { 
@@ -24,15 +52,17 @@ const routes: Routes = [
   },
   { 
     path: 'register', 
-    component: RegisterComponent 
+    component: RegisterComponent,
+    canActivate: [PublicAuthenticationGuard]
   },
   { 
     path: 'login', 
-    component: LoginComponent 
+    component: LoginComponent
   },
   { 
     path: 'recover-password', 
-    component: RecoverPasswordComponent 
+    component: RecoverPasswordComponent,
+    canActivate: [PublicAuthenticationGuard]
   },
   { 
     path: '', 

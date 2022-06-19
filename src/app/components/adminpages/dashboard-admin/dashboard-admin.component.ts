@@ -11,14 +11,15 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class DashboardAdminComponent implements OnInit {
 
+  
+
   constructor(
     private userService: UserService,
-    private router: Router,
-    private userControl: DataApiService
+    private router: Router
     ) { }
 
   ngOnInit(): void {
-    //this.checkRolAdmin()
+    
     /*
     this.userControl.getUser().subscribe(users => {
       console.log(users);
@@ -27,7 +28,7 @@ export class DashboardAdminComponent implements OnInit {
     
   }
 
-  onClick(){
+  singOut(){
     this.userService.logout()
       .then(() => {
         this.router.navigate(['/login']);
@@ -35,14 +36,5 @@ export class DashboardAdminComponent implements OnInit {
       .catch(error => console.log(error));
   }
 
-  async checkRolAdmin(){
-    
-    const email = this.userService.seeEmailUserAuth()
-    const rol = await this.userControl.searchUserRol(email)
-      console.log('Este usuario tiene rol desde dashboard-admin: ', rol)
-      if(rol === 'cliente'){
-        this.router.navigate(['/dashboard-user'])
-      }
-  }
-
+ 
 }

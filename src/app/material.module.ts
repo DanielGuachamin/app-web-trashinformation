@@ -11,6 +11,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatChipsModule} from '@angular/material/chips'
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter'
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter'
     MatInputModule,
     MatChipsModule,
     MatDatepickerModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatTabsModule,
+    MatToolbarModule
   ]
 })
 export class MaterialModule { }

@@ -13,6 +13,8 @@ import { RecoverPasswordComponent } from './components/authpages/recover-passwor
 
 import { DashboardAdminComponent } from './components/adminpages/dashboard-admin/dashboard-admin.component';
 import { DashboardUserComponent } from './components/userpages/dashboard-user/dashboard-user.component';
+
+
 import { ModalGeneralComponent } from './components/modal-general/modal-general.component';
 
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
@@ -23,6 +25,9 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
 
 import  {HttpClientModule}  from "@angular/common/http";
 import { FilterPipe } from './pipes/filter.pipe';
+import { DashboardAdminModule } from './components/adminpages/dashboard-admin/dashboard-admin.module';
+
+
 
 
 @NgModule({
@@ -48,6 +53,8 @@ import { FilterPipe } from './pipes/filter.pipe';
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
+    DashboardAdminModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
