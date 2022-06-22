@@ -10,7 +10,8 @@ import {
   getDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { User } from '../interfaces/user';
+import { Noticia } from '../modelos/noticia';
+import { User } from '../modelos/user';
 
 @Injectable({
   providedIn: 'root',
@@ -20,20 +21,37 @@ export class DataApiService {
   constructor(private firestore: Firestore) {}
 
   addUser(user: User, email: any) {
-    //const userRef = collection(this.firestore, 'Personas');
-    //return addDoc(userRef, user);
     return setDoc(doc(this.firestore, 'Personas', email), user);
   }
 
   addUserRol(user: User, email: any) {
-    //const userRef = collection(this.firestore, 'Roles');
-    //return addDoc(userRef, user);
     return setDoc(doc(this.firestore, 'Roles', email), user);
   }
 
   getUser(): Observable<User[]> {
     const userRef = collection(this.firestore, 'Personas');
     return collectionData(userRef, { idField: 'email' }) as Observable<User[]>;
+  }
+
+  addNoticia(noticia: Noticia, id: string){
+    return setDoc(doc(this.firestore, 'Noticias', id), noticia);
+  }
+
+  getNoticias(): Observable<Noticia[]>{
+    const noticiaRef = collection(this.firestore, 'Noticias')
+    return collectionData(noticiaRef, {idField: 'id'}) as Observable<Noticia[]>
+  }
+
+  deleteNoticia(id: String){
+    const noticiaDocRef = doc(this.firestore, `Noticias/${id}`);
+    return deleteDoc(noticiaDocRef)
+  }
+
+  async modifiedNoticia(id: any) {
+    
+    const noticiaRef = doc(this.firestore, 'Noticias', id)
+    const respuesta = await getDoc(noticiaRef)
+    return respuesta.data()
   }
 
   async searchUserRol(email:any) {
@@ -46,9 +64,6 @@ export class DataApiService {
 
   /*
 
-  deleteElement(user: User){
-    const userDocRef = collection(this.firestore, `users/{user.email}`);
-    return deleteDoc(userDocRef)
-  }
+  
   */
 }

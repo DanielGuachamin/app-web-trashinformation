@@ -19,7 +19,7 @@ export class RegisterComponent implements OnInit {
   alfabetWithOutSpacePattern: any = /^[A-Za-z\s]+$/;
 
   formReg: FormGroup;
-  formBuilder: any;
+  
 
   constructor(
     private userService: UserService,
