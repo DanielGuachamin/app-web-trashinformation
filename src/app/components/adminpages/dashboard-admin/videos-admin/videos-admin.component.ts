@@ -40,6 +40,7 @@ export class VideosAdminComponent implements OnInit, AfterViewInit, OnDestroy {
       urlID: new FormControl(),
     });
   }
+  
 
   ngOnInit(): void {
     this.dataControl.getVideos().subscribe((videos) => {
@@ -69,6 +70,7 @@ export class VideosAdminComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     window.removeEventListener('resize', this.onResize);
   }
+
 
   async onSubmitAddVideo() {
     const videoID = this.getVideoId(this.formVideo.get('url').value);

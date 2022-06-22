@@ -11,6 +11,7 @@ import {
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Noticia } from '../modelos/noticia';
+import { Recomendacion } from '../modelos/recomendacion';
 import { User } from '../modelos/user';
 import { Video } from '../modelos/video';
 
@@ -76,6 +77,24 @@ export class DataApiService {
     const respuesta = await getDoc(videoRef)
     return respuesta.data()
   }
+
+  //Funciones para manejar recomendaciones
+
+  addRecommendation(recomen: Recomendacion, id: string){
+    return setDoc(doc(this.firestore, 'Recomendaciones', id), recomen);
+  }
+
+  getRecommendations(): Observable<Recomendacion[]>{
+    const recomenRef = collection(this.firestore, 'Recomendaciones')
+    return collectionData(recomenRef, {idField: 'id'}) as Observable<Recomendacion[]>
+  }
+
+  async modifiedRecommendation(id: any) {
+    const recomenRef = doc(this.firestore, 'Recomendaciones', id)
+    const respuesta = await getDoc(recomenRef)
+    return respuesta.data()
+  }
+
   //Funciones generales de control de elementos
 
   deleteElement(id: String, path: String){
