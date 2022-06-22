@@ -5,7 +5,7 @@
 }
 
 .video-card {
-    max-width: 400px;
+    max-width: 600px;
     margin-bottom: 1rem;
 }
 
@@ -13,4 +13,24 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.formulario-news {
+    align-items: center;
+}
+
+.video-content {
+    display: flex;
+}
+
+.video-text{
+    margin-right: 1rem;
+}
+
+.video-image{
+    padding: 1rem;
+}
+
+mat-card-content{
+    margin: 0 16px;
 }

@@ -14,6 +14,7 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter'
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatCardModule} from '@angular/material/card';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [],
@@ -33,7 +34,8 @@ import {MatCardModule} from '@angular/material/card';
     MatMomentDateModule,
     MatTabsModule,
     MatToolbarModule,
-    MatCardModule
+    MatCardModule,
+    MatGridListModule
   ]
 })
 export class MaterialModule { }

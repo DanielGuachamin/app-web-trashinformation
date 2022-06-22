@@ -3,23 +3,24 @@
         <div class="mostrar-videos">
             <div class="individual-videos" *ngFor="let video of videos">
                 <mat-card class="video-card">
-                    <mat-card-header>
-
-                        <mat-card-title>{{video.title}}</mat-card-title>
-                        <mat-card-subtitle>{{video.category}}</mat-card-subtitle>
-                    </mat-card-header>
-                    <img mat-card-image [src]="video.prevImg" alt={{video.title}} width="200" height="300">
-                    <div #demoYouTubePlayer class="demo-youtube-player">
-                        <h1>Angular YouTube Player Demo</h1>
-                        <section>
-                          <youtube-player videoId={{video.urlID}} [width]="videoWidth" [height]="videoHeight"></youtube-player>
-                        </section>
-                     </div>
-                    <mat-card-content>
-                        <h3>
-                            Autor: {{video.author}}
-                        </h3>
-                    </mat-card-content>
+                    <div class="video-content">
+                        <div class="video-text">
+                            <mat-card-header>
+    
+                                <mat-card-title>{{video.title}}</mat-card-title>
+                                <mat-card-subtitle>{{video.category}}</mat-card-subtitle>
+                            </mat-card-header>
+                            
+                            <mat-card-content>
+                                <h3>
+                                    Autor: {{video.author}}
+                                </h3>
+                            </mat-card-content>
+                        </div>
+                        <div class="video-image">
+                            <img mat-card-image [src]="video.prevImg" alt={{video.title}} width="200" height="200">
+                        </div>
+                    </div>
                     <mat-card-actions>
                         <button mat-raised-button color="warn" (click)="deleteVideoById(video.id)">Eliminar</button>
                         <button mat-raised-button color="accent" (click)="fillFormVideo(video.id)">Modificar</button>
@@ -51,7 +52,7 @@
                     <input matInput placeholder="Ingrese un enlace de Youtube" class="form-control"
                         formControlName="url">
                 </mat-form-field>
-                <mat-icon>youtube</mat-icon>
+                <mat-icon>play_circle</mat-icon>
                 <button mat-raised-button color="primary">Guardar</button>
             </form>
             <button mat-raised-button color="primary" (click)="clearForm()">Limpiar Formulario</button>
