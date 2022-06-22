@@ -8,7 +8,7 @@
                       <mat-card-title>{{noticia.title}}</mat-card-title>
                       <mat-card-subtitle>{{noticia.category}}</mat-card-subtitle>
                     </mat-card-header>
-                    <img mat-card-image [src]="noticia.noticiaPic" alt={{noticia.title}} width="300" height="300">
+                    <img mat-card-image [src]="noticia.noticiaPic" alt={{noticia.title}} width="200" height="300">
                     <mat-card-content>
                       <p>
                         {{noticia.description}}
@@ -58,7 +58,7 @@
            
                 <button mat-raised-button color="primary">Guardar</button>
             </form>
-            
+            <button mat-raised-button color="primary" (click)="clearForm()">Limpiar Formulario</button>
         </div>
         
     </div>

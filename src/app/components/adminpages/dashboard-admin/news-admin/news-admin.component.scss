@@ -16,3 +16,17 @@
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
 }
+
+.fondo-news {
+    display: flex;
+    align-content: space-around;
+    justify-content: space-around;
+}
+
+.mostrar-news {
+    column-count: 2;
+}
+
+.example-card {
+    margin-bottom: 1rem;
+}
