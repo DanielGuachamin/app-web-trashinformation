@@ -1,0 +1,16 @@
+.fondo-videos {
+    display: flex;
+    align-content: space-around;
+    justify-content: space-around;
+}
+
+.video-card {
+    max-width: 400px;
+    margin-bottom: 1rem;
+}
+
+.formulario-videos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

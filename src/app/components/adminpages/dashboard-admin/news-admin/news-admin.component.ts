@@ -5,7 +5,6 @@ import {
   Storage,
   ref,
   uploadBytes,
-  //listAll,
   getDownloadURL,
 } from '@angular/fire/storage';
 import { Noticia } from 'src/app/modelos/noticia';
@@ -21,7 +20,6 @@ export class NewsAdminComponent implements OnInit {
   enumNoticias: number = 0;
   noticias: Noticia[] = [];
   urlNoticia: string = '';
-  fillNoticia: Noticia[] = [];
 
   plantillaImage: any = {
     MedioAmbiente:
@@ -98,7 +96,7 @@ export class NewsAdminComponent implements OnInit {
   }
 
   async deleteNoticiaById(id: any) {
-    await this.dataControl.deleteNoticia(id);
+    await this.dataControl.deleteElement(id, 'Noticias');
   }
 
   uploadNoticiaImage($event: any) {
@@ -124,7 +122,6 @@ export class NewsAdminComponent implements OnInit {
 
   fillFormNoticia(id: any) {
     this.dataControl.modifiedNoticia(id).then((response: any) => {
-      const FormNoticia = response;
       this.formNoticia.setValue(response);
     });
   }

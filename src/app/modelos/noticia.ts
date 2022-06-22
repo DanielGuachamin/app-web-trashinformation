@@ -4,6 +4,6 @@ export interface Noticia{
     category: String,
     description: String,
     author: String,
-    url: String
+    url: String,
     noticiaPic: String
 }

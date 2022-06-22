@@ -12,6 +12,7 @@ import {
 import { Observable } from 'rxjs';
 import { Noticia } from '../modelos/noticia';
 import { User } from '../modelos/user';
+import { Video } from '../modelos/video';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,7 @@ export class DataApiService {
  
   constructor(private firestore: Firestore) {}
 
+  //Funciones para manejar usuarios
   addUser(user: User, email: any) {
     return setDoc(doc(this.firestore, 'Personas', email), user);
   }
@@ -33,6 +35,16 @@ export class DataApiService {
     return collectionData(userRef, { idField: 'email' }) as Observable<User[]>;
   }
 
+  async searchUserRol(email:any) {
+    const docRef = doc(this.firestore, 'Roles', email);
+    const docSnap = await getDoc(docRef);
+    const responseUser:any = docSnap.data()
+    const rol = responseUser['rol']
+    return rol
+  }
+
+  //Funciones para manejar noticias
+
   addNoticia(noticia: Noticia, id: string){
     return setDoc(doc(this.firestore, 'Noticias', id), noticia);
   }
@@ -42,28 +54,36 @@ export class DataApiService {
     return collectionData(noticiaRef, {idField: 'id'}) as Observable<Noticia[]>
   }
 
-  deleteNoticia(id: String){
-    const noticiaDocRef = doc(this.firestore, `Noticias/${id}`);
-    return deleteDoc(noticiaDocRef)
-  }
-
   async modifiedNoticia(id: any) {
-    
     const noticiaRef = doc(this.firestore, 'Noticias', id)
     const respuesta = await getDoc(noticiaRef)
     return respuesta.data()
   }
 
-  async searchUserRol(email:any) {
-    const docRef = doc(this.firestore, 'Roles', email);
-    const docSnap = await getDoc(docRef);
-    const responseUser:any = docSnap.data()
-    const rol = responseUser['rol']
-    return rol
+  //Funciones para manejar videos
+
+  addVideo(video: Video, id: string){
+    return setDoc(doc(this.firestore, 'Videos', id), video);
   }
 
-  /*
+  getVideos(): Observable<Video[]>{
+    const videoRef = collection(this.firestore, 'Videos')
+    return collectionData(videoRef, {idField: 'id'}) as Observable<Video[]>
+  }
+
+  async modifiedVideo(id: any) {
+    const videoRef = doc(this.firestore, 'Videos', id)
+    const respuesta = await getDoc(videoRef)
+    return respuesta.data()
+  }
+  //Funciones generales de control de elementos
+
+  deleteElement(id: String, path: String){
+    const noticiaDocRef = doc(this.firestore, `${path}/${id}`);
+    return deleteDoc(noticiaDocRef)
+  }
 
   
-  */
+
+  
 }

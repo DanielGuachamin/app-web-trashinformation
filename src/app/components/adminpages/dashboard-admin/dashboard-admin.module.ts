@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { YouTubePlayerModule } from "@angular/youtube-player";
 
 import { DashboardAdminRoutingModule } from './dashboard-admin-routing.module';
 import { NewsAdminComponent } from './news-admin/news-admin.component';
@@ -24,7 +25,8 @@ import { SuggestionsAdminComponent } from './suggestions-admin/suggestions-admin
     DashboardAdminRoutingModule,
     MaterialModule,
     FormsModule, 
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    YouTubePlayerModule
   ]
 })
 export class DashboardAdminModule { }

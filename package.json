@@ -23,6 +23,7 @@
     "@angular/platform-browser": "^14.0.0",
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
+    "@angular/youtube-player": "^14.0.2",
     "@firebase/auth": "^0.20.3",
     "firebase": "^9.8.3",
     "moment": "^2.29.3",
