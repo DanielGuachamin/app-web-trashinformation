@@ -10,6 +10,7 @@ import {
   getDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { Contacto } from '../modelos/contacto';
 import { Noticia } from '../modelos/noticia';
 import { Recomendacion } from '../modelos/recomendacion';
 import { User } from '../modelos/user';
@@ -92,6 +93,23 @@ export class DataApiService {
   async modifiedRecommendation(id: any) {
     const recomenRef = doc(this.firestore, 'Recomendaciones', id)
     const respuesta = await getDoc(recomenRef)
+    return respuesta.data()
+  }
+
+   //Funciones para manejar contactos
+
+   addContact(contacto: Contacto, id: string){
+    return setDoc(doc(this.firestore, 'Contactos', id), contacto);
+  }
+
+  getContacts(): Observable<Contacto[]>{
+    const contactRef = collection(this.firestore, 'Contactos')
+    return collectionData(contactRef, {idField: 'id'}) as Observable<Contacto[]>
+  }
+
+  async modifiedContact(id: any) {
+    const contactRef = doc(this.firestore, 'Contactos', id)
+    const respuesta = await getDoc(contactRef)
     return respuesta.data()
   }
 

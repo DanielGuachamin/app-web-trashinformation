@@ -1,1 +1,87 @@
-<p>contacts-admin works!</p>
+<div class="pantalla-contacts">
+    <div class="fondo-contacts">
+        <div class="mostrar-contacts">
+            <div class="individual-contacts" >
+                <mat-form-field appearance="standard">
+                    <mat-label>Filtro</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Busque por cualquier campo" #input>
+                  </mat-form-field>
+                  
+                  <div class="mat-elevation-z8">
+                    <table mat-table [dataSource]="dataSource" matSort>
+                  
+                   
+                    <ng-container matColumnDef="id">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
+                      <td mat-cell *matCellDef="let element"> {{element.id[0]}} </td>
+                    </ng-container>
+                  
+                  
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                    </ng-container>
+                  
+                 
+                    <ng-container matColumnDef="address">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Dirección </th>
+                      <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="phoneNumber">
+                      <th mat-header-cell *matHeaderCellDef> Contacto </th>
+                      <td mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="activity">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Actividad </th>
+                        <td mat-cell *matCellDef="let element"> {{element.activity}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <button mat-stroked-button color="accent" (click)="fillFormContacto(element.id)">Modificar</button>
+                            <button mat-stroked-button color="warn" (click)="deleteContactById(element.id)">Eliminar</button>
+                        </td>
+                      </ng-container>
+                  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  
+                
+                    <tr class="mat-row" *matNoDataRow>
+                      <td class="mat-cell" colspan="4">No hay información que coincida con: "{{input.value}}"</td>
+                    </tr>
+                  </table>
+
+                  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" ></mat-paginator>
+                </div>
+            </div>
+        </div>
+        <div class="formulario-contacts">
+            <form [formGroup]="formContact" (ngSubmit)="onSubmitAddContact()" class="formulario-contacts">
+                <mat-form-field appearance="fill">
+                    <mat-label>Nombre de Contacto</mat-label>
+                    <input matInput placeholder="Ingrese un nombre" class="form-control" formControlName="name">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Direccion de Contacto</mat-label>
+                    <input matInput placeholder="Ingrese una dirección" class="form-control" formControlName="address">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Número de Contacto</mat-label>
+                    <input matInput placeholder="Ingrese un número telefónico" class="form-control" formControlName="phoneNumber">
+                </mat-form-field>
+             
+                <mat-form-field appearance="fill">
+                    <mat-label>Actividad que realiza</mat-label>
+                    <input matInput placeholder="Ingrese un tipo de actividad" class="form-control" formControlName="activity">
+                </mat-form-field>
+                <button mat-raised-button color="primary">Guardar</button>
+            </form>
+            <button mat-raised-button color="primary" (click)="clearForm()">Limpiar Formulario</button>
+        </div>
+
+    </div>
+</div>
