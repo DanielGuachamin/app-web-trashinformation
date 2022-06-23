@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import { Contacto } from '../modelos/contacto';
 import { Noticia } from '../modelos/noticia';
 import { Recomendacion } from '../modelos/recomendacion';
+import { Sugerencia } from '../modelos/sugerencia';
 import { User } from '../modelos/user';
 import { Video } from '../modelos/video';
 
@@ -43,6 +44,13 @@ export class DataApiService {
     const responseUser:any = docSnap.data()
     const rol = responseUser['rol']
     return rol
+  }
+
+  async searchUserData(email:any) {
+    const docRef = doc(this.firestore, 'Roles', email);
+    const docSnap = await getDoc(docRef);
+    const responseUser:any = docSnap.data()
+    return responseUser
   }
 
   //Funciones para manejar noticias
@@ -96,7 +104,7 @@ export class DataApiService {
     return respuesta.data()
   }
 
-   //Funciones para manejar contactos
+  //Funciones para manejar contactos
 
    addContact(contacto: Contacto, id: string){
     return setDoc(doc(this.firestore, 'Contactos', id), contacto);
@@ -111,6 +119,17 @@ export class DataApiService {
     const contactRef = doc(this.firestore, 'Contactos', id)
     const respuesta = await getDoc(contactRef)
     return respuesta.data()
+  }
+
+  //Funciones para manejar sugerencias
+
+  addSuggest(sugerencia: Sugerencia, id: string){
+    return setDoc(doc(this.firestore, 'Sugerencias', id), sugerencia);
+  }
+
+  getSuggestions(): Observable<Sugerencia[]>{
+    const sugestRef = collection(this.firestore, 'Sugerencias')
+    return collectionData(sugestRef, {idField: 'id'}) as Observable<Sugerencia[]>
   }
 
   //Funciones generales de control de elementos

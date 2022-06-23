@@ -1,1 +1,47 @@
-<p>suggestions-admin works!</p>
+<div class="pantalla-sugerencias">
+    <div class="fondo-sugerencias">
+        <div class="mostrar-sugerencias">
+            <div class="individual-sugerencias" *ngFor="let sugerencia of sugerencias">
+                <mat-card class="sugerencia-card">
+                   
+                            <mat-card-header>
+    
+                                <mat-card-title>{{sugerencia.email}}</mat-card-title>
+                                <mat-card-subtitle>{{sugerencia.name}} + {{sugerencia.lastName}}</mat-card-subtitle>
+                                <mat-card-subtitle>{{sugerencia.section}}</mat-card-subtitle>
+                            </mat-card-header>
+                            
+                            <mat-card-content>
+                                <h3>
+                                    Descripción: {{sugerencia.comment}}
+                                </h3>
+                            </mat-card-content>
+                            
+                            <!-- img mat-card-image [src]="sugerencia.urlImage" alt={{sugerencia.title}} width="200" height="270" -->
+                        
+                    
+                    <mat-card-actions>
+                        <button mat-raised-button color="warn" (click)="deleteSuggestById(sugerencia.id)">Eliminar</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+        <div class="formulario-sugerencias">
+            <form [formGroup]="formSuggest" (ngSubmit)="onSubmitAddSuggest()" class="formulario-sugerencias">
+                <mat-form-field appearance="fill">
+                    <mat-label>¿Su opinión es acerca de...?</mat-label>
+                    <input matInput placeholder="Ingrese el nombre de la sección a mejorar" class="form-control" formControlName="section">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Comentario</mat-label>
+                    <textarea matInput matInput placeholder="Ingresa tu comentario" class="form-control"
+                    formControlName="comment"></textarea>
+                   
+                </mat-form-field>
+                <button mat-raised-button color="primary">Enviar</button>
+            </form>
+            
+        </div>
+
+    </div>
+</div>
