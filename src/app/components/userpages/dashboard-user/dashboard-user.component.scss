@@ -1,3 +1,15 @@
+@use '@angular/material' as mat;
+
+.user-menu {
+ $special-primary: mat.define-palette(mat.$gray-palette, 900);
+ $special-accent: mat.define-palette(mat.$brown-palette);
+ $special-theme: mat.define-dark-theme((
+   color: (primary: $special-primary, accent: $special-accent),
+ ));
+
+ @include mat.button-color($special-theme);
+}
+
 .user-header{
     display: flex;
     justify-content: space-between;
