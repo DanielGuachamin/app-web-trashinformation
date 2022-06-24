@@ -26,6 +26,7 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
 import  {HttpClientModule}  from "@angular/common/http";
 import { FilterPipe } from './pipes/filter.pipe';
 import { DashboardAdminModule } from './components/adminpages/dashboard-admin/dashboard-admin.module';
+import { DashboardUserModule } from './components/userpages/dashboard-user/dashboard-user.module';
 
 
 
@@ -53,7 +54,8 @@ import { DashboardAdminModule } from './components/adminpages/dashboard-admin/da
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
-    DashboardAdminModule
+    DashboardAdminModule,
+    DashboardUserModule
     
   ],
   providers: [],
