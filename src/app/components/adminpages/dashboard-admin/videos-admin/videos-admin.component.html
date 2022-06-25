@@ -6,11 +6,11 @@
                     <div class="video-content">
                         <div class="video-text">
                             <mat-card-header>
-    
+
                                 <mat-card-title>{{video.title}}</mat-card-title>
                                 <mat-card-subtitle>{{video.category}}</mat-card-subtitle>
                             </mat-card-header>
-                            
+
                             <mat-card-content>
                                 <h3>
                                     Autor: {{video.author}}
@@ -32,7 +32,8 @@
             <form [formGroup]="formVideo" (ngSubmit)="onSubmitAddVideo()" class="formulario-videos">
                 <mat-form-field appearance="fill">
                     <mat-label>Título</mat-label>
-                    <input matInput placeholder="Ingrese un título" class="form-control" formControlName="title">
+                    <input type="text" matInput placeholder="Ingrese un título" class="form-control" formControlName="title">
+                    <mat-error *ngIf="title.invalid && (title.dirty || title.touched)">{{getErrorMessageTitle()}}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="fill">
                     <mat-label>Categoría</mat-label>
@@ -42,20 +43,23 @@
                         <mat-option value="Reciclaje">Reciclaje</mat-option>
                         <mat-option value="Covid19">Covid 19</mat-option>
                     </mat-select>
+                    <mat-error *ngIf="category.invalid && (category.dirty || category.touched)">{{getErrorMessageCategory()}}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="fill">
                     <mat-label>Autor</mat-label>
-                    <input matInput placeholder="Ingrese un autor" class="form-control" formControlName="author">
+                    <input type="text" matInput placeholder="Ingrese un autor" class="form-control" formControlName="author">
+                    <mat-error *ngIf="author.invalid && (author.dirty || author.touched)">{{getErrorMessageAuthor()}}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="fill">
                     <mat-label>Enlace de video de Youtube</mat-label>
-                    <input matInput placeholder="Ingrese un enlace de Youtube" class="form-control"
+                    <input type="text" matInput placeholder="Ingrese un enlace de Youtube" class="form-control"
                         formControlName="url">
+                        <mat-error *ngIf="url.invalid && (url.dirty || url.touched)">{{getErrorMessageUrl()}}</mat-error>
                 </mat-form-field>
-                <mat-icon>play_circle</mat-icon>
-                <button mat-raised-button color="primary">Guardar</button>
+                <mat-icon class="mt-3">play_circle</mat-icon>
+                <button  mat-raised-button color="primary">Guardar</button>
             </form>
-            <button mat-raised-button color="primary" (click)="clearForm()">Limpiar Formulario</button>
+            <button class="ms-4 mt-2" mat-raised-button color="primary" (click)="clearForm()">Limpiar Formulario</button>
         </div>
 
     </div>

@@ -25,7 +25,8 @@
             <form [formGroup]="formNoticia" (ngSubmit)="onSubmitAddNoticia()" class="formulario-news">
                 <mat-form-field appearance="fill">
                     <mat-label>Título</mat-label>
-                    <input matInput placeholder="Ingrese un título" class="form-control" formControlName="title" >
+                    <input type="text" matInput placeholder="Ingrese un título" class="form-control" formControlName="title" >
+                    <mat-error *ngIf="title.invalid && (title.dirty || title.touched)">{{getErrorMessageTitle()}}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="fill">
                     <mat-label>Categoría</mat-label>
@@ -35,23 +36,27 @@
                         <mat-option value="Reciclaje">Reciclaje</mat-option>
                         <mat-option value="Covid19">Covid 19</mat-option>
                     </mat-select>
+                    <mat-error *ngIf="category.invalid && (category.dirty || category.touched)">{{getErrorMessageCategory()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="fill">
+                <mat-form-field class="mt-3" appearance="fill">
                     <mat-label>Autor</mat-label>
-                    <input matInput placeholder="Ingrese un autor" class="form-control" formControlName="author">
+                    <input type="text" matInput placeholder="Ingrese un autor" class="form-control" formControlName="author">
+                    <mat-error *ngIf="author.invalid && (author.dirty || author.touched)">{{getErrorMessageAuthor()}}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="fill">
                     <mat-label>Descripción</mat-label>
-                    <textarea matInput matInput placeholder="Ingrese una descripción" class="form-control"
+                    <textarea type="text" matInput matInput placeholder="Ingrese una descripción" class="form-control"
                     formControlName="description"></textarea>
+                    <mat-error *ngIf="description.invalid && (description.dirty || description.touched)">{{getErrorMessageDescription()}}</mat-error>
 
                 </mat-form-field>
-                <mat-form-field appearance="fill">
+                <mat-form-field class="mt-3" appearance="fill">
                     <mat-label>Fuente bibliográfica</mat-label>
-                    <input matInput placeholder="Ingrese una referencia" class="form-control" formControlName="url">
+                    <input type="text" matInput placeholder="Ingrese una referencia" class="form-control" formControlName="url">
+                    <mat-error *ngIf="url.invalid && (url.dirty || url.touched)">{{getErrorMessageUrl()}}</mat-error>
                 </mat-form-field>
 
-                    <mat-icon>image</mat-icon>
+                    <mat-icon class="mt-4">image</mat-icon>
                     <button type="button" mat-raised-button (click)="fileInput.click()">Agregar Imagen (Opcional)</button>
                     <input hidden (change)="uploadNoticiaImage($event)" #fileInput type="file">
                     <span class="file-name">{{selectedFile?.name}}</span>

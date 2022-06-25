@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { Sugerencia } from 'src/app/modelos/sugerencia';
 import { UserService } from 'src/app/services/user.service';
@@ -23,8 +23,12 @@ export class SuggestionsAdminComponent implements OnInit {
       name: new FormControl(),
       lastName: new FormControl(),
       email: new FormControl(),
-      section: new FormControl(),
-      comment: new FormControl(),
+      section: new FormControl('', [
+        Validators.required
+      ]),
+      comment: new FormControl('', [
+        Validators.required
+      ]),
     });
   }
 
@@ -59,21 +63,40 @@ export class SuggestionsAdminComponent implements OnInit {
 
   comprobarIdSuggest() {
     const listSugerencia = this.sugerencias;
-    const idBD = listSugerencia.map((item) => item.id);
-    const idMod = '1s'
+    const idSugerenciaBD = listSugerencia.map((item) => item.id);
+    const idMod = this.formSuggest.get('id').value;
     let idAdd;
-    for (let item of idBD) {
-      if (item != idMod) {
-        idAdd = idMod;
-        return idAdd;
-      } else{
-        idAdd = `${this.enumSuggest + 1}s`;
-        return idAdd;
+    if (idSugerenciaBD[0]!= '1s'){
+      idAdd = '1s'
+      return idAdd;
+    }else{
+      for (let item of idSugerenciaBD) {
+        if (item == idMod) {
+          idAdd = idMod;
+          return idAdd;
+        }
       }
+      idAdd = `${this.enumSuggest + 1}s`;
+      return idAdd;
     }
-    idAdd = `${this.enumSuggest + 1}s`;
-    return idAdd;
-    
-  
+
   }
+
+  get section(){
+    return this.formSuggest.get('section');
+  }
+
+  get comment(){
+    return this.formSuggest.get('comment');
+  }
+
+  getErrorMessageSection(){
+    return this.section.hasError('required') ? 'Debe escribir acerca de que es su opinión' : '';
+  }
+
+  getErrorMessageComment(){
+    return this.comment.hasError('required') ? 'Debe escribir el contenido de su opinión' : '';
+  }
+
+
 }

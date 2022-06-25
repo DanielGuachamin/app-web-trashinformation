@@ -91,19 +91,19 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
 
   comprobarIdContact() {
     const listContacto = this.contactos;
-    const idNoticiaBD = listContacto.map((item) => item.id);
+    const idContactoBD = listContacto.map((item) => item.id);
     const idMod = this.formContact.get('id').value;
     console.log('id para modificar: ',idMod)
     let idAdd;
-    if(idNoticiaBD[0] != '1c'){
+    if(idContactoBD[0] != '1c'){
       idAdd = '1c'
       return idAdd;
     }else {
-      for (let item of idNoticiaBD) {
+      for (let item of idContactoBD) {
 
         if (item == idMod) {
           idAdd = idMod;
-          this.toastr.info('El contacto fue modificado con éxito', 'Contacto modificado', {
+          this.toastr.info('El contacto fue modificado con éxito!', 'Contacto modificado', {
             positionClass: 'toast-bottom-right'
           })
           console.log('id para cambiar: ',idAdd)
@@ -111,7 +111,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
         }
       }
       idAdd = `${this.enumContact + 1}c`;
-          this.toastr.success('El contacto fue registrado con exito!', 'Contacto Registrado', {
+          this.toastr.success('El contacto fue registrado con exito!', 'Contacto registrado', {
           positionClass: 'toast-bottom-right'
           });
           console.log('id para agregar: ',idAdd)
@@ -168,7 +168,10 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
   }
 
   getErrorMessagePhoneNumber(){
-    return this.phoneNumber.hasError('required') ? 'Debe escribir su número de contacto' : '';
+    if (this.phoneNumber.hasError('required')){
+      return  'Debe escribir su número de contacto'
+    }
+    return this.phoneNumber.hasError('pattern') ? 'Máximo 10 dígitos' : '';
   }
 
   getErrorMessageActivity(){

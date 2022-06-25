@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataApiService } from 'src/app/services/data-api.service';
 import {
   Storage,
@@ -8,6 +8,7 @@ import {
   getDownloadURL,
 } from '@angular/fire/storage';
 import { Noticia } from 'src/app/modelos/noticia';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-news-admin',
@@ -32,13 +33,24 @@ export class NewsAdminComponent implements OnInit {
       'https://firebasestorage.googleapis.com/v0/b/trash-information-appweb.appspot.com/o/plantillaImages%2Fcovid19.jpg?alt=media&token=9330e991-2f82-4ba5-a2fe-d0db316998dd',
   };
 
-  constructor(private dataControl: DataApiService, private storage: Storage) {
+  constructor(private dataControl: DataApiService, private storage: Storage,
+              private toastr: ToastrService) {
     this.formNoticia = new FormGroup({
-      title: new FormControl(),
-      category: new FormControl(),
-      description: new FormControl(),
-      author: new FormControl(),
-      url: new FormControl(),
+      title: new FormControl('', [
+        Validators.required
+      ]),
+      category: new FormControl('', [
+        Validators.required
+      ]),
+      description: new FormControl('', [
+        Validators.required
+      ]),
+      author: new FormControl('', [
+        Validators.required
+      ]),
+      url: new FormControl('', [
+        Validators.required
+      ]),
       id: new FormControl(),
       noticiaPic: new FormControl(),
     });
@@ -83,20 +95,35 @@ export class NewsAdminComponent implements OnInit {
     const idNoticiaBD = listNoticia.map((item) => item.id);
     const idMod = this.formNoticia.get('id').value;
     let idAdd;
-    for (let item of idNoticiaBD) {
-      if (item == idMod) {
-        
-        idAdd = idMod;
-
-        return idAdd;
+    if (idNoticiaBD[0] != '1n'){
+      idAdd = '1n'
+      return idAdd;
+    }else{
+      for (let item of idNoticiaBD) {
+        if (item == idMod) {
+          idAdd = idMod;
+          this.toastr.info('La noticia fue modificada con éxito!', 'Noticia modificada', {
+            positionClass: 'toast-bottom-right'
+          })
+          return idAdd;
+        }
       }
+      idAdd = `${this.enumNoticias + 1}n`;
+      this.toastr.success('La noticia fue registrada con exito!', 'Noticia registrada', {
+          positionClass: 'toast-bottom-right'
+      });
+      return idAdd;
+
     }
-    idAdd = `${this.enumNoticias + 1}n`;
-    return idAdd;
+
   }
 
   async deleteNoticiaById(id: any) {
     await this.dataControl.deleteElement(id, 'Noticias');
+
+    this.toastr.error('La noticia fue eliminada con éxito!', 'Noticia eliminada', {
+      positionClass: 'toast-bottom-right'
+    });
   }
 
   uploadNoticiaImage($event: any) {
@@ -129,4 +156,45 @@ export class NewsAdminComponent implements OnInit {
   clearForm(){
     this.formNoticia.reset();
   }
+
+  get title(){
+    return this.formNoticia.get('title');
+  }
+
+  get category(){
+    return this.formNoticia.get('category');
+  }
+
+  get description(){
+    return this.formNoticia.get('description');
+  }
+
+  get author(){
+    return this.formNoticia.get('author');
+  }
+
+  get url(){
+    return this.formNoticia.get('url');
+  }
+
+  getErrorMessageTitle(){
+    return this.title.hasError('required') ? 'Debe escribir un título para la noticia' : '';
+  }
+
+  getErrorMessageCategory(){
+    return this.category.hasError('required') ? 'Debe elegir una categoría para la noticia' : '';
+  }
+
+  getErrorMessageDescription(){
+    return this.description.hasError('required') ? 'Debe escribir una descripción para la noticia' : '';
+  }
+
+  getErrorMessageAuthor(){
+    return this.author.hasError('required') ? 'Debe escribir un autor para la noticia' : '';
+  }
+
+  getErrorMessageUrl(){
+    return this.url.hasError('required') ? 'Debe ingresar la fuente bibliográfica donde se encuentra la noticia' : '';
+  }
+
 }
