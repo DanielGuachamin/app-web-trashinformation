@@ -27,7 +27,7 @@ import  {HttpClientModule}  from "@angular/common/http";
 import { FilterPipe } from './pipes/filter.pipe';
 import { DashboardAdminModule } from './components/adminpages/dashboard-admin/dashboard-admin.module';
 
-
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -49,12 +49,14 @@ import { DashboardAdminModule } from './components/adminpages/dashboard-admin/da
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
     DashboardAdminModule
-    
+
   ],
   providers: [],
   bootstrap: [AppComponent]

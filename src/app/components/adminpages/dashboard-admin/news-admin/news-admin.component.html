@@ -4,7 +4,7 @@
             <div class="individual-news" *ngFor="let noticia of noticias">
                 <mat-card class="example-card">
                     <mat-card-header>
-                     
+
                       <mat-card-title>{{noticia.title}}</mat-card-title>
                       <mat-card-subtitle>{{noticia.category}}</mat-card-subtitle>
                     </mat-card-header>
@@ -44,22 +44,22 @@
                     <mat-label>Descripción</mat-label>
                     <textarea matInput matInput placeholder="Ingrese una descripción" class="form-control"
                     formControlName="description"></textarea>
-                   
+
                 </mat-form-field>
                 <mat-form-field appearance="fill">
                     <mat-label>Fuente bibliográfica</mat-label>
                     <input matInput placeholder="Ingrese una referencia" class="form-control" formControlName="url">
                 </mat-form-field>
-            
+
                     <mat-icon>image</mat-icon>
                     <button type="button" mat-raised-button (click)="fileInput.click()">Agregar Imagen (Opcional)</button>
                     <input hidden (change)="uploadNoticiaImage($event)" #fileInput type="file">
                     <span class="file-name">{{selectedFile?.name}}</span>
-           
-                <button mat-raised-button color="primary">Guardar</button>
+
+                <button class="mt-2" mat-raised-button color="primary">Guardar</button>
             </form>
-            <button mat-raised-button color="primary" (click)="clearForm()">Limpiar Formulario</button>
+            <button class="mt-2" mat-raised-button color="primary" (click)="clearForm()">Limpiar Formulario</button>
         </div>
-        
+
     </div>
 </div>

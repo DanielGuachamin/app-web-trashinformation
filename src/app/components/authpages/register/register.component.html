@@ -1,4 +1,4 @@
-<div class="pantalla-register">
+<div class="pantalla-register" style=" background-image: url(../../../assets/AplicacionWebFondo.jpg)">
   <div class="fondo-register">
     <div class="header-register">
       <h4>
@@ -31,7 +31,7 @@
           <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">{{getErrorMessageEmail()}}</mat-error>
         </mat-form-field>
 
-        
+
         <mat-form-field appearance="legacy">
           <mat-label>Contraseña</mat-label>
           <input matInput type="password" class="form-control" formControlName="password">
@@ -53,7 +53,7 @@
           <mat-error *ngIf="direccionBase.invalid && (direccionBase.dirty || direccionBase.touched)">{{getErrorMessageDirection()}}</mat-error>
         </mat-form-field>
 
-       
+
         <button mat-raised-button color="primary" [disabled]="email.invalid || password.invalid || name.invalid || lastName.invalid || direccionBase.invalid || birthdate.invalid">Registrarme</button>
       </form>
     </div>
