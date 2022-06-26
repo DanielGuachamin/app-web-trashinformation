@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { Recomendacion} from 'src/app/modelos/recomendacion'
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-recommendations-admin',
@@ -27,11 +28,18 @@ export class RecommendationsAdminComponent implements OnInit {
 
   constructor(
     private dataControl: DataApiService,
+    private toastr: ToastrService
   ) {
     this.formRecomen = new FormGroup({
-      title: new FormControl(),
-      category: new FormControl(),
-      content: new FormControl(),
+      title: new FormControl('', [
+        Validators.required
+      ]),
+      category: new FormControl('', [
+        Validators.required
+      ]),
+      content: new FormControl('', [
+        Validators.required
+      ]),
       urlImage: new FormControl(),
       id: new FormControl()
     })
@@ -45,7 +53,7 @@ export class RecommendationsAdminComponent implements OnInit {
   }
 
   async onSubmitAddRecomen() {
-    
+
     const idAdd = this.comprobarIdRecomen();
     const urlImage = this.formRecomen.get('urlImage').value
     if ((urlImage == null) || (urlImage == '')) {
@@ -57,7 +65,7 @@ export class RecommendationsAdminComponent implements OnInit {
           this.formRecomen.controls['urlImage'].setValue(responseUrlImage);
         }
       }
-    } 
+    }
     this.formRecomen.controls['id'].setValue(idAdd);
     await this.dataControl.addRecommendation(this.formRecomen.value, idAdd);
     console.log('formulario a enviar: ',this.formRecomen.value)
@@ -65,23 +73,39 @@ export class RecommendationsAdminComponent implements OnInit {
   }
 
   comprobarIdRecomen() {
-    const listVideo = this.recomendaciones;
-    const idNoticiaBD = listVideo.map((item) => item.id);
+    const listRecom = this.recomendaciones;
+    const idRecomBD = listRecom.map((item) => item.id);
     const idMod = this.formRecomen.get('id').value;
     let idAdd;
-    for (let item of idNoticiaBD) {
-      if (item == idMod) {
-        idAdd = idMod;
-
-        return idAdd;
+    if (idRecomBD[0]!= '1r'){
+      idAdd = '1r'
+      return idAdd;
+    }else{
+      for (let item of idRecomBD) {
+        if (item == idMod) {
+          idAdd = idMod;
+          this.toastr.info('La recomendación fue modificada con éxito!', 'Recomendación modificada', {
+            positionClass: 'toast-bottom-right'
+          })
+          return idAdd;
+        }
       }
+      idAdd = `${this.enumRecomen + 1}r`;
+      this.toastr.success('La recomendación fue registrada con exito!', 'Recomendación registrada', {
+            positionClass: 'toast-bottom-right'
+      });
+      return idAdd;
     }
-    idAdd = `${this.enumRecomen + 1}r`;
-    return idAdd;
+
+
   }
 
   async deleteRecomenById(id: any) {
     await this.dataControl.deleteElement(id, 'Recomendaciones');
+
+    this.toastr.error('La noticia fue eliminada con éxito!', 'Noticia eliminada', {
+      positionClass: 'toast-bottom-right'
+    });
   }
 
   fillFormRecomen(id: any) {
@@ -93,5 +117,30 @@ export class RecommendationsAdminComponent implements OnInit {
   clearForm() {
     this.formRecomen.reset();
   }
+
+  get title(){
+    return this.formRecomen.get('title');
+  }
+
+  get category(){
+    return this.formRecomen.get('category');
+  }
+
+  get content(){
+    return this.formRecomen.get('content');
+  }
+
+  getErrorMessageTitle(){
+    return this.title.hasError('required') ? 'Debe escribir un título para la recomendación' : '';
+  }
+
+  getErrorMessageCategory(){
+    return this.category.hasError('required') ? 'Debe elegir una categoría para la recomendación' : '';
+  }
+
+  getErrorMessageContent(){
+    return this.content.hasError('required') ? 'Debe escribir el contenido de su recomendación' : '';
+  }
+
 
 }

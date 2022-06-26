@@ -28,7 +28,7 @@ import { FilterPipe } from './pipes/filter.pipe';
 import { DashboardAdminModule } from './components/adminpages/dashboard-admin/dashboard-admin.module';
 import { DashboardUserModule } from './components/userpages/dashboard-user/dashboard-user.module';
 
-
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -50,6 +50,8 @@ import { DashboardUserModule } from './components/userpages/dashboard-user/dashb
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
