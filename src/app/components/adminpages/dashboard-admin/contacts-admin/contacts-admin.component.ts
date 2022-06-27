@@ -102,6 +102,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     const idContactoBD = listContacto.map((item) => item.id);
     const idMod = this.formContact.get('id').value;
     let idAdd;
+    let rastrearId = 0;
     if(idContactoBD[0] != '1c'){
       idAdd = '1c'
       return idAdd;
@@ -111,7 +112,12 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
       return idAdd;
       } else{
         for (let item of idContactoBD) {
-
+          rastrearId++;
+          if (parseInt(item[0]) != rastrearId) {
+            console.log('no coincide', rastrearId);
+            idAdd = `${rastrearId}c`;
+            return idAdd;
+          }
           if (item == idMod) {
             idAdd = idMod;
             this.toastr.info('El contacto fue modificado con éxito!', 'Contacto modificado', {

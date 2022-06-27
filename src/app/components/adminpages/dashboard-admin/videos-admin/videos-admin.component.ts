@@ -59,6 +59,7 @@ export class VideosAdminComponent implements OnInit {
     const idVideoBD = listVideo.map((item) => item.id);
     const idMod = this.formVideo.get('id').value;
     let idAdd;
+    let rastrearId = 0;
     if (idVideoBD[0] != '1v') {
       idAdd = '1v';
       return idAdd;
@@ -68,6 +69,12 @@ export class VideosAdminComponent implements OnInit {
         return idAdd;
       } else {
         for (let item of idVideoBD) {
+          rastrearId++;
+          if (parseInt(item[0]) != rastrearId) {
+            console.log('no coincide', rastrearId);
+            idAdd = `${rastrearId}v`;
+            return idAdd;
+          }
           if (item == idMod) {
             idAdd = idMod;
             this.toastr.info(

@@ -80,6 +80,7 @@ export class RecommendationsAdminComponent implements OnInit {
     const idRecomBD = listRecom.map((item) => item.id);
     const idMod = this.formRecomen.get('id').value;
     let idAdd;
+    let rastrearId = 0;
     if (idRecomBD[0]!= '1r'){
       idAdd = '1r'
       return idAdd;
@@ -89,6 +90,12 @@ export class RecommendationsAdminComponent implements OnInit {
         return idAdd;
       } else{
         for (let item of idRecomBD) {
+          rastrearId++;
+          if (parseInt(item[0]) != rastrearId) {
+            console.log('no coincide', rastrearId);
+            idAdd = `${rastrearId}r`;
+            return idAdd;
+          }
           if (item == idMod) {
             idAdd = idMod;
             this.toastr.info('La recomendación fue modificada con éxito!', 'Recomendación modificada', {
