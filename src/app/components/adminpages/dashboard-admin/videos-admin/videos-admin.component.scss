@@ -4,19 +4,23 @@
     justify-content: space-around;
 }
 
+.mostrar-videos {
+    column-count: 1;
+    border-right: groove 1px #47AF49;
+    padding-right: 2.5rem;
+    width: 950px;
+}
+
 .video-card {
-    max-width: 600px;
+    max-width: 950px;
     margin-bottom: 1rem;
 }
 
 .formulario-videos {
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
-
-.formulario-news {
-    align-items: center;
+    align-items: stretch;
+    width: 15rem;
 }
 
 .video-content {
@@ -24,13 +28,20 @@
 }
 
 .video-text{
-    margin-right: 1rem;
+    width: 400px;
 }
 
 .video-image{
-    padding: 1rem;
+    max-width: 500px;
 }
 
 mat-card-content{
     margin: 0 16px;
+}
+
+.mat-icon{
+    height: 45px;
+    width: 45px;
+    font-size: 45px;
+    margin: 0.1rem 6rem;
 }

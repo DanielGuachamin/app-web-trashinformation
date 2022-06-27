@@ -24,6 +24,8 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
   enumContact: number = 0;
   contactos: Contacto[] = [];
 
+  alfabetWithOutSpacePattern: any = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
+  phoneNumberPattern: any = /^\d{10}$/;
 
 
   constructor(private dataControl: DataApiService,
@@ -33,14 +35,20 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
       id: new FormControl(),
       name: new FormControl('', [
         Validators.required,
-        Validators.minLength(3)
+        Validators.minLength(3),
+        Validators.pattern(this.alfabetWithOutSpacePattern)
+      ]),
+      lastName: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.pattern(this.alfabetWithOutSpacePattern)
       ]),
       address: new FormControl('', [
         Validators.required
       ]),
       phoneNumber: new FormControl('', [
         Validators.required,
-        Validators.maxLength(10)
+        Validators.pattern(this.phoneNumberPattern)
       ]),
       activity: new FormControl('', [
         Validators.required
@@ -93,29 +101,40 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     const listContacto = this.contactos;
     const idContactoBD = listContacto.map((item) => item.id);
     const idMod = this.formContact.get('id').value;
-    console.log('id para modificar: ',idMod)
     let idAdd;
+    let rastrearId = 0;
     if(idContactoBD[0] != '1c'){
       idAdd = '1c'
       return idAdd;
     }else {
-      for (let item of idContactoBD) {
-
-        if (item == idMod) {
-          idAdd = idMod;
-          this.toastr.info('El contacto fue modificado con éxito!', 'Contacto modificado', {
-            positionClass: 'toast-bottom-right'
-          })
-          console.log('id para cambiar: ',idAdd)
-          return idAdd;
+      if(idMod == '1c'){
+        idAdd = '1c'
+      return idAdd;
+      } else{
+        for (let item of idContactoBD) {
+          rastrearId++;
+          if (parseInt(item[0]) != rastrearId) {
+            console.log('no coincide', rastrearId);
+            idAdd = `${rastrearId}c`;
+            return idAdd;
+          }
+          if (item == idMod) {
+            idAdd = idMod;
+            this.toastr.info('El contacto fue modificado con éxito!', 'Contacto modificado', {
+              positionClass: 'toast-bottom-right'
+            })
+          
+            return idAdd;
+          }
         }
+        idAdd = `${this.enumContact + 1}c`;
+            this.toastr.success('El contacto fue registrado con exito!', 'Contacto registrado', {
+            positionClass: 'toast-bottom-right'
+            });
+       
+            return idAdd;
       }
-      idAdd = `${this.enumContact + 1}c`;
-          this.toastr.success('El contacto fue registrado con exito!', 'Contacto registrado', {
-          positionClass: 'toast-bottom-right'
-          });
-          console.log('id para agregar: ',idAdd)
-          return idAdd;
+      
 
     }
 
@@ -142,6 +161,10 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
 
   get name(){
     return this.formContact.get('name');
+  }
+
+  get lastName(){
+    return this.formContact.get('lastName');
   }
 
   get address(){
@@ -171,7 +194,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     if (this.phoneNumber.hasError('required')){
       return  'Debe escribir su número de contacto'
     }
-    return this.phoneNumber.hasError('pattern') ? 'Máximo 10 dígitos' : '';
+    return this.phoneNumber.hasError('pattern') ? 'Coloque un número telefónico válido de 10 dígitos' : '';
   }
 
   getErrorMessageActivity(){

@@ -33,24 +33,17 @@ export class NewsAdminComponent implements OnInit {
       'https://firebasestorage.googleapis.com/v0/b/trash-information-appweb.appspot.com/o/plantillaImages%2Fcovid19.jpg?alt=media&token=9330e991-2f82-4ba5-a2fe-d0db316998dd',
   };
 
-  constructor(private dataControl: DataApiService, private storage: Storage,
-              private toastr: ToastrService) {
+  constructor(
+    private dataControl: DataApiService,
+    private storage: Storage,
+    private toastr: ToastrService
+  ) {
     this.formNoticia = new FormGroup({
-      title: new FormControl('', [
-        Validators.required
-      ]),
-      category: new FormControl('', [
-        Validators.required
-      ]),
-      description: new FormControl('', [
-        Validators.required
-      ]),
-      author: new FormControl('', [
-        Validators.required
-      ]),
-      url: new FormControl('', [
-        Validators.required
-      ]),
+      title: new FormControl('', [Validators.required]),
+      category: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+      author: new FormControl('', [Validators.required]),
+      url: new FormControl('', [Validators.required]),
       id: new FormControl(),
       noticiaPic: new FormControl(),
     });
@@ -61,12 +54,11 @@ export class NewsAdminComponent implements OnInit {
       //console.log(noticias);
       this.noticias = noticias;
       this.enumNoticias = noticias.length;
+      console.log('cantidad de noticias: ', this.enumNoticias);
     });
   }
 
   async onSubmitAddNoticia() {
-    //console.log('formulario noticia: ', this.formNoticia.value)
-    const idAdd = this.comprobarIdNoticia();
     const nameNoticiaImage = this.selectedFile;
 
     if (nameNoticiaImage == null) {
@@ -84,9 +76,10 @@ export class NewsAdminComponent implements OnInit {
       const urlNoticia = this.urlNoticia;
       this.formNoticia.controls['noticiaPic'].setValue(urlNoticia);
     }
-
+    const idAdd = this.comprobarIdNoticia();
     this.formNoticia.controls['id'].setValue(idAdd);
     await this.dataControl.addNoticia(this.formNoticia.value, idAdd);
+    console.log(this.formNoticia.value);
     this.formNoticia.reset();
   }
 
@@ -95,35 +88,61 @@ export class NewsAdminComponent implements OnInit {
     const idNoticiaBD = listNoticia.map((item) => item.id);
     const idMod = this.formNoticia.get('id').value;
     let idAdd;
-    if (idNoticiaBD[0] != '1n'){
-      idAdd = '1n'
+    let rastrearId = 0;
+    if (idNoticiaBD[0] != '1n') {
+      idAdd = '1n';
+      console.log('id a añadir', idAdd);
       return idAdd;
-    }else{
-      for (let item of idNoticiaBD) {
-        if (item == idMod) {
-          idAdd = idMod;
-          this.toastr.info('La noticia fue modificada con éxito!', 'Noticia modificada', {
-            positionClass: 'toast-bottom-right'
-          })
-          return idAdd;
+    } else {
+      if (idMod == '1n') {
+        idAdd = '1n';
+        console.log('id a añadir', idAdd);
+        return idAdd;
+      } else {
+        for (let item of idNoticiaBD) {
+          rastrearId++;
+          if (parseInt(item[0]) != rastrearId) {
+            console.log('no coincide', rastrearId);
+            idAdd = `${rastrearId}n`;
+            return idAdd;
+          }
+          if (item == idMod) {
+            idAdd = idMod;
+            this.toastr.info(
+              'La noticia fue modificada con éxito!',
+              'Noticia modificada',
+              {
+                positionClass: 'toast-bottom-right',
+              }
+            );
+            console.log('id a añadir', idAdd);
+            return idAdd;
+          }
         }
+        idAdd = `${this.enumNoticias + 1}n`;
+        this.toastr.success(
+          'La noticia fue registrada con exito!',
+          'Noticia registrada',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+        console.log('id a añadir', idAdd);
+        return idAdd;
       }
-      idAdd = `${this.enumNoticias + 1}n`;
-      this.toastr.success('La noticia fue registrada con exito!', 'Noticia registrada', {
-          positionClass: 'toast-bottom-right'
-      });
-      return idAdd;
-
     }
-
   }
 
   async deleteNoticiaById(id: any) {
     await this.dataControl.deleteElement(id, 'Noticias');
 
-    this.toastr.error('La noticia fue eliminada con éxito!', 'Noticia eliminada', {
-      positionClass: 'toast-bottom-right'
-    });
+    this.toastr.error(
+      'La noticia fue eliminada con éxito!',
+      'Noticia eliminada',
+      {
+        positionClass: 'toast-bottom-right',
+      }
+    );
   }
 
   uploadNoticiaImage($event: any) {
@@ -142,7 +161,6 @@ export class NewsAdminComponent implements OnInit {
 
   getNoticiaImageUrl(path: string) {
     getDownloadURL(ref(this.storage, path)).then((url) => {
-      //console.log('Url de la imagen: ', url)
       this.urlNoticia = url;
     });
   }
@@ -153,48 +171,57 @@ export class NewsAdminComponent implements OnInit {
     });
   }
 
-  clearForm(){
+  clearForm() {
     this.formNoticia.reset();
   }
 
-  get title(){
+  get title() {
     return this.formNoticia.get('title');
   }
 
-  get category(){
+  get category() {
     return this.formNoticia.get('category');
   }
 
-  get description(){
+  get description() {
     return this.formNoticia.get('description');
   }
 
-  get author(){
+  get author() {
     return this.formNoticia.get('author');
   }
 
-  get url(){
+  get url() {
     return this.formNoticia.get('url');
   }
 
-  getErrorMessageTitle(){
-    return this.title.hasError('required') ? 'Debe escribir un título para la noticia' : '';
+  getErrorMessageTitle() {
+    return this.title.hasError('required')
+      ? 'Debe escribir un título para la noticia'
+      : '';
   }
 
-  getErrorMessageCategory(){
-    return this.category.hasError('required') ? 'Debe elegir una categoría para la noticia' : '';
+  getErrorMessageCategory() {
+    return this.category.hasError('required')
+      ? 'Debe elegir una categoría para la noticia'
+      : '';
   }
 
-  getErrorMessageDescription(){
-    return this.description.hasError('required') ? 'Debe escribir una descripción para la noticia' : '';
+  getErrorMessageDescription() {
+    return this.description.hasError('required')
+      ? 'Debe escribir una descripción para la noticia'
+      : '';
   }
 
-  getErrorMessageAuthor(){
-    return this.author.hasError('required') ? 'Debe escribir un autor para la noticia' : '';
+  getErrorMessageAuthor() {
+    return this.author.hasError('required')
+      ? 'Debe escribir un autor para la noticia'
+      : '';
   }
 
-  getErrorMessageUrl(){
-    return this.url.hasError('required') ? 'Debe ingresar la fuente bibliográfica donde se encuentra la noticia' : '';
+  getErrorMessageUrl() {
+    return this.url.hasError('required')
+      ? 'Debe ingresar la fuente bibliográfica donde se encuentra la noticia'
+      : '';
   }
-
 }

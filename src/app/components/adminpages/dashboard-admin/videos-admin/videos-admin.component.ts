@@ -1,12 +1,4 @@
-import {
-  Component,
-  OnInit,
-  AfterViewInit,
-  ChangeDetectorRef,
-  ElementRef,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { Video } from 'src/app/modelos/video';
@@ -17,40 +9,25 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './videos-admin.component.html',
   styleUrls: ['./videos-admin.component.scss'],
 })
-export class VideosAdminComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('demoYouTubePlayer')
-  demoYouTubePlayer: ElementRef<HTMLDivElement>;
-  videoWidth: number | undefined;
-  videoHeight: number | undefined;
-
+export class VideosAdminComponent implements OnInit {
   formVideo: FormGroup;
   enumVideos: number = 0;
   videos: Video[] = [];
 
   constructor(
     private dataControl: DataApiService,
-    private _changeDetectorRef: ChangeDetectorRef,
     private toastr: ToastrService
   ) {
     this.formVideo = new FormGroup({
-      title: new FormControl('', [
-        Validators.required
-      ]),
-      category: new FormControl('', [
-        Validators.required
-      ]),
+      title: new FormControl('', [Validators.required]),
+      category: new FormControl('', [Validators.required]),
       prevImg: new FormControl(),
-      author: new FormControl('', [
-        Validators.required
-      ]),
-      url: new FormControl('', [
-        Validators.required
-      ]),
+      author: new FormControl('', [Validators.required]),
+      url: new FormControl('', [Validators.required]),
       id: new FormControl(),
       urlID: new FormControl(),
     });
   }
-
 
   ngOnInit(): void {
     this.dataControl.getVideos().subscribe((videos) => {
@@ -58,29 +35,6 @@ export class VideosAdminComponent implements OnInit, AfterViewInit, OnDestroy {
       this.enumVideos = videos.length;
     });
   }
-
-  ngAfterViewInit(): void {
-    console.log('afterinit');
-    setTimeout(() => {
-      this.onResize();
-      window.addEventListener('resize', this.onResize);
-    }, 1000);
-  }
-
-  onResize = (): void => {
-    // Automatically expand the video to fit the page up to 1200px x 720px
-    this.videoWidth = Math.min(
-      this.demoYouTubePlayer.nativeElement.clientWidth,
-      1200
-    );
-    this.videoHeight = this.videoWidth * 0.6;
-    this._changeDetectorRef.detectChanges();
-  };
-
-  ngOnDestroy(): void {
-    window.removeEventListener('resize', this.onResize);
-  }
-
 
   async onSubmitAddVideo() {
     const videoID = this.getVideoId(this.formVideo.get('url').value);
@@ -96,7 +50,7 @@ export class VideosAdminComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getVideoId(url: string) {
-    const urlEdited = url.slice(32,43);
+    const urlEdited = url.slice(32, 43);
     return urlEdited;
   }
 
@@ -105,33 +59,52 @@ export class VideosAdminComponent implements OnInit, AfterViewInit, OnDestroy {
     const idVideoBD = listVideo.map((item) => item.id);
     const idMod = this.formVideo.get('id').value;
     let idAdd;
-    if (idVideoBD[0]!= '1v'){
-      idAdd = '1v'
+    let rastrearId = 0;
+    if (idVideoBD[0] != '1v') {
+      idAdd = '1v';
       return idAdd;
-    }else{
-      for (let item of idVideoBD) {
-        if (item == idMod) {
-          idAdd = idMod;
-          this.toastr.info('El video fue modificado con éxito!', 'Video modificado', {
-            positionClass: 'toast-bottom-right'
-          })
-          return idAdd;
+    } else {
+      if (idMod == '1v') {
+        idAdd = '1v';
+        return idAdd;
+      } else {
+        for (let item of idVideoBD) {
+          rastrearId++;
+          if (parseInt(item[0]) != rastrearId) {
+            console.log('no coincide', rastrearId);
+            idAdd = `${rastrearId}v`;
+            return idAdd;
+          }
+          if (item == idMod) {
+            idAdd = idMod;
+            this.toastr.info(
+              'El video fue modificado con éxito!',
+              'Video modificado',
+              {
+                positionClass: 'toast-bottom-right',
+              }
+            );
+            return idAdd;
+          }
         }
+        idAdd = `${this.enumVideos + 1}v`;
+        this.toastr.success(
+          'El video fue registrado con exito!',
+          'Video registrado',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+        return idAdd;
       }
-      idAdd = `${this.enumVideos + 1}v`;
-      this.toastr.success('El video fue registrado con exito!', 'Video registrado', {
-            positionClass: 'toast-bottom-right'
-      });
-      return idAdd;
     }
-
   }
 
   async deleteVideoById(id: any) {
     await this.dataControl.deleteElement(id, 'Videos');
 
     this.toastr.error('El video fue eliminado con éxito!', 'Video eliminado', {
-      positionClass: 'toast-bottom-right'
+      positionClass: 'toast-bottom-right',
     });
   }
 
@@ -145,36 +118,43 @@ export class VideosAdminComponent implements OnInit, AfterViewInit, OnDestroy {
     this.formVideo.reset();
   }
 
-  get title(){
+  get title() {
     return this.formVideo.get('title');
   }
 
-  get category(){
+  get category() {
     return this.formVideo.get('category');
   }
 
-  get author(){
+  get author() {
     return this.formVideo.get('author');
   }
 
-  get url(){
+  get url() {
     return this.formVideo.get('url');
   }
 
-  getErrorMessageTitle(){
-    return this.title.hasError('required') ? 'Debe escribir un título para el video' : '';
+  getErrorMessageTitle() {
+    return this.title.hasError('required')
+      ? 'Debe escribir un título para el video'
+      : '';
   }
 
-  getErrorMessageCategory(){
-    return this.category.hasError('required') ? 'Debe elegir una categoría para el video' : '';
+  getErrorMessageCategory() {
+    return this.category.hasError('required')
+      ? 'Debe elegir una categoría para el video'
+      : '';
   }
 
-  getErrorMessageAuthor(){
-    return this.author.hasError('required') ? 'Debe escribir un autor para el video' : '';
+  getErrorMessageAuthor() {
+    return this.author.hasError('required')
+      ? 'Debe escribir un autor para el video'
+      : '';
   }
 
-  getErrorMessageUrl(){
-    return this.url.hasError('required') ? 'Debe ingresar el enlace de YouTube del video' : '';
+  getErrorMessageUrl() {
+    return this.url.hasError('required')
+      ? 'Debe ingresar el enlace de YouTube del video'
+      : '';
   }
-
 }

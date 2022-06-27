@@ -8,6 +8,8 @@ import {
   doc,
   setDoc,
   getDoc,
+  query,
+  where,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Contacto } from '../modelos/contacto';
@@ -131,6 +133,8 @@ export class DataApiService {
     const sugestRef = collection(this.firestore, 'Sugerencias')
     return collectionData(sugestRef, {idField: 'id'}) as Observable<Sugerencia[]>
   }
+
+
 
   //Funciones generales de control de elementos
 

@@ -11,6 +11,9 @@ import { RecommendationsAdminComponent } from './recommendations-admin/recommend
 import { ContactsAdminComponent } from './contacts-admin/contacts-admin.component';
 import { SuggestionsAdminComponent } from './suggestions-admin/suggestions-admin.component';
 
+import { NewsfilterPipe } from '../../../pipes/newsfilter.pipe';
+import { VideosfilterPipe } from '../../../pipes/videosfilter.pipe';
+import { RecomensfilterPipe } from '../../../pipes/recomensfilter.pipe';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { SuggestionsAdminComponent } from './suggestions-admin/suggestions-admin
     VideosAdminComponent,
     RecommendationsAdminComponent,
     ContactsAdminComponent,
-    SuggestionsAdminComponent
+    SuggestionsAdminComponent,
+    NewsfilterPipe,
+    VideosfilterPipe,
+    RecomensfilterPipe
   ],
   imports: [
     CommonModule,

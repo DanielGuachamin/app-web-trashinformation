@@ -1,19 +1,53 @@
 .fondo-sugerencias {
     display: flex;
-    align-content: space-around;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 0 2rem;
 }
 
-.sugerencia-card {
-    max-width: 400px;
-    margin-bottom: 1rem;
+.mostrar-sugerencias{
+    border-right: groove 1px #47AF49;
+    padding-right: 2.5rem;
+    width: 950px;
+}
+
+.sugerencia-content{
+    display: flex;
+    width: 950px;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: solid 1px #9697B7;
+}
+
+.comment-suggest{
+    width: 690px;
+}
+
+.image-user{
+    width: 100px;
+    margin-right: 1rem;
+}
+
+.comment-header{
+    display: flex;
     
+}
+
+.nombre-sugerencia{
+    font-size: 20px;
+    margin-right: 5rem;
+}
+.correo-sugerencia{
+    font-size: 15px;
+    margin-left: 1rem;
 }
 
 .formulario-sugerencias {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    width: 15rem;
 }
 
 mat-card-content{
@@ -22,4 +56,13 @@ mat-card-content{
 
 mat-card-content{
     margin-bottom: 1rem;;
+}
+
+mat-icon{
+    font-size: 26px;
+    color: grey;
+}
+
+img {
+    border-radius: 50px;
 }
