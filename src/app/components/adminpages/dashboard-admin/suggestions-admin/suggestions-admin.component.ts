@@ -13,6 +13,7 @@ export class SuggestionsAdminComponent implements OnInit {
   formSuggest: FormGroup;
   enumSuggest: number = 0;
   sugerencias: Sugerencia[] = [];
+  sugerenciaByUser: Sugerencia[] = [];
 
   constructor(
     private dataControl: DataApiService,
@@ -36,8 +37,11 @@ export class SuggestionsAdminComponent implements OnInit {
     this.dataControl.getSuggestions().subscribe((sugerencias) => {
       this.sugerencias = sugerencias;
       this.enumSuggest = sugerencias.length;
+      this.sugerenciaByUser = this.getSuggestByUser()
     });
   }
+
+  
 
   async onSubmitAddSuggest() {
     const idAdd = this.comprobarIdSuggest()
@@ -59,6 +63,21 @@ export class SuggestionsAdminComponent implements OnInit {
 
   async deleteSuggestById(id: any) {
     await this.dataControl.deleteElement(id, 'Sugerencias');
+  }
+
+  getSuggestByUser(){
+    const listSugerencia = this.sugerencias;
+    const email = this.userService.seeEmailUserAuth();
+    let sugerenciaByUser: Sugerencia[] =[];
+    for(let sugerencia of listSugerencia){
+      if(sugerencia.email == email){
+        console.log(sugerencia)
+        sugerenciaByUser.push(sugerencia)
+      }
+    
+    }
+    console.log(sugerenciaByUser)
+    return sugerenciaByUser
   }
 
   comprobarIdSuggest() {
@@ -98,5 +117,8 @@ export class SuggestionsAdminComponent implements OnInit {
     return this.comment.hasError('required') ? 'Debe escribir el contenido de su opinión' : '';
   }
 
+  recuperarUrlImage(name: String, lastName: String){
+    return `https://ui-avatars.com/api/?background=0B2460&color=fff&size=600&font-size=0.4&name=${name}+${lastName}`
+  }
 
 }

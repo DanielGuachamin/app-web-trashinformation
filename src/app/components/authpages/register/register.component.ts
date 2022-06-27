@@ -112,7 +112,7 @@ export class RegisterComponent implements OnInit {
     momentResponse = momentResponse.birthdate
     momentResponse = momentResponse.slice(0,-14)
     let split = momentResponse.split('-')
-    momentResponse = split[2] + '-' + split[1] + '-' + split[0]
+    momentResponse = split[2] + '/' + split[1] + '/' + split[0]
     return momentResponse
   }
      

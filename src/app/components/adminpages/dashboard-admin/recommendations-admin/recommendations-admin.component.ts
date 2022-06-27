@@ -15,6 +15,8 @@ export class RecommendationsAdminComponent implements OnInit {
   enumRecomen: number = 0;
   recomendaciones: Recomendacion[] = [];
 
+  contentLimitPattern: any = /^[\s\S]{0,150}$/;
+
   plantillaImage: any = {
     MedioAmbiente:
       'https://firebasestorage.googleapis.com/v0/b/trash-information-appweb.appspot.com/o/plantillaImages%2Fmedioambiente.jpg?alt=media&token=cf74d9ba-7683-4d60-b742-5141625c4057',
@@ -38,7 +40,8 @@ export class RecommendationsAdminComponent implements OnInit {
         Validators.required
       ]),
       content: new FormControl('', [
-        Validators.required
+        Validators.required,
+        Validators.pattern(this.contentLimitPattern)
       ]),
       urlImage: new FormControl(),
       id: new FormControl()
@@ -81,20 +84,25 @@ export class RecommendationsAdminComponent implements OnInit {
       idAdd = '1r'
       return idAdd;
     }else{
-      for (let item of idRecomBD) {
-        if (item == idMod) {
-          idAdd = idMod;
-          this.toastr.info('La recomendación fue modificada con éxito!', 'Recomendación modificada', {
-            positionClass: 'toast-bottom-right'
-          })
-          return idAdd;
+      if(idMod == '1r'){
+        idAdd = '1r'
+        return idAdd;
+      } else{
+        for (let item of idRecomBD) {
+          if (item == idMod) {
+            idAdd = idMod;
+            this.toastr.info('La recomendación fue modificada con éxito!', 'Recomendación modificada', {
+              positionClass: 'toast-bottom-right'
+            })
+            return idAdd;
+          }
         }
+        idAdd = `${this.enumRecomen + 1}r`;
+        this.toastr.success('La recomendación fue registrada con exito!', 'Recomendación registrada', {
+              positionClass: 'toast-bottom-right'
+        });
+        return idAdd;
       }
-      idAdd = `${this.enumRecomen + 1}r`;
-      this.toastr.success('La recomendación fue registrada con exito!', 'Recomendación registrada', {
-            positionClass: 'toast-bottom-right'
-      });
-      return idAdd;
     }
 
 
@@ -139,7 +147,10 @@ export class RecommendationsAdminComponent implements OnInit {
   }
 
   getErrorMessageContent(){
-    return this.content.hasError('required') ? 'Debe escribir el contenido de su recomendación' : '';
+    if(this.content.hasError('required')){
+      return 'Debe escribir el contenido de su recomendación'
+    }
+    return this.content.hasError('pattern') ? 'Límite máximo de caracteres es 150' : '';
   }
 
 

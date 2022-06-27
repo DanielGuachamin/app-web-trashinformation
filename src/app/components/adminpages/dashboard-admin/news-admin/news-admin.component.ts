@@ -65,7 +65,6 @@ export class NewsAdminComponent implements OnInit {
   }
 
   async onSubmitAddNoticia() {
-    //console.log('formulario noticia: ', this.formNoticia.value)
     const idAdd = this.comprobarIdNoticia();
     const nameNoticiaImage = this.selectedFile;
 
@@ -99,20 +98,26 @@ export class NewsAdminComponent implements OnInit {
       idAdd = '1n'
       return idAdd;
     }else{
-      for (let item of idNoticiaBD) {
-        if (item == idMod) {
-          idAdd = idMod;
-          this.toastr.info('La noticia fue modificada con éxito!', 'Noticia modificada', {
-            positionClass: 'toast-bottom-right'
-          })
-          return idAdd;
+      if(idMod == '1n'){
+        idAdd = '1n'
+        return idAdd;
+      } else{
+        for (let item of idNoticiaBD) {
+          if (item == idMod) {
+            idAdd = idMod;
+            this.toastr.info('La noticia fue modificada con éxito!', 'Noticia modificada', {
+              positionClass: 'toast-bottom-right'
+            })
+            return idAdd;
+          }
         }
+        idAdd = `${this.enumNoticias + 1}n`;
+        this.toastr.success('La noticia fue registrada con exito!', 'Noticia registrada', {
+            positionClass: 'toast-bottom-right'
+        });
+        return idAdd;
+
       }
-      idAdd = `${this.enumNoticias + 1}n`;
-      this.toastr.success('La noticia fue registrada con exito!', 'Noticia registrada', {
-          positionClass: 'toast-bottom-right'
-      });
-      return idAdd;
 
     }
 
@@ -142,7 +147,6 @@ export class NewsAdminComponent implements OnInit {
 
   getNoticiaImageUrl(path: string) {
     getDownloadURL(ref(this.storage, path)).then((url) => {
-      //console.log('Url de la imagen: ', url)
       this.urlNoticia = url;
     });
   }
