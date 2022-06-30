@@ -1,1 +1,81 @@
-<p>recommendatios-user works!</p>
+<div class="pantalla-recomendaciones">
+    <div class="fondo-recomendaciones">
+        <div class="header-recomendaciones">
+        </div>
+            <mat-tab-group mat-align-tabs="center" class="grupo-labels">
+                <mat-tab label="Residuos Reciclables">
+                    <div class="header-tab">
+                        <h2>
+                            Aprende la forma CORRECTA de manejar y clasificar tus residuos
+                        </h2>
+                    </div>
+                    <div class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'Reciclaje')">
+                        <mat-card class="recomen-card">
+                            <mat-card-header>
+                                <mat-card-title>{{recomen.title}}</mat-card-title>
+                            </mat-card-header>
+                            <div class="contenedor">
+                                <img mat-card-image [src]="recomen.urlImage" alt={{recomen.title}} width="300" height="190">
+            
+                                <div class="centrado">
+                                    <p>
+                                        {{recomen.content}}
+                                    </p>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Residuos Orgánicos">
+                    <div class="header-tab">
+                        <h2>
+                            Aprende la forma CORRECTA de manejar y clasificar tus residuos
+                        </h2>
+                    </div>
+                    <div class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'Orgánicos')">
+                        <mat-card class="recomen-card">
+                            <mat-card-header>
+                                <mat-card-title>{{recomen.title}}</mat-card-title>
+                                <mat-card-subtitle>{{recomen.category}}</mat-card-subtitle>
+                            </mat-card-header>
+                            <div class="contenedor">
+                                <img mat-card-image [src]="recomen.urlImage" alt={{recomen.title}} width="300" height="190">
+            
+                                <div class="centrado">
+                                    <p>
+                                        {{recomen.content}}
+                                    </p>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Residuos Coronavirus">
+                    <div class="header-tab">
+                        <h2>
+                            Aprende la forma CORRECTA de manejar y clasificar tus residuos
+                        </h2>
+                    </div>
+                    <div class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'Covid19')">
+                        <mat-card class="recomen-card">
+                            <mat-card-header>
+                                <mat-card-title>{{recomen.title}}</mat-card-title>
+                                <mat-card-subtitle>{{recomen.category}}</mat-card-subtitle>
+                            </mat-card-header>
+                            <div class="contenedor">
+                                <img mat-card-image [src]="recomen.urlImage" alt={{recomen.title}} width="300" height="190">
+            
+                                <div class="centrado">
+                                    <p>
+                                        {{recomen.content}}
+                                    </p>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </mat-tab>
+              </mat-tab-group>
+            
+        
+    </div>
+</div>

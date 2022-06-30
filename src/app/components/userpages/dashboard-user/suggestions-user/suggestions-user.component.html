@@ -1,1 +1,55 @@
-<p>suggestions-user works!</p>
+<div class="pantalla-sugerencias">
+    <div class="fondo-sugerencias">
+        <div class="form-sugerencia">
+            <div class="header-sugerencias">
+                <h2>
+                    Comentarios y Sugerencias | ¿Cómo lo estamos haciendo?
+                </h2>
+                <p>
+                    Sus ideas y opiniones son importantes para nosotros. Gracias a sus comentarios, 
+                    podemos identificar las áreas en que debemos mejorar. Puede realizar comentarios 
+                    y sugerencias del servicio de recolección de basura en su barrio o puede comentarnos 
+                    en que puede mejorar nuestra página web.
+                </p>
+            </div>
+            <form [formGroup]="formSuggest" (ngSubmit)="onSubmitAddSuggest()" class="formulario-sugerencias">
+                <mat-form-field appearance="fill">
+                    <mat-label>¿Su opinión es acerca de...?</mat-label>
+                    <input type="text" matInput placeholder="Ingrese el nombre de la sección a mejorar" class="form-control" formControlName="section">
+                    <mat-error *ngIf="section.invalid && (section.dirty || section.touched)">{{getErrorMessageSection()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Comentario</mat-label>
+                    <textarea matInput matInput placeholder="Ingresa tu comentario" class="form-control"
+                    formControlName="comment"></textarea>
+                    <mat-error *ngIf="comment.invalid && (comment.dirty || comment.touched)">{{getErrorMessageComment()}}</mat-error>
+                </mat-form-field>
+                <button mat-raised-button color="primary" [disabled]="section.invalid || comment.invalid">Enviar</button>
+            </form>
+        </div>
+        <div class="mostrar-sugerencias" *ngIf="sugerenciaByUser == null">
+            <h2>
+                Tus comentarios:
+            </h2>
+            <div class="individual-sugerencia">
+                <mat-card class="example-card" *ngFor="let sugerencia of sugerenciaByUser">
+                    <mat-card-title-group>
+                      <mat-card-title>
+                        {{sugerencia.name}} {{sugerencia.lastName}}
+                      </mat-card-title>
+                      <mat-card-subtitle>
+                        {{sugerencia.section}}
+                      </mat-card-subtitle>
+                      <img mat-card-sm-image src="src/assets/fondo-sugerencia.jpg" >
+                    </mat-card-title-group>
+                    <mat-card-content>
+                      {{sugerencia.comment}}
+                    </mat-card-content>
+                    <mat-card-actions align="start">
+                        <button mat-button (click)="deleteSuggestById(sugerencia.id)">Like</button>
+                      </mat-card-actions>
+                  </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

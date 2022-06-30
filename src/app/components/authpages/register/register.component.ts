@@ -16,7 +16,7 @@ export class RegisterComponent implements OnInit {
 
   passwordPattern: any = /^(?=.*[a-z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{6,15}/;
 
-  alfabetWithOutSpacePattern: any = /^[A-Za-z\s]+$/;
+  alfabetWithOutSpacePattern: any = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
 
   formReg: FormGroup;
   

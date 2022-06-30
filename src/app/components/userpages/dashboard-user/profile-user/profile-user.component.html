@@ -1,4 +1,52 @@
-<p>profile-user works!</p>
+<div class="pantalla-perfil">
+  <div class="fondo-perfil">
+    <div class="info-perfil">
+      <div class="image-perfil">
+        <img [src]="profilePic" alt="Foto perfil usuario">
+        <button type="button" mat-raised-button (click)="fileInput.click()">Actualizar</button>
+        <input hidden (change)="uploadNoticiaImage($event)" #fileInput type="file">
+        <span class="file-name">{{selectedFile?.name}}</span>
+      </div>
+      <form [formGroup]="formProfile" (ngSubmit)="onModifiedProfile()" class="formulario-perfil">
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Nombre</mat-label>
+          <input matInput type="text" class="form-control" formControlName="name">
+          <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">{{getErrorMessageNameLastname()}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Apellido</mat-label>
+          <input matInput type="text" class="form-control" formControlName="lastName">
+          <mat-error *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">{{getErrorMessageNameLastname()}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" class="form-control" formControlName="email">
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Fecha de nacimiento</mat-label>
+          <input matInput formControlName="birthdate">
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Dirección de domicilio</mat-label>
+          <mat-select class="form-control" formControlName="direccionBase">
+            <mat-option value="San Carlos">San Carlos</mat-option>
+           <mat-option value="Cotocollao">Cotocollao</mat-option>
+          </mat-select>
+          <mat-error *ngIf="direccionBase.invalid && (direccionBase.dirty || direccionBase.touched)">{{getErrorMessageDirection()}}</mat-error>
+        </mat-form-field>
+
+
+        <button mat-raised-button color="primary" [disabled]="name.invalid || lastName.invalid || direccionBase.invalid">Guardar</button>
+      </form>
+      
+    </div>
+  </div>
+</div>
 
 
 <div class="footer">

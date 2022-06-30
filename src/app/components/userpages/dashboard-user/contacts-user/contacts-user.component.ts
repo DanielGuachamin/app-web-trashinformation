@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DataApiService } from 'src/app/services/data-api.service';
+import { Contacto } from 'src/app/modelos/contacto'
 
 @Component({
   selector: 'app-contacts-user',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactsUserComponent implements OnInit {
 
-  constructor() { }
+  contactos: Contacto[] = [];
+
+  constructor(private dataControl: DataApiService) { }
 
   ngOnInit(): void {
+    this.dataControl.getContacts().subscribe((contactos) => {
+      this.contactos = contactos;
+    });
   }
 
 }

@@ -36,7 +36,7 @@ export class NewsAdminComponent implements OnInit {
   constructor(
     private dataControl: DataApiService,
     private storage: Storage,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {
     this.formNoticia = new FormGroup({
       title: new FormControl('', [Validators.required]),
@@ -115,7 +115,6 @@ export class NewsAdminComponent implements OnInit {
                 positionClass: 'toast-bottom-right',
               }
             );
-            console.log('id a añadir', idAdd);
             return idAdd;
           }
         }

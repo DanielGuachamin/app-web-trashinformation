@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from '../../../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { YouTubePlayerModule } from "@angular/youtube-player";
@@ -20,7 +21,7 @@ import { ProfileUserComponent } from './profile-user/profile-user.component';
     RecommendatiosUserComponent,
     ContactsUserComponent,
     SuggestionsUserComponent,
-    ProfileUserComponent
+    ProfileUserComponent,
   ],
   imports: [
     CommonModule,
@@ -28,7 +29,8 @@ import { ProfileUserComponent } from './profile-user/profile-user.component';
     MaterialModule,
     FormsModule, 
     ReactiveFormsModule,
-    YouTubePlayerModule
+    YouTubePlayerModule,
+    SharedModule
   ]
 })
 export class DashboardUserModule { }

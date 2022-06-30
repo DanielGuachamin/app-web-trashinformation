@@ -29,7 +29,7 @@ import { DashboardAdminModule } from './components/adminpages/dashboard-admin/da
 import { DashboardUserModule } from './components/userpages/dashboard-user/dashboard-user.module';
 
 import { ToastrModule } from 'ngx-toastr';
-
+import { SharedModule } from './shared/shared.module';
 
 
 @NgModule({
@@ -57,7 +57,8 @@ import { ToastrModule } from 'ngx-toastr';
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
     DashboardAdminModule,
-    DashboardUserModule
+    DashboardUserModule,
+    SharedModule
     
   ],
   providers: [],

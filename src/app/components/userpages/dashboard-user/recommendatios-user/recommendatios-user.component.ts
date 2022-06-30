@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DataApiService } from 'src/app/services/data-api.service';
+import { Recomendacion} from 'src/app/modelos/recomendacion'
 
 @Component({
   selector: 'app-recommendatios-user',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RecommendatiosUserComponent implements OnInit {
 
-  constructor() { }
+  recomendaciones: Recomendacion[] = [];
+
+  constructor(private dataControl: DataApiService) { }
 
   ngOnInit(): void {
+    this.dataControl.getRecommendations().subscribe((recomendaciones) => {
+      this.recomendaciones = recomendaciones;
+    });
   }
 
 }
