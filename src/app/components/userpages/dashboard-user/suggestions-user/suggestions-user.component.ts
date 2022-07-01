@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { Sugerencia } from 'src/app/modelos/sugerencia';
 import { UserService } from 'src/app/services/user.service';
+import {MatTableDataSource} from '@angular/material/table';
+import {DatePipe} from '@angular/common'
 
 @Component({
   selector: 'app-suggestions-user',
@@ -11,6 +13,10 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class SuggestionsUserComponent implements OnInit {
 
+  today: Date = new Date();
+  pipe = new DatePipe('en-US');
+  displayedColumns: string[] = ['nombre', 'seccion', 'comentario', 'acciones'];
+  dataSource = new MatTableDataSource();
   formSuggest: FormGroup;
   enumSuggest: number = 0;
   sugerencias: Sugerencia[] = [];
@@ -31,6 +37,7 @@ export class SuggestionsUserComponent implements OnInit {
       comment: new FormControl('', [
         Validators.required
       ]),
+      timeStamp: new FormControl('')
     });
   }
 
@@ -38,6 +45,7 @@ export class SuggestionsUserComponent implements OnInit {
     this.dataControl.getSuggestions().subscribe((sugerencias) => {
       this.enumSuggest = sugerencias.length;
       this.sugerencias = sugerencias;
+      this.dataSource.data = this.getSuggestByUser()
       this.sugerenciaByUser = this.getSuggestByUser()
     });
   }
@@ -47,6 +55,8 @@ export class SuggestionsUserComponent implements OnInit {
     this.formSuggest.controls['id'].setValue(idAdd);
     const email = this.userService.seeEmailUserAuth();
     this.formSuggest.controls['email'].setValue(email);
+    const timeStamp = this.pipe.transform(Date.now(), 'dd/MM/yyyy');
+    this.formSuggest.controls['timeStamp'].setValue(timeStamp);
     let name,
       lastName = '';
     this.dataControl.searchUserData(email).then(async (response) => {
@@ -54,8 +64,7 @@ export class SuggestionsUserComponent implements OnInit {
       lastName = response.lastName;
       this.formSuggest.controls['name'].setValue(name);
       this.formSuggest.controls['lastName'].setValue(lastName);
-      console.log('formulario a enviar: ', this.formSuggest.value);
-      //await this.dataControl.addSuggest(this.formSuggest.value, idAdd);
+      await this.dataControl.addSuggest(this.formSuggest.value, idAdd);
       this.formSuggest.reset();
     });
   }
@@ -75,7 +84,6 @@ export class SuggestionsUserComponent implements OnInit {
       }
     
     }
-    console.log(sugerenciaByUser)
     return sugerenciaByUser
   }
 
@@ -91,7 +99,6 @@ export class SuggestionsUserComponent implements OnInit {
       for (let item of idSugerenciaBD) {
         rastrearId++;
           if (parseInt(item[0]) != rastrearId) {
-            console.log('no coincide', rastrearId);
             idAdd = `${rastrearId}n`;
             return idAdd;
           }

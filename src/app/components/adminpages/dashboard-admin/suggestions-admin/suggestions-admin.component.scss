@@ -1,19 +1,10 @@
 .fondo-sugerencias {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
     margin: 0 2rem;
-}
-
-.mostrar-sugerencias{
-    border-right: groove 1px #47AF49;
-    padding-right: 2.5rem;
-    width: 950px;
 }
 
 .sugerencia-content{
     display: flex;
-    width: 950px;
+   
     align-items: center;
     margin-bottom: 0.5rem;
     padding-bottom: 0.5rem;
@@ -21,7 +12,7 @@
 }
 
 .comment-suggest{
-    width: 690px;
+    width: 100%;
 }
 
 .image-user{

@@ -5,4 +5,5 @@ export interface Sugerencia{
     email: String,
     section: String,
     comment: String,
+    timeStamp: String
 }

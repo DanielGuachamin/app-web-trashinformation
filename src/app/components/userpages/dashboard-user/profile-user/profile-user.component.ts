@@ -21,6 +21,7 @@ export class ProfileUserComponent implements OnInit {
 
   formProfile: FormGroup;
   profilePic: String = '';
+  email: String = '';
   selectedFile: any = null;
   urlProfilePic: string = '';
 
@@ -63,16 +64,16 @@ export class ProfileUserComponent implements OnInit {
     const nameNoticiaImage = this.selectedFile;
 
     if (nameNoticiaImage != null) {
-      const urlNoticia = this.urlProfilePic;
-      this.formProfile.controls['profilePic'].setValue(urlNoticia);
+      const urlImage = this.urlProfilePic;
+      this.formProfile.controls['profilePic'].setValue(urlImage);
     }
     
-    //await this.dataControl.addUser(this.formProfile.value, email);
+    await this.dataControl.addUser(this.formProfile.value, email);
     this.toastr.success('Perfil modificado con éxito!', 'Perfil modificado', {
       positionClass: 'toast-bottom-right'
       });
     console.log('formulario perfil: ', this.formProfile.value, email);
-    //this.getProfileUser()
+    this.getProfileUser()
   }
 
   getProfileUser(){
@@ -81,19 +82,24 @@ export class ProfileUserComponent implements OnInit {
       this.formProfile.setValue(response);
       const profilePic = this.formProfile.get('profilePic').value
       this.profilePic = profilePic
+      const email = this.formProfile.get('email').value
+      this.email = email
     });
   }
 
   uploadNoticiaImage($event: any) {
     this.selectedFile = $event.target.files[0] ?? null;
     const file = $event.target.files[0];
-
-    const imgRef = ref(this.storage, `noticiasImages/${file.name}`);
+    const formName = this.formProfile.get('name').value
+    const formLastname = this.formProfile.get('lastName').value
+    const fileName = `${formName.toLowerCase()}_${formLastname.toLowerCase()}_22`
+    //console.log('nombre de imagen: ', fileName)
+    const imgRef = ref(this.storage, `userImages/${fileName}`);
 
     uploadBytes(imgRef, file)
       .then((response) => {
         console.log(response);
-        this.getNoticiaImageUrl(`noticiasImages/${file.name}`);
+        this.getNoticiaImageUrl(`userImages/${fileName}`);
       })
       .catch((error) => console.log(error));
   }

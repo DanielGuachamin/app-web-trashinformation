@@ -1,14 +1,18 @@
 <div class="pantalla-perfil">
   <div class="fondo-perfil">
+    <h2>
+      Perfil del usuario: {{email}}
+    </h2>
     <div class="info-perfil">
       <div class="image-perfil">
-        <img [src]="profilePic" alt="Foto perfil usuario">
-        <button type="button" mat-raised-button (click)="fileInput.click()">Actualizar</button>
-        <input hidden (change)="uploadNoticiaImage($event)" #fileInput type="file">
-        <span class="file-name">{{selectedFile?.name}}</span>
+        <img [src]="profilePic" alt="Foto perfil usuario" width="200px" height="200px">
+        <div class="button-image">
+          <button type="button" mat-raised-button (click)="fileInput.click()">Actualizar</button>
+          <input hidden (change)="uploadNoticiaImage($event)" #fileInput type="file">
+          <span class="file-name">{{selectedFile?.name}}</span>
+        </div>
       </div>
       <form [formGroup]="formProfile" (ngSubmit)="onModifiedProfile()" class="formulario-perfil">
-
         <mat-form-field appearance="legacy">
           <mat-label>Nombre</mat-label>
           <input matInput type="text" class="form-control" formControlName="name">
@@ -22,16 +26,6 @@
         </mat-form-field>
 
         <mat-form-field appearance="legacy">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" class="form-control" formControlName="email">
-        </mat-form-field>
-
-        <mat-form-field appearance="legacy">
-          <mat-label>Fecha de nacimiento</mat-label>
-          <input matInput formControlName="birthdate">
-        </mat-form-field>
-
-        <mat-form-field appearance="legacy">
           <mat-label>Dirección de domicilio</mat-label>
           <mat-select class="form-control" formControlName="direccionBase">
             <mat-option value="San Carlos">San Carlos</mat-option>
@@ -40,8 +34,10 @@
           <mat-error *ngIf="direccionBase.invalid && (direccionBase.dirty || direccionBase.touched)">{{getErrorMessageDirection()}}</mat-error>
         </mat-form-field>
 
+        <div class="button-save">
 
-        <button mat-raised-button color="primary" [disabled]="name.invalid || lastName.invalid || direccionBase.invalid">Guardar</button>
+          <button mat-raised-button color="primary" [disabled]="name.invalid || lastName.invalid || direccionBase.invalid">Guardar</button>
+        </div>
       </form>
       
     </div>

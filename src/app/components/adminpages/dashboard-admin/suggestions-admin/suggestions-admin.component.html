@@ -31,23 +31,5 @@
                 </div>
             </div>
         </div>
-        <div class="formulario-sugerencias">
-            <form [formGroup]="formSuggest" (ngSubmit)="onSubmitAddSuggest()" class="formulario-sugerencias">
-                <mat-form-field appearance="fill">
-                    <mat-label>¿Su opinión es acerca de...?</mat-label>
-                    <input type="text" matInput placeholder="Ingrese el nombre de la sección a mejorar" class="form-control" formControlName="section">
-                    <mat-error *ngIf="section.invalid && (section.dirty || section.touched)">{{getErrorMessageSection()}}</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="fill">
-                    <mat-label>Comentario</mat-label>
-                    <textarea matInput matInput placeholder="Ingresa tu comentario" class="form-control"
-                    formControlName="comment"></textarea>
-                    <mat-error *ngIf="comment.invalid && (comment.dirty || comment.touched)">{{getErrorMessageComment()}}</mat-error>
-                </mat-form-field>
-                <button mat-raised-button color="primary" [disabled]="section.invalid || comment.invalid">Enviar</button>
-            </form>
-
-        </div>
-
     </div>
 </div>

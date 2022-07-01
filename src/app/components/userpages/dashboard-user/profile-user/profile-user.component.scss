@@ -1,9 +1,46 @@
+.fondo-perfil{
+    margin: 0 6rem;
+    text-align: center;
+}
+
+.info-perfil{
+    display: flex;
+}
+
+.image-perfil{
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    align-items: center;
+    margin-left: 2rem;
+}
+
+.formulario-perfil{
+    display: flex;
+    flex-direction: column;
+    margin-left: 5rem;
+    align-content: center;
+    width: 700px;
+}
+
+.button-image{
+    margin-top: 1rem;
+}
+
 button{
     border-radius: 20px;
     font-size: 16px;
 }
 
+.button-save{
+    text-align: end;
+}
+
 .footer{
     margin: 1rem 76rem 0rem 1rem;
     text-align: center;
+}
+
+img{
+    border-radius: 100px;
 }

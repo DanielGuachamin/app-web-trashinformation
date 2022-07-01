@@ -86,15 +86,12 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
 
 
   async onSubmitAddContact() {
-
     const idAdd = this.comprobarIdContact();
     console.log(idAdd)
     this.formContact.controls['id'].setValue(idAdd);
     await this.dataControl.addContact(this.formContact.value, idAdd);
     console.log('formulario a enviar: ',this.formContact.value)
     this.formContact.reset();
-
-
   }
 
   comprobarIdContact() {
