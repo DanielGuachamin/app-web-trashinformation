@@ -15,7 +15,9 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './news-admin.component.html',
   styleUrls: ['./news-admin.component.scss'],
 })
+
 export class NewsAdminComponent implements OnInit {
+
   formNoticia: FormGroup;
   selectedFile: any = null;
   enumNoticias: number = 0;
@@ -51,16 +53,13 @@ export class NewsAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataControl.getNoticias().subscribe((noticias) => {
-      //console.log(noticias);
       this.noticias = noticias;
       this.enumNoticias = noticias.length;
-      console.log('cantidad de noticias: ', this.enumNoticias);
     });
   }
 
   async onSubmitAddNoticia() {
     const nameNoticiaImage = this.selectedFile;
-
     if (nameNoticiaImage == null) {
       const baseImages = this.plantillaImage;
       const category = this.formNoticia.get('category').value;
@@ -68,7 +67,6 @@ export class NewsAdminComponent implements OnInit {
       for (let nameImage in baseImages) {
         if (nameImage == category) {
           const responseUrlImage = baseImages[nameImage];
-
           this.formNoticia.controls['noticiaPic'].setValue(responseUrlImage);
         }
       }
@@ -134,7 +132,6 @@ export class NewsAdminComponent implements OnInit {
 
   async deleteNoticiaById(id: any) {
     await this.dataControl.deleteElement(id, 'Noticias');
-
     this.toastr.error(
       'La noticia fue eliminada con éxito!',
       'Noticia eliminada',
@@ -147,9 +144,7 @@ export class NewsAdminComponent implements OnInit {
   uploadNoticiaImage($event: any) {
     this.selectedFile = $event.target.files[0] ?? null;
     const file = $event.target.files[0];
-
     const imgRef = ref(this.storage, `noticiasImages/${file.name}`);
-
     uploadBytes(imgRef, file)
       .then((response) => {
         console.log(response);

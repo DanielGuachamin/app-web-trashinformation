@@ -92,7 +92,7 @@ export class ProfileUserComponent implements OnInit {
     const file = $event.target.files[0];
     const formName = this.formProfile.get('name').value
     const formLastname = this.formProfile.get('lastName').value
-    const fileName = `${formName.toLowerCase()}_${formLastname.toLowerCase()}_22`
+    const fileName = `${formName.toLowerCase()}_${formLastname.toLowerCase()}_22.jpg`
     //console.log('nombre de imagen: ', fileName)
     const imgRef = ref(this.storage, `userImages/${fileName}`);
 

@@ -12,7 +12,7 @@ import { RecommendatiosUserComponent } from './recommendatios-user/recommendatio
 import { ContactsUserComponent } from './contacts-user/contacts-user.component';
 import { SuggestionsUserComponent } from './suggestions-user/suggestions-user.component';
 import { ProfileUserComponent } from './profile-user/profile-user.component';
-
+import { MapComponent } from '../../../components/dialogs/map/map.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +22,7 @@ import { ProfileUserComponent } from './profile-user/profile-user.component';
     ContactsUserComponent,
     SuggestionsUserComponent,
     ProfileUserComponent,
+    MapComponent
   ],
   imports: [
     CommonModule,
@@ -31,6 +32,7 @@ import { ProfileUserComponent } from './profile-user/profile-user.component';
     ReactiveFormsModule,
     YouTubePlayerModule,
     SharedModule
-  ]
+  ],
+  entryComponents: [MapComponent]
 })
 export class DashboardUserModule { }

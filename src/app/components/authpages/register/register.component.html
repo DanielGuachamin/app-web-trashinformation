@@ -14,15 +14,18 @@
     <mat-divider></mat-divider>
     <div class="content-register">
       <form [formGroup]="formReg" (ngSubmit)="onSubmit()" class="formulario-register">
+
         <mat-form-field appearance="legacy">
           <mat-label>Nombre</mat-label>
           <input matInput type="text" class="form-control" formControlName="name">
           <mat-error *ngIf="name.invalid && (name.dirty || name.touched)">{{getErrorMessageNameLastname()}}</mat-error>
         </mat-form-field>
+
         <mat-form-field appearance="legacy">
           <mat-label>Apellido</mat-label>
           <input matInput type="text" class="form-control" formControlName="lastName">
-          <mat-error *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">{{getErrorMessageNameLastname()}}</mat-error>
+          <mat-error *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">{{getErrorMessageNameLastname()}}
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="legacy">
@@ -34,26 +37,260 @@
         <mat-form-field appearance="legacy">
           <mat-label>Contraseña</mat-label>
           <input matInput type="password" class="form-control" formControlName="password">
-          <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">{{getErrorMessagePassword()}}</mat-error>
+          <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">{{getErrorMessagePassword()}}
+          </mat-error>
         </mat-form-field>
+
         <mat-form-field appearance="legacy">
           <mat-label>Fecha de nacimiento</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="birthdate">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
-          <mat-error *ngIf="birthdate.invalid && (birthdate.dirty || birthdate.touched)">{{getErrorMessageBirthday()}}</mat-error>
+          <mat-error *ngIf="birthdate.invalid && (birthdate.dirty || birthdate.touched)">{{getErrorMessageBirthday()}}
+          </mat-error>
         </mat-form-field>
+
         <mat-form-field appearance="legacy">
           <mat-label>Dirección de domicilio</mat-label>
           <mat-select class="form-control" formControlName="direccionBase">
-            <mat-option value="San Carlos">San Carlos</mat-option>
-           <mat-option value="Cotocollao">Cotocollao</mat-option>
+            <mat-option value="hola"> 6 DE DICIEMBRE - ONTANEDA </mat-option>
+            <mat-option value=""> ALBORNOZ - LACAPILLA </mat-option>
+            <mat-option value=""> ALMA LOJANA </mat-option>
+            <mat-option value=""> ALOGUINCHO </mat-option>
+            <mat-option value=""> ALTAMIRA </mat-option>
+            <mat-option value=""> AMAGASI DEL INCA </mat-option>
+            <mat-option value=""> AMAGUAÑA - CUENDINA </mat-option>
+            <mat-option value=""> AMAGUAÑA CENTRO </mat-option>
+            <mat-option value=""> ANANSAYAS </mat-option>
+            <mat-option value=""> ARGELIA ALTA </mat-option>
+            <mat-option value=""> ARGELIA BAJA </mat-option>
+            <mat-option value=""> ARRAYANES - MANGAHUANTAG </mat-option>
+            <mat-option value=""> ATUCUCHO </mat-option>
+            <mat-option value=""> BAKER </mat-option>
+            <mat-option value=""> BALCON DEL VALLE - SAN PATRICIO </mat-option>
+            <mat-option value=""> BARRIO SUR ORIENTAL - LLOA </mat-option>
+            <mat-option value=""> BATAN </mat-option>
+            <mat-option value=""> BATAN ALTO </mat-option>
+            <mat-option value=""> BELISARIO </mat-option>
+            <mat-option value=""> BELLAVISTA </mat-option>
+            <mat-option value=""> BELLAVISTA - JARDINES DE BABILONIA </mat-option>
+            <mat-option value=""> BILOXI - CHILIBULO </mat-option>
+            <mat-option value=""> BOSQUE COCHAPAMBA </mat-option>
+            <mat-option value=""> BRETAÑA - GUAMANI </mat-option>
+            <mat-option value=""> CALACALI </mat-option>
+            <mat-option value=""> CALDERON CENTRO - SAN CAMILO </mat-option>
+            <mat-option value=""> CALDERON PERIFERICO </mat-option>
+            <mat-option value=""> CALIFORNIA </mat-option>
+            <mat-option value=""> CAMAL </mat-option>
+            <mat-option value=""> CAMAL - RECREO </mat-option>
+            <mat-option value=""> CAMAL METROPOLITANO </mat-option>
+            <mat-option value=""> CANGAHUA - TWINTZA </mat-option>
+            <mat-option value=""> CAPULIES - ZABALA </mat-option>
+            <mat-option value=""> CARAPUNGO C-F </mat-option>
+            <mat-option value=""> CARAPUNGO D-E Y LA MORENITA </mat-option>
+            <mat-option value=""> CARAPUNGO EL VERGEL </mat-option>
+            <mat-option value=""> CARAPUNGO PUERTAS DEL SOL </mat-option>
+            <mat-option value=""> CARCELEN 3 </mat-option>
+            <mat-option value=""> CARCELEN ALTO </mat-option>
+            <mat-option value=""> CARCELEN BAJO </mat-option>
+            <mat-option value=""> CAROLINA </mat-option>
+            <mat-option value=""> CAUPICHO </mat-option>
+            <mat-option value=""> CAUPICHO 1 </mat-option>
+            <mat-option value=""> CENTRO HISTORICO OCCIDENTAL </mat-option>
+            <mat-option value=""> CENTRO HISTORICO ORIENTAL </mat-option>
+            <mat-option value=""> CHECA CENTRO Y PERIFERIA </mat-option>
+            <mat-option value=""> CHILLOGALLO </mat-option>
+            <mat-option value=""> CHILLOGALLO - CHIMBORAZO </mat-option>
+            <mat-option value=""> CHILLO JIJON - EL DEAN BAJO </mat-option>
+            <mat-option value=""> CHIRYACU AV PRINCIPALES </mat-option>
+            <mat-option value=""> CIMA DE LA LIBERTAD </mat-option>
+            <mat-option value=""> CIUDADELA CHIMBORAZO - AVPRINCIPALES - MALDONADO </mat-option>
+            <mat-option value=""> CIUDADELA IBARRA 1</mat-option>
+            <mat-option value=""> CIUDADELA IBARRA 2</mat-option>
+            <mat-option value=""> COLINAS DEL NORTE A</mat-option>
+            <mat-option value=""> COLINAS DEL NORTE B </mat-option>
+            <mat-option value=""> COLLASQUI,LASPEÑAS </mat-option>
+            <mat-option value=""> COMITE DEL PUEBLO 1 </mat-option>
+            <mat-option value=""> COMITE DEL PUEBLO 2 </mat-option>
+            <mat-option value=""> COMITE DEL PUEBLO 3 </mat-option>
+            <mat-option value=""> COMUNA CENTRAL </mat-option>
+            <mat-option value=""> COMUNA LEOPOLDO CHAVEZ </mat-option>
+            <mat-option value=""> CONDADO </mat-option>
+            <mat-option value=""> CONOCOTO - LARIVERA 1Y2 </mat-option>
+            <mat-option value=""> CONOCOTO CENTRO </mat-option>
+            <mat-option value=""> CONOCOTO HOSPITALARIA </mat-option>
+            <mat-option value=""> CONTENERIZACION MARISCAL </mat-option>
+            <mat-option value=""> CORAZON DE JESUS </mat-option>
+            <mat-option value=""> COTOCOLLAO </mat-option>
+            <mat-option value=""> CRISTIANIA </mat-option>
+            <mat-option value=""> CRUZ LOMA </mat-option>
+            <mat-option value=""> CUARTELES - SANTA ISABEL </mat-option>
+            <mat-option value=""> CUMBAYA (CENTRO) </mat-option>
+            <mat-option value=""> CUNUNYACU - PACHOSALAS </mat-option>
+            <mat-option value=""> DELICIA </mat-option>
+            <mat-option value=""> DIVINO NIÑO - CIUDAD JARDIN </mat-option>
+            <mat-option value=""> EL CARMEN - GUADALUPE - CHUSPIYACU - INGA </mat-option>
+            <mat-option value=""> EL CARMEN BAJO </mat-option>
+            <mat-option value=""> EL CONDE </mat-option>
+            <mat-option value=""> EL DORADO </mat-option>
+            <mat-option value=""> EL EDEN - QUINTANA </mat-option>
+            <mat-option value=""> EL GIRON - GUAPULO </mat-option>
+            <mat-option value=""> EL INCA </mat-option>
+            <mat-option value=""> EL LABRADOR </mat-option>
+            <mat-option value=""> EL TINGO - ALANGASI - ANGAMARCA </mat-option>
+            <mat-option value=""> EPLICACHINA YERBA BUENA ARGELIA </mat-option>
+            <mat-option value=""> ESPEJO </mat-option>
+            <mat-option value=""> FERROVIARIA </mat-option>
+            <mat-option value=""> FLORESTA </mat-option>
+            <mat-option value=""> FLORIDA </mat-option>
+            <mat-option value=""> FORESTAL </mat-option>
+            <mat-option value=""> GIRON SUR 2 </mat-option>
+            <mat-option value=""> GUAMANI ALTO </mat-option>
+            <mat-option value=""> GUAYLLABAMBA CENTRO </mat-option>
+            <mat-option value=""> GUAYLLABAMBA PERIFERICO </mat-option>
+            <mat-option value=""> H.SOLCA - UNIONYPROGRESO </mat-option>
+            <mat-option value=""> HERMANO MIGUEL </mat-option>
+            <mat-option value=""> HUARCAY - SANTOSPAMBA ALTO </mat-option>
+            <mat-option value=""> INDEPENDENCIA </mat-option>
+            <mat-option value=""> INFA-SANTAMONICA-CIUDADDELNIÑO </mat-option>
+            <mat-option value=""> IÑAQUITO </mat-option>
+            <mat-option value=""> JACARANDA - URB.VALLES </mat-option>
+            <mat-option value=""> JARDIN DEL VALLE - ORQUIDEAS </mat-option>
+            <mat-option value=""> JARDINESDELBATAN </mat-option>
+            <mat-option value=""> JIPIJAPA </mat-option>
+            <mat-option value=""> KENNEDY </mat-option>
+            <mat-option value=""> LA BOTA </mat-option>
+            <mat-option value=""> LABRADOR </mat-option>
+            <mat-option value=""> LA COCHA </mat-option>
+            <mat-option value=""> LA COMUNA </mat-option>
+            <mat-option value=""> LA ECUATORIANA </mat-option>
+            <mat-option value=""> LA ESTANCIA </mat-option>
+            <mat-option value=""> LA GASCA </mat-option>
+            <mat-option value=""> LA GRANJA </mat-option>
+            <mat-option value=""> LA LORENA - EL GUABO </mat-option>
+            <mat-option value=""> LA LUZ </mat-option>
+            <mat-option value=""> LA MERCED - CONCEPCION </mat-option>
+            <mat-option value=""> LA MORITA  -EL ARENAL </mat-option>
+            <mat-option value=""> LA PAZ </mat-option>
+            <mat-option value=""> LA TOLA </mat-option>
+            <mat-option value=""> LAURELES </mat-option>
+            <mat-option value=""> LA VICTORIA </mat-option>
+            <mat-option value=""> LLANO CHICO </mat-option>
+            <mat-option value=""> LLANO GRANDE - LA CANDELARIA </mat-option>
+            <mat-option value=""> LLANO GRANDE - PUEBLO BLANCO </mat-option>
+            <mat-option value=""> LLANO GRANDE PERIFERIA - OYACOTO </mat-option>
+            <mat-option value=""> LOMA - SAN MARCOS </mat-option>
+            <mat-option value=""> LOS NOGALES </mat-option>
+            <mat-option value=""> LOS PINOS - MONSERRATE </mat-option>
+            <mat-option value=""> LUCHA ALTA - PUEBLO UNIDO </mat-option>
+            <mat-option value=""> LUCHA DE LOS POBRES </mat-option>
+            <mat-option value=""> LULUNCOTO </mat-option>
+            <mat-option value=""> LULUNCOTO BAJO - AV.PRINCIPALES </mat-option>
+            <mat-option value=""> LUMBISI - LIMONAR </mat-option>
+            <mat-option value=""> LUZ Y VIDA </mat-option>
+            <mat-option value=""> MAGDALENA </mat-option>
+            <mat-option value=""> MANUEL LARREA - SANTA CLARA </mat-option>
+            <mat-option value=""> MARCO PAMBA </mat-option>
+            <mat-option value=""> MARIANAS </mat-option>
+            <mat-option value=""> MARISCAL DE AYACUCHO </mat-option>
+            <mat-option value=""> MARISCAL SUCRE - CHILLOGALLO 2 </mat-option>
+            <mat-option value=""> MARTHA BUCARAN </mat-option>
+            <mat-option value=""> MATOVELLE </mat-option>
+            <mat-option value=""> MENA 2 - TARQUI </mat-option>
+            <mat-option value=""> MENA DEL HIERRO - SANTA ROSA DE SINGUÑA </mat-option>
+            <mat-option value=""> MERCADO MAYORISTA </mat-option>
+            <mat-option value=""> MEXICO - PIOXII </mat-option>
+            <mat-option value=""> MIRA SIERRA - PLAYA GRANDE </mat-option>
+            <mat-option value=""> MIRAVALLE 1-2-3 </mat-option>
+            <mat-option value=""> MONJAS </mat-option>
+            <mat-option value=""> MONTESERRIN </mat-option>
+            <mat-option value=""> NANEGALITO - RUMICUCHO </mat-option>
+            <mat-option value=""> NAYON CENTRO </mat-option>
+            <mat-option value=""> NAYON PERIFERICO </mat-option>
+            <mat-option value=""> OBRERO INDEPENDIENTE </mat-option>
+            <mat-option value=""> OFELIA </mat-option>
+            <mat-option value=""> PACTO, NONO, TANLAGUA </mat-option>
+            <mat-option value=""> PANECILLO </mat-option>
+            <mat-option value=""> PARQUE DE LOS RECUERDOS </mat-option>
+            <mat-option value=""> PARQUE INDUSTRIAL - CORAZON </mat-option>
+            <mat-option value=""> PARQUE LINEAL </mat-option>
+            <mat-option value=""> PATRICIO ROMERO </mat-option>
+            <mat-option value=""> PEDREGAL </mat-option>
+            <mat-option value=""> PERIODISTAS </mat-option>
+            <mat-option value=""> PERLA DE GUAMANI </mat-option>
+            <mat-option value=""> PILLAGUA - MENECES PALLARES </mat-option>
+            <mat-option value=""> PINAR ALTO SAN FERNANDO </mat-option>
+            <mat-option value=""> PINAR BAJO </mat-option>
+            <mat-option value=""> PISULI </mat-option>
+            <mat-option value=""> PLAYA CHICA - USHIMANA </mat-option>
+            <mat-option value=""> PLYWOOD </mat-option>
+            <mat-option value=""> POMASQUI 1 </mat-option>
+            <mat-option value=""> POMASQUI 2 </mat-option>
+            <mat-option value=""> POMASQUI 3 </mat-option>
+            <mat-option value=""> POMASQUI 4 </mat-option>
+            <mat-option value=""> PONCEANO </mat-option>
+            <mat-option value=""> PRADERA </mat-option>
+            <mat-option value=""> PRIMAVERA </mat-option>
+            <mat-option value=""> PUEBLO BLANCO - GUANGOPOLO </mat-option>
+            <mat-option value=""> PUEBLO SOLO PUEBLO </mat-option>
+            <mat-option value=""> PUEMBO (CENTRO) </mat-option>
+            <mat-option value=""> QUITO NORTE </mat-option>
+            <mat-option value=""> QUITO SUR </mat-option>
+            <mat-option value=""> QUITO TENIS </mat-option>
+            <mat-option value=""> QUITUMBE </mat-option>
+            <mat-option value=""> REINO DE QUITO </mat-option>
+            <mat-option value=""> ROJAS - PRIMAVERAS 1,2,3 </mat-option>
+            <mat-option value=""> ROLDOS </mat-option>
+            <mat-option value=""> ROSARIO </mat-option>
+            <mat-option value=""> RUMIPAMBA </mat-option>
+            <mat-option value=""> SAN BLAS </mat-option>
+            <mat-option value=""> SAN CARLOS </mat-option>
+            <mat-option value=""> SAN ISIDRO DEL INCA - ZAMBIZA </mat-option>
+            <mat-option value=""> SAN JOSE - SIERRA HERMOSA </mat-option>
+            <mat-option value=""> SAN JOSE DE CONOCOTO </mat-option>
+            <mat-option value=""> SAN JOSE DEL CONDADO </mat-option>
+            <mat-option value=""> SAN JOSE DE MINAS </mat-option>
+            <mat-option value=""> SAN JOSE DE MORAN - BARRIO ECUADOR </mat-option>
+            <mat-option value=""> SAN JUAN - AMERICA </mat-option>
+            <mat-option value=""> SAN JUAN - BICENTENARIO </mat-option>
+            <mat-option value=""> SAN JUAN DE CONOCOTO </mat-option>
+            <mat-option value=""> SAN JUAN DE CUMBAYA </mat-option>
+            <mat-option value=""> SAN LUIS - EL TRANSITO </mat-option>
+            <mat-option value=""> SAN PEDRO CLAVER </mat-option>
+            <mat-option value=""> SANTA ANA </mat-option>
+            <mat-option value=""> SANTA ANITA </mat-option>
+            <mat-option value=""> SANTA BARBARA - CRISTOREY </mat-option>
+            <mat-option value=""> SANTA LUCIA - PRIMAVERA </mat-option>
+            <mat-option value=""> SANTA MARÍA - RANCHO ALTO </mat-option>
+            <mat-option value=""> SANTA ROSA </mat-option>
+            <mat-option value=""> SANTA ROSA TUMBACO </mat-option>
+            <mat-option value=""> SANTIAGO - HOSPITAL DEL SUR </mat-option>
+            <mat-option value=""> SANTO DOMINGO CONOCOTO </mat-option>
+            <mat-option value=""> SANTOS PAMBA - MANUELITA SAENZ </mat-option>
+            <mat-option value=""> SANTO TOMAS </mat-option>
+            <mat-option value=""> SOLANDA </mat-option>
+            <mat-option value=""> TAMAYO </mat-option>
+            <mat-option value=""> TERRANOVA - CIUDADELA EJERCITO </mat-option>
+            <mat-option value=""> TOCTIUCO </mat-option>
+            <mat-option value=""> TRANSITO </mat-option>
+            <mat-option value=""> TURUBAMBA ALTO </mat-option>
+            <mat-option value=""> TURUBAMBA BAJO </mat-option>
+            <mat-option value=""> UNION Y JUSTICIA </mat-option>
+            <mat-option value=""> URABA </mat-option>
+            <mat-option value=""> URB.ARMENIA1 </mat-option>
+            <mat-option value=""> VICENTINA </mat-option>
+            <mat-option value=""> VILLAFLORA </mat-option>
+            <mat-option value=""> VIRGEN DEL CISNE </mat-option>
+            <mat-option value=""> VIRGEN DEL QUINCHE </mat-option>
+            <mat-option value=""> VOZANDES </mat-option>
+            <mat-option value=""> YAGUACHI - CHILIBULO </mat-option>
           </mat-select>
-          <mat-error *ngIf="direccionBase.invalid && (direccionBase.dirty || direccionBase.touched)">{{getErrorMessageDirection()}}</mat-error>
+          <mat-error *ngIf="direccionBase.invalid && (direccionBase.dirty || direccionBase.touched)">
+            {{getErrorMessageDirection()}}</mat-error>
         </mat-form-field>
 
-
-        <button mat-raised-button color="primary" [disabled]="email.invalid || password.invalid || name.invalid || lastName.invalid || direccionBase.invalid || birthdate.invalid">Registrarme</button>
+        <button mat-raised-button color="primary"
+          [disabled]="email.invalid || password.invalid || name.invalid || lastName.invalid || direccionBase.invalid || birthdate.invalid">Registrarme</button>
       </form>
     </div>
   </div>

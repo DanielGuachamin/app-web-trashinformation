@@ -7,10 +7,14 @@
 
 .individual-recomendacion{
     margin: 0 1rem;
-    max-width: 600px;
+    max-width: 100%;
     margin-bottom: 1rem;
 }
 
 .contenedor{
     margin: 1rem 0.9rem;
 }
+
+mat-grid-tile {
+    background: lightblue;
+  }

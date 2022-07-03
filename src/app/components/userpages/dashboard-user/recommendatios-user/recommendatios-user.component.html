@@ -10,6 +10,7 @@
                         </h2>
                     </div>
                     <div class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'Reciclaje')">
+                       
                         <mat-card class="recomen-card">
                             <mat-card-header>
                                 <mat-card-title>{{recomen.title}}</mat-card-title>
@@ -32,7 +33,13 @@
                             Aprende la forma CORRECTA de manejar y clasificar tus residuos
                         </h2>
                     </div>
-                    <div class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'Orgánicos')">
+                    <mat-grid-list cols="2" rowHeight="2:1" class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'Orgánicos')">
+                        <mat-grid-list cols="2" rowHeight="2:1">
+                            <mat-grid-tile>1</mat-grid-tile>
+                            <mat-grid-tile>2</mat-grid-tile>
+                            <mat-grid-tile>3</mat-grid-tile>
+                            <mat-grid-tile>4</mat-grid-tile>
+                          </mat-grid-list>
                         <mat-card class="recomen-card">
                             <mat-card-header>
                                 <mat-card-title>{{recomen.title}}</mat-card-title>
@@ -48,7 +55,7 @@
                                 </div>
                             </div>
                         </mat-card>
-                    </div>
+                    </mat-grid-list>
                 </mat-tab>
                 <mat-tab label="Residuos Coronavirus">
                     <div class="header-tab">
