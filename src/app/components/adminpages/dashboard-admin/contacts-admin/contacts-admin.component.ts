@@ -16,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 
 export class ContactsAdminComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['id', 'name', 'address', 'phoneNumber', 'activity', 'actions'];
+  displayedColumns: string[] = ['name', 'address', 'phoneNumber', 'activity', 'actions'];
   dataSource = new MatTableDataSource();
   @ViewChild(MatPaginator, {static: true})paginator: MatPaginator | undefined;
   @ViewChild(MatSort, {static: true})sort: MatSort | undefined;
