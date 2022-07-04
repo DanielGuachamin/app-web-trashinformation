@@ -78,6 +78,7 @@ export class NewsAdminComponent implements OnInit {
     await this.dataControl.addNoticia(this.formNoticia.value, idAdd);
     console.log(this.formNoticia.value);
     this.formNoticia.reset();
+    
   }
 
   comprobarId() {

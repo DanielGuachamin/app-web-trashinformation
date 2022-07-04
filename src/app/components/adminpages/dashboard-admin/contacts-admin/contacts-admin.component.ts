@@ -103,7 +103,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     let rastrearIdBD;
     for (let item of idBD) {
       rastrearId++;
-      const idToAdd = `${rastrearId}n`;
+      const idToAdd = `${rastrearId}c`;
       rastrearIdBD = item.substring(0, item.length - 1);
       if (idBD.indexOf(idToAdd) == -1) {
         idAdd = idToAdd;
@@ -129,7 +129,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
         return idAdd;
       }
     }
-    idAdd = `${this.enumContact + 1}n`;
+    idAdd = `${this.enumContact + 1}c`;
     this.toastr.success(
       'La noticia fue registrada con exito!',
       'Noticia registrada',

@@ -63,7 +63,7 @@ export class VideosAdminComponent implements OnInit {
     let rastrearIdBD;
     for (let item of idBD) {
       rastrearId++;
-      const idToAdd = `${rastrearId}n`;
+      const idToAdd = `${rastrearId}v`;
       rastrearIdBD = item.substring(0, item.length - 1);
       if (idBD.indexOf(idToAdd) == -1) {
         idAdd = idToAdd;
@@ -89,7 +89,7 @@ export class VideosAdminComponent implements OnInit {
         return idAdd;
       }
     }
-    idAdd = `${this.enumVideos + 1}n`;
+    idAdd = `${this.enumVideos + 1}v`;
     this.toastr.success(
       'La noticia fue registrada con exito!',
       'Noticia registrada',
