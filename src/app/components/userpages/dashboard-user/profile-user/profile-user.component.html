@@ -22,34 +22,37 @@
         <mat-form-field appearance="legacy">
           <mat-label>Apellido</mat-label>
           <input matInput type="text" class="form-control" formControlName="lastName">
-          <mat-error *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">{{getErrorMessageNameLastname()}}</mat-error>
+          <mat-error *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">{{getErrorMessageNameLastname()}}
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="legacy">
           <mat-label>Dirección de domicilio</mat-label>
           <mat-select class="form-control" formControlName="direccionBase">
-            <mat-option value="San Carlos">San Carlos</mat-option>
-           <mat-option value="Cotocollao">Cotocollao</mat-option>
+            <mat-option value="alt"> ALTAMIRA </mat-option>
+            <mat-option value="lg"> LA GRANJA </mat-option>
           </mat-select>
-          <mat-error *ngIf="direccionBase.invalid && (direccionBase.dirty || direccionBase.touched)">{{getErrorMessageDirection()}}</mat-error>
+          <mat-error *ngIf="direccionBase.invalid && (direccionBase.dirty || direccionBase.touched)">
+            {{getErrorMessageDirection()}}</mat-error>
         </mat-form-field>
 
         <div class="button-save">
 
-          <button mat-raised-button color="primary" [disabled]="name.invalid || lastName.invalid || direccionBase.invalid">Guardar</button>
+          <button mat-raised-button color="primary"
+            [disabled]="name.invalid || lastName.invalid || direccionBase.invalid">Guardar</button>
         </div>
       </form>
-      
+
     </div>
   </div>
 </div>
 
 
 <div class="footer">
-    <button mat-fab color="warn" (click)="singOut()">
-      <mat-icon>logout</mat-icon>
-    </button>
-    <h2>
-      Cerrar sesión
-    </h2>
-  </div>
+  <button mat-fab color="warn" (click)="singOut()">
+    <mat-icon>logout</mat-icon>
+  </button>
+  <h2>
+    Cerrar sesión
+  </h2>
+</div>
