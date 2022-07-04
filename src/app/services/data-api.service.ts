@@ -2,14 +2,11 @@ import { Injectable } from '@angular/core';
 import {
   Firestore,
   collection,
-  addDoc,
   collectionData,
   deleteDoc,
   doc,
   setDoc,
   getDoc,
-  query,
-  where,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Contacto } from '../modelos/contacto';
@@ -38,6 +35,12 @@ export class DataApiService {
   getUser(): Observable<User[]> {
     const userRef = collection(this.firestore, 'Personas');
     return collectionData(userRef, { idField: 'email' }) as Observable<User[]>;
+  }
+
+  async getProfile(email: any) {
+    const userRef = doc(this.firestore, 'Personas', email)
+    const respuesta = await getDoc(userRef)
+    return respuesta.data()
   }
 
   async searchUserRol(email:any) {

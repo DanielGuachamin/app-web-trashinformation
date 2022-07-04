@@ -1,47 +1,118 @@
 <div class="pantalla-recomens">
     <div class="fondo-recomens">
         <div class="mostrar-recomens">
-           
-            <div class="individual-recomens" *ngFor="let recomen of recomendaciones">
-
-                <mat-card class="recomen-card">
-
-                    <mat-card-header>
-
-                        <mat-card-title>{{recomen.title}}</mat-card-title>
-                        <mat-card-subtitle>{{recomen.category}}</mat-card-subtitle>
-                    </mat-card-header>
-
-
-                    <div class="contenedor">
-                        <img mat-card-image [src]="recomen.urlImage" alt={{recomen.title}} width="300" height="190">
-
-                        <div class="centrado">
-                            <p>
-                                {{recomen.content}}
-                            </p>
-                        </div>
+            <mat-tab-group mat-align-tabs="center">
+                <mat-tab label="Medio Ambiente">
+                    <div class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'MedioAmbiente')">
+                       
+                        <mat-card class="recomen-card">
+                            <mat-card-header>
+                                <mat-card-title>{{recomen.title}}</mat-card-title>
+                            </mat-card-header>
+                            <div class="contenedor">
+                                <img mat-card-image [src]="recomen.urlImage" alt={{recomen.title}} width="300" height="190">
+            
+                                <div class="centrado">
+                                    <p>
+                                        {{recomen.content}}
+                                    </p>
+                                </div>
+                            </div>
+                            <mat-card-actions>
+                                <button mat-raised-button color="warn" (click)="deleteRecomenById(recomen.id)">Eliminar</button>
+                                <button mat-raised-button color="accent"
+                                    (click)="fillFormRecomen(recomen.id)">Modificar</button>
+                            </mat-card-actions>
+                        </mat-card>
                     </div>
-
-
-
-                    <mat-card-actions>
-                        <button mat-raised-button color="warn" (click)="deleteRecomenById(recomen.id)">Eliminar</button>
-                        <button mat-raised-button color="accent"
-                            (click)="fillFormRecomen(recomen.id)">Modificar</button>
-                    </mat-card-actions>
-                </mat-card>
-            </div>
+                </mat-tab>
+                <mat-tab label="Residuos Reciclables">
+                    <div class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'Reciclaje')">
+                       
+                        <mat-card class="recomen-card">
+                            <mat-card-header>
+                                <mat-card-title>{{recomen.title}}</mat-card-title>
+                            </mat-card-header>
+                            <div class="contenedor">
+                                <img mat-card-image [src]="recomen.urlImage" alt={{recomen.title}} width="300" height="190">
+            
+                                <div class="centrado">
+                                    <p>
+                                        {{recomen.content}}
+                                    </p>
+                                </div>
+                            </div>
+                            <mat-card-actions>
+                                <button mat-raised-button color="warn" (click)="deleteRecomenById(recomen.id)">Eliminar</button>
+                                <button mat-raised-button color="accent"
+                                    (click)="fillFormRecomen(recomen.id)">Modificar</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Residuos Orgánicos">
+                    <mat-grid-list cols="2" rowHeight="2:1" class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'Orgánicos')">
+                      
+                        <mat-card class="recomen-card">
+                            <mat-card-header>
+                                <mat-card-title>{{recomen.title}}</mat-card-title>
+                                <mat-card-subtitle>{{recomen.category}}</mat-card-subtitle>
+                            </mat-card-header>
+                            <div class="contenedor">
+                                <img mat-card-image [src]="recomen.urlImage" alt={{recomen.title}} width="300" height="190">
+            
+                                <div class="centrado">
+                                    <p>
+                                        {{recomen.content}}
+                                    </p>
+                                </div>
+                            </div>
+                            <mat-card-actions>
+                                <button mat-raised-button color="warn" (click)="deleteRecomenById(recomen.id)">Eliminar</button>
+                                <button mat-raised-button color="accent"
+                                    (click)="fillFormRecomen(recomen.id)">Modificar</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </mat-grid-list>
+                </mat-tab>
+                <mat-tab label="Residuos Coronavirus">
+                    <div class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'Covid19')">
+                        <mat-card class="recomen-card">
+                            <mat-card-header>
+                                <mat-card-title>{{recomen.title}}</mat-card-title>
+                                <mat-card-subtitle>{{recomen.category}}</mat-card-subtitle>
+                            </mat-card-header>
+                            <div class="contenedor">
+                                <img mat-card-image [src]="recomen.urlImage" alt={{recomen.title}} width="300" height="190">
+            
+                                <div class="centrado">
+                                    <p>
+                                        {{recomen.content}}
+                                    </p>
+                                </div>
+                            </div>
+                            <mat-card-actions>
+                                <button mat-raised-button color="warn" (click)="deleteRecomenById(recomen.id)">Eliminar</button>
+                                <button mat-raised-button color="accent"
+                                    (click)="fillFormRecomen(recomen.id)">Modificar</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </mat-tab>
+              </mat-tab-group>
+           
         </div>
         <div class="formulario-recomens">
             <form [formGroup]="formRecomen" (ngSubmit)="onSubmitAddRecomen()" class="formulario-recomens">
-                <mat-form-field appearance="fill">
+
+                <mat-form-field appearance="standard">
                     <mat-label>Título</mat-label>
                     <input matInput placeholder="Ingrese un título" class="form-control" formControlName="title">
                     <mat-error *ngIf="title.invalid && (title.dirty || title.touched)">{{getErrorMessageTitle()}}
                     </mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="fill">
+
+                <mat-form-field appearance="standard">
                     <mat-label>Categoría</mat-label>
                     <mat-select class="form-control" formControlName="category">
                         <mat-option value="MedioAmbiente">Medio ambiente</mat-option>
@@ -52,7 +123,8 @@
                     <mat-error *ngIf="category.invalid && (category.dirty || category.touched)">
                         {{getErrorMessageCategory()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="fill">
+
+                <mat-form-field appearance="standard">
                     <mat-label>Contenido</mat-label>
                     <textarea matInput matInput placeholder="Ingrese contenido en la recomendación" class="form-control"
                         formControlName="content"></textarea>
@@ -60,12 +132,14 @@
                         {{getErrorMessageContent()}}</mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="standard">
                     <mat-label>Enlace de imagen (Opcional)</mat-label>
                     <input matInput placeholder="Ingrese un enlace de imagen" class="form-control"
                         formControlName="urlImage">
                 </mat-form-field>
-                <button mat-raised-button color="primary">Guardar</button>
+                
+                <button mat-raised-button color="primary"
+                    [disabled]="title.invalid || category.invalid || content.invalid">Guardar</button>
             </form>
             <button class="mt-3" mat-raised-button color="primary" (click)="clearForm()">Limpiar Formulario</button>
         </div>

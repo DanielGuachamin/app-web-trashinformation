@@ -57,7 +57,7 @@ export class RecommendationsAdminComponent implements OnInit {
 
   async onSubmitAddRecomen() {
 
-    const idAdd = this.comprobarIdRecomen();
+    const idAdd = this.comprobarId();
     const urlImage = this.formRecomen.get('urlImage').value
     if ((urlImage == null) || (urlImage == '')) {
       const baseImages = this.plantillaImage;
@@ -75,44 +75,51 @@ export class RecommendationsAdminComponent implements OnInit {
     this.formRecomen.reset();
   }
 
-  comprobarIdRecomen() {
-    const listRecom = this.recomendaciones;
-    const idRecomBD = listRecom.map((item) => item.id);
+  comprobarId() {
+    const listElement = this.recomendaciones;
+    const idBD = listElement.map((item) => item.id);
     const idMod = this.formRecomen.get('id').value;
     let idAdd;
     let rastrearId = 0;
-    if (idRecomBD[0]!= '1r'){
-      idAdd = '1r'
-      return idAdd;
-    }else{
-      if(idMod == '1r'){
-        idAdd = '1r'
+    let rastrearIdBD;
+    for (let item of idBD) {
+      rastrearId++;
+      const idToAdd = `${rastrearId}n`;
+      rastrearIdBD = item.substring(0, item.length - 1);
+      if (idBD.indexOf(idToAdd) == -1) {
+        idAdd = idToAdd;
+        console.log('id que falta: ', idAdd);
+        this.toastr.success(
+          'La noticia fue registrada con exito!',
+          'Noticia registrada',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
         return idAdd;
-      } else{
-        for (let item of idRecomBD) {
-          rastrearId++;
-          if (parseInt(item[0]) != rastrearId) {
-            console.log('no coincide', rastrearId);
-            idAdd = `${rastrearId}r`;
-            return idAdd;
+      }
+      if (item == idMod) {
+        idAdd = idMod;
+        this.toastr.info(
+          'La noticia fue modificada con éxito!',
+          'Noticia modificada',
+          {
+            positionClass: 'toast-bottom-right',
           }
-          if (item == idMod) {
-            idAdd = idMod;
-            this.toastr.info('La recomendación fue modificada con éxito!', 'Recomendación modificada', {
-              positionClass: 'toast-bottom-right'
-            })
-            return idAdd;
-          }
-        }
-        idAdd = `${this.enumRecomen + 1}r`;
-        this.toastr.success('La recomendación fue registrada con exito!', 'Recomendación registrada', {
-              positionClass: 'toast-bottom-right'
-        });
+        );
         return idAdd;
       }
     }
-
-
+    idAdd = `${this.enumRecomen + 1}n`;
+    this.toastr.success(
+      'La noticia fue registrada con exito!',
+      'Noticia registrada',
+      {
+        positionClass: 'toast-bottom-right',
+      }
+    );
+    console.log('id a añadir', idAdd);
+    return idAdd;
   }
 
   async deleteRecomenById(id: any) {
@@ -121,6 +128,7 @@ export class RecommendationsAdminComponent implements OnInit {
     this.toastr.error('La noticia fue eliminada con éxito!', 'Noticia eliminada', {
       positionClass: 'toast-bottom-right'
     });
+    this.formRecomen.reset();
   }
 
   fillFormRecomen(id: any) {

@@ -86,58 +86,59 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
 
 
   async onSubmitAddContact() {
-
-    const idAdd = this.comprobarIdContact();
+    const idAdd = this.comprobarId();
     console.log(idAdd)
     this.formContact.controls['id'].setValue(idAdd);
     await this.dataControl.addContact(this.formContact.value, idAdd);
     console.log('formulario a enviar: ',this.formContact.value)
     this.formContact.reset();
-
-
   }
 
-  comprobarIdContact() {
-    const listContacto = this.contactos;
-    const idContactoBD = listContacto.map((item) => item.id);
+  comprobarId() {
+    const listElement = this.contactos;
+    const idBD = listElement.map((item) => item.id);
     const idMod = this.formContact.get('id').value;
     let idAdd;
     let rastrearId = 0;
-    if(idContactoBD[0] != '1c'){
-      idAdd = '1c'
-      return idAdd;
-    }else {
-      if(idMod == '1c'){
-        idAdd = '1c'
-      return idAdd;
-      } else{
-        for (let item of idContactoBD) {
-          rastrearId++;
-          if (parseInt(item[0]) != rastrearId) {
-            console.log('no coincide', rastrearId);
-            idAdd = `${rastrearId}c`;
-            return idAdd;
+    let rastrearIdBD;
+    for (let item of idBD) {
+      rastrearId++;
+      const idToAdd = `${rastrearId}n`;
+      rastrearIdBD = item.substring(0, item.length - 1);
+      if (idBD.indexOf(idToAdd) == -1) {
+        idAdd = idToAdd;
+        console.log('id que falta: ', idAdd);
+        this.toastr.success(
+          'La noticia fue registrada con exito!',
+          'Noticia registrada',
+          {
+            positionClass: 'toast-bottom-right',
           }
-          if (item == idMod) {
-            idAdd = idMod;
-            this.toastr.info('El contacto fue modificado con éxito!', 'Contacto modificado', {
-              positionClass: 'toast-bottom-right'
-            })
-          
-            return idAdd;
-          }
-        }
-        idAdd = `${this.enumContact + 1}c`;
-            this.toastr.success('El contacto fue registrado con exito!', 'Contacto registrado', {
-            positionClass: 'toast-bottom-right'
-            });
-       
-            return idAdd;
+        );
+        return idAdd;
       }
-      
-
+      if (item == idMod) {
+        idAdd = idMod;
+        this.toastr.info(
+          'La noticia fue modificada con éxito!',
+          'Noticia modificada',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+        return idAdd;
+      }
     }
-
+    idAdd = `${this.enumContact + 1}n`;
+    this.toastr.success(
+      'La noticia fue registrada con exito!',
+      'Noticia registrada',
+      {
+        positionClass: 'toast-bottom-right',
+      }
+    );
+    console.log('id a añadir', idAdd);
+    return idAdd;
   }
 
   async deleteContactById(id: any) {
@@ -146,6 +147,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     this.toastr.error('El contacto fue eliminado con éxito', 'Registro eliminado', {
       positionClass: 'toast-bottom-right'
     });
+    this.formContact.reset();
   }
 
   fillFormContacto(id: any) {

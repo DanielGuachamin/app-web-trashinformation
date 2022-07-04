@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from '../../../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { YouTubePlayerModule } from "@angular/youtube-player";
@@ -11,7 +12,7 @@ import { RecommendatiosUserComponent } from './recommendatios-user/recommendatio
 import { ContactsUserComponent } from './contacts-user/contacts-user.component';
 import { SuggestionsUserComponent } from './suggestions-user/suggestions-user.component';
 import { ProfileUserComponent } from './profile-user/profile-user.component';
-
+import { MapComponent } from '../../../components/dialogs/map/map.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ProfileUserComponent } from './profile-user/profile-user.component';
     RecommendatiosUserComponent,
     ContactsUserComponent,
     SuggestionsUserComponent,
-    ProfileUserComponent
+    ProfileUserComponent,
+    MapComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,9 @@ import { ProfileUserComponent } from './profile-user/profile-user.component';
     MaterialModule,
     FormsModule, 
     ReactiveFormsModule,
-    YouTubePlayerModule
-  ]
+    YouTubePlayerModule,
+    SharedModule
+  ],
+  entryComponents: [MapComponent]
 })
 export class DashboardUserModule { }

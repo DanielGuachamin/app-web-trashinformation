@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DataApiService } from 'src/app/services/data-api.service';
+import { Video } from 'src/app/modelos/video';
 
 @Component({
   selector: 'app-videos-user',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VideosUserComponent implements OnInit {
 
-  constructor() { }
+  videos: Video[] = [];
+
+  constructor(private dataControl: DataApiService) { }
 
   ngOnInit(): void {
+    this.dataControl.getVideos().subscribe((videos) => {
+      this.videos = videos;
+    });
   }
 
 }

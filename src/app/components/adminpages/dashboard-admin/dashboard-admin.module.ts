@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from '../../../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { YouTubePlayerModule } from "@angular/youtube-player";
@@ -11,10 +12,6 @@ import { RecommendationsAdminComponent } from './recommendations-admin/recommend
 import { ContactsAdminComponent } from './contacts-admin/contacts-admin.component';
 import { SuggestionsAdminComponent } from './suggestions-admin/suggestions-admin.component';
 
-import { NewsfilterPipe } from '../../../pipes/newsfilter.pipe';
-import { VideosfilterPipe } from '../../../pipes/videosfilter.pipe';
-import { RecomensfilterPipe } from '../../../pipes/recomensfilter.pipe';
-
 @NgModule({
   declarations: [
     NewsAdminComponent,
@@ -22,9 +19,6 @@ import { RecomensfilterPipe } from '../../../pipes/recomensfilter.pipe';
     RecommendationsAdminComponent,
     ContactsAdminComponent,
     SuggestionsAdminComponent,
-    NewsfilterPipe,
-    VideosfilterPipe,
-    RecomensfilterPipe
   ],
   imports: [
     CommonModule,
@@ -32,7 +26,8 @@ import { RecomensfilterPipe } from '../../../pipes/recomensfilter.pipe';
     MaterialModule,
     FormsModule, 
     ReactiveFormsModule,
-    YouTubePlayerModule
+    YouTubePlayerModule,
+    SharedModule
   ]
 })
 export class DashboardAdminModule { }

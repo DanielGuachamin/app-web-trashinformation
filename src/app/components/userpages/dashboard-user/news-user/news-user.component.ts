@@ -1,4 +1,6 @@
 import { Component, OnInit} from '@angular/core';
+import { DataApiService } from 'src/app/services/data-api.service';
+import { Noticia } from 'src/app/modelos/noticia';
 
 @Component({
   selector: 'app-news-user',
@@ -7,11 +9,14 @@ import { Component, OnInit} from '@angular/core';
 })
 export class NewsUserComponent implements OnInit {
 
-  constructor(
-    
-  ) { }
+  noticias: Noticia[] = [];
+
+  constructor(private dataControl: DataApiService) { }
 
   ngOnInit(): void {
+    this.dataControl.getNoticias().subscribe((noticias) => {
+      this.noticias = noticias;
+    });
   }
 
 

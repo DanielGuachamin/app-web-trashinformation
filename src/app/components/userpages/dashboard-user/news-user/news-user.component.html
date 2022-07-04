@@ -1,3 +1,149 @@
+<div class="pantalla-noticias">
+    <div class="fondo-noticias">
+        <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="Medio Ambiente" class="tab-content-news">
+                <div class="individual-news" *ngFor="let noticia of (noticias | newsfilter:'MedioAmbiente')">
+                    <mat-card class="news-card">
+                        <div class="news-content">
+                            <div class="news-text">
+                                <mat-card-header>
 
-<h1>News works</h1>
+                                    <mat-card-title>{{noticia.title}}</mat-card-title>
+                                    <mat-card-subtitle>{{noticia.category}}</mat-card-subtitle>
+                                </mat-card-header>
 
+                                <mat-card-content>
+                                    <p>
+                                        {{noticia.description}}
+                                    </p>
+                                </mat-card-content>
+                            </div>
+                            <div class="news-image">
+                                <img mat-card-image [src]="noticia.noticiaPic" alt={{noticia.title}} width="300"
+                                    height="180">
+                                <div class="fuente">
+                                    <p>
+                                        Autor: <b>{{noticia.author}}</b>
+                                        <br>
+                                        Fuente: <a [href]="noticia.url" target="_blank">{{noticia.url}}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+            </mat-tab>
+            <mat-tab label="Reciclaje">
+                <div class="header-tab">
+                    <h2>
+                        Aprende la forma CORRECTA de manejar y clasificar tus residuos
+                    </h2>
+                </div>
+                <div class="individual-news" *ngFor="let noticia of (noticias | newsfilter:'Reciclaje')">
+                    <mat-card class="news-card">
+                        <div class="news-content">
+                            <div class="news-text">
+                                <mat-card-header>
+
+                                    <mat-card-title>{{noticia.title}}</mat-card-title>
+                                    <mat-card-subtitle>{{noticia.category}}</mat-card-subtitle>
+                                </mat-card-header>
+
+                                <mat-card-content>
+                                    <p>
+                                        {{noticia.description}}
+                                    </p>
+                                </mat-card-content>
+                            </div>
+                            <div class="news-image">
+                                <img mat-card-image [src]="noticia.noticiaPic" alt={{noticia.title}} width="300"
+                                    height="180">
+                                <div class="fuente">
+                                    <p>
+                                        Autor: <b>{{noticia.author}}</b>
+                                        <br>
+                                        Fuente: <a [href]="noticia.url" target="_blank">{{noticia.url}}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+            </mat-tab>
+            <mat-tab label="Residuos Orgánicos">
+                <div class="header-tab">
+                    <h2>
+                        Aprende la forma CORRECTA de manejar y clasificar tus residuos
+                    </h2>
+                </div>
+                <div class="individual-news" *ngFor="let noticia of (noticias | newsfilter:'Orgánicos')">
+                    <mat-card class="news-card">
+                        <div class="news-content">
+                            <div class="news-text">
+                                <mat-card-header>
+
+                                    <mat-card-title>{{noticia.title}}</mat-card-title>
+                                    <mat-card-subtitle>{{noticia.category}}</mat-card-subtitle>
+                                </mat-card-header>
+
+                                <mat-card-content>
+                                    <p>
+                                        {{noticia.description}}
+                                    </p>
+                                </mat-card-content>
+                            </div>
+                            <div class="news-image">
+                                <img mat-card-image [src]="noticia.noticiaPic" alt={{noticia.title}} width="300"
+                                    height="180">
+                                <div class="fuente">
+                                    <p>
+                                        Autor: <b>{{noticia.author}}</b>
+                                        <br>
+                                        Fuente: <a [href]="noticia.url" target="_blank">{{noticia.url}}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+            </mat-tab>
+            <mat-tab label="Desechos Covid-19">
+                <div class="header-tab">
+                    <h2>
+                        Aprende la forma CORRECTA de manejar y clasificar tus residuos
+                    </h2>
+                </div>
+                <div class="individual-news" *ngFor="let noticia of (noticias | newsfilter:'Covid19')">
+                    <mat-card class="news-card">
+                        <div class="news-content">
+                            <div class="news-text">
+                                <mat-card-header>
+
+                                    <mat-card-title>{{noticia.title}}</mat-card-title>
+                                    <mat-card-subtitle>{{noticia.category}}</mat-card-subtitle>
+                                </mat-card-header>
+
+                                <mat-card-content>
+                                    <p>
+                                        {{noticia.description}}
+                                    </p>
+                                </mat-card-content>
+                            </div>
+                            <div class="news-image">
+                                <img mat-card-image [src]="noticia.noticiaPic" alt={{noticia.title}} width="300"
+                                    height="180">
+                                <div class="fuente">
+                                    <p>
+                                        Autor: <b>{{noticia.author}}</b>
+                                        <br>
+                                        Fuente: <a [href]="noticia.url" target="_blank">{{noticia.url}}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

@@ -16,10 +16,9 @@ export class RegisterComponent implements OnInit {
 
   passwordPattern: any = /^(?=.*[a-z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{6,15}/;
 
-  alfabetWithOutSpacePattern: any = /^[A-Za-z\s]+$/;
+  alfabetWithOutSpacePattern: any = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
 
   formReg: FormGroup;
-  
 
   constructor(
     private userService: UserService,
@@ -61,8 +60,6 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(){
-    
-    
     this.userService.register(this.formReg.get('email').value, this.formReg.get('password').value)
       .then(async response => {
         this.formReg.removeControl('password');
@@ -70,12 +67,15 @@ export class RegisterComponent implements OnInit {
         const getPick = this.getPickAPI()
         this.formReg.controls['birthdate'].setValue(getDate)
         this.formReg.controls['profilePic'].setValue(getPick)
-        await this.userControl.addUser(this.formReg.value, this.formReg.get('email').value)
+        let email = this.formReg.get('email').value
+        email = email.toLowerCase()
+        this.formReg.controls['email'].setValue(email)
+        await this.userControl.addUser(this.formReg.value, email)
         this.formReg.addControl('rol', new FormControl(''))
         const rol = 'cliente'
         this.formReg.controls['rol'].setValue(rol)
         this.formReg.removeControl('direccionBase');
-        await this.userControl.addUserRol(this.formReg.value, this.formReg.get('email').value)
+        await this.userControl.addUserRol(this.formReg.value, email)
         this.router.navigate(['/login']);
       })
       .catch(error => console.error(error));

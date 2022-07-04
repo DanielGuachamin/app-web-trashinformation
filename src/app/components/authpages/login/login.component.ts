@@ -46,10 +46,14 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.formLogin.valid) {
+      let email = this.formLogin.get('email').value
+        email = email.toLowerCase()
+        this.formLogin.controls['email'].setValue(email)
       this.userService.login(this.formLogin.value)
         .then((response: any) => {
           console.log(response)
           this.redirectAdminOrUser()
+          
         })
         .catch(error => console.log(error));
     } else {

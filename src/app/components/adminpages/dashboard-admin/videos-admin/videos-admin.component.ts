@@ -38,7 +38,7 @@ export class VideosAdminComponent implements OnInit {
 
   async onSubmitAddVideo() {
     const videoID = this.getVideoId(this.formVideo.get('url').value);
-    const idAdd = this.comprobarIdVideo();
+    const idAdd = this.comprobarId();
     const urlImage = `https://img.youtube.com/vi/${videoID}/maxresdefault.jpg`;
 
     this.formVideo.controls['prevImg'].setValue(urlImage);
@@ -54,43 +54,34 @@ export class VideosAdminComponent implements OnInit {
     return urlEdited;
   }
 
-  comprobarIdVideo() {
-    const listVideo = this.videos;
-    const idVideoBD = listVideo.map((item) => item.id);
+  comprobarId() {
+    const listElement = this.videos;
+    const idBD = listElement.map((item) => item.id);
     const idMod = this.formVideo.get('id').value;
     let idAdd;
     let rastrearId = 0;
-    if (idVideoBD[0] != '1v') {
-      idAdd = '1v';
-      return idAdd;
-    } else {
-      if (idMod == '1v') {
-        idAdd = '1v';
-        return idAdd;
-      } else {
-        for (let item of idVideoBD) {
-          rastrearId++;
-          if (parseInt(item[0]) != rastrearId) {
-            console.log('no coincide', rastrearId);
-            idAdd = `${rastrearId}v`;
-            return idAdd;
-          }
-          if (item == idMod) {
-            idAdd = idMod;
-            this.toastr.info(
-              'El video fue modificado con éxito!',
-              'Video modificado',
-              {
-                positionClass: 'toast-bottom-right',
-              }
-            );
-            return idAdd;
-          }
-        }
-        idAdd = `${this.enumVideos + 1}v`;
+    let rastrearIdBD;
+    for (let item of idBD) {
+      rastrearId++;
+      const idToAdd = `${rastrearId}n`;
+      rastrearIdBD = item.substring(0, item.length - 1);
+      if (idBD.indexOf(idToAdd) == -1) {
+        idAdd = idToAdd;
+        console.log('id que falta: ', idAdd);
         this.toastr.success(
-          'El video fue registrado con exito!',
-          'Video registrado',
+          'La noticia fue registrada con exito!',
+          'Noticia registrada',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+        return idAdd;
+      }
+      if (item == idMod) {
+        idAdd = idMod;
+        this.toastr.info(
+          'La noticia fue modificada con éxito!',
+          'Noticia modificada',
           {
             positionClass: 'toast-bottom-right',
           }
@@ -98,6 +89,16 @@ export class VideosAdminComponent implements OnInit {
         return idAdd;
       }
     }
+    idAdd = `${this.enumVideos + 1}n`;
+    this.toastr.success(
+      'La noticia fue registrada con exito!',
+      'Noticia registrada',
+      {
+        positionClass: 'toast-bottom-right',
+      }
+    );
+    console.log('id a añadir', idAdd);
+    return idAdd;
   }
 
   async deleteVideoById(id: any) {
@@ -106,6 +107,7 @@ export class VideosAdminComponent implements OnInit {
     this.toastr.error('El video fue eliminado con éxito!', 'Video eliminado', {
       positionClass: 'toast-bottom-right',
     });
+    this.formVideo.reset();
   }
 
   fillFormVideo(id: any) {

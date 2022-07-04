@@ -14,9 +14,6 @@ import { RecoverPasswordComponent } from './components/authpages/recover-passwor
 import { DashboardAdminComponent } from './components/adminpages/dashboard-admin/dashboard-admin.component';
 import { DashboardUserComponent } from './components/userpages/dashboard-user/dashboard-user.component';
 
-
-import { ModalGeneralComponent } from './components/modal-general/modal-general.component';
-
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
@@ -29,7 +26,9 @@ import { DashboardAdminModule } from './components/adminpages/dashboard-admin/da
 import { DashboardUserModule } from './components/userpages/dashboard-user/dashboard-user.module';
 
 import { ToastrModule } from 'ngx-toastr';
+import { SharedModule } from './shared/shared.module';
 
+//import { MapComponent } from './components/dialogs/map/map.component';
 
 
 @NgModule({
@@ -40,7 +39,7 @@ import { ToastrModule } from 'ngx-toastr';
     DashboardAdminComponent,
     DashboardUserComponent,
     RecoverPasswordComponent,
-    ModalGeneralComponent
+    //MapComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +56,8 @@ import { ToastrModule } from 'ngx-toastr';
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
     DashboardAdminModule,
-    DashboardUserModule
+    DashboardUserModule,
+    SharedModule
     
   ],
   providers: [],
