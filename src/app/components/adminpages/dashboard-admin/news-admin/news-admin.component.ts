@@ -15,13 +15,12 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './news-admin.component.html',
   styleUrls: ['./news-admin.component.scss'],
 })
-
 export class NewsAdminComponent implements OnInit {
-
   formNoticia: FormGroup;
   selectedFile: any = null;
   enumNoticias: number = 0;
   noticias: Noticia[] = [];
+  verifyNoticias: Noticia[] = [];
   urlNoticia: string = '';
 
   plantillaImage: any = {
@@ -38,7 +37,7 @@ export class NewsAdminComponent implements OnInit {
   constructor(
     private dataControl: DataApiService,
     private storage: Storage,
-    private toastr: ToastrService,
+    private toastr: ToastrService
   ) {
     this.formNoticia = new FormGroup({
       title: new FormControl('', [Validators.required]),
@@ -54,6 +53,7 @@ export class NewsAdminComponent implements OnInit {
   ngOnInit(): void {
     this.dataControl.getNoticias().subscribe((noticias) => {
       this.noticias = noticias;
+      this.verifyNoticias = noticias;
       this.enumNoticias = noticias.length;
     });
   }
@@ -63,7 +63,6 @@ export class NewsAdminComponent implements OnInit {
     if (nameNoticiaImage == null) {
       const baseImages = this.plantillaImage;
       const category = this.formNoticia.get('category').value;
-      console.log(category);
       for (let nameImage in baseImages) {
         if (nameImage == category) {
           const responseUrlImage = baseImages[nameImage];
@@ -74,49 +73,27 @@ export class NewsAdminComponent implements OnInit {
       const urlNoticia = this.urlNoticia;
       this.formNoticia.controls['noticiaPic'].setValue(urlNoticia);
     }
-    const idAdd = this.comprobarIdNoticia();
+    const idAdd = this.comprobarId();
     this.formNoticia.controls['id'].setValue(idAdd);
     await this.dataControl.addNoticia(this.formNoticia.value, idAdd);
     console.log(this.formNoticia.value);
     this.formNoticia.reset();
   }
 
-  comprobarIdNoticia() {
-    const listNoticia = this.noticias;
-    const idNoticiaBD = listNoticia.map((item) => item.id);
+  comprobarId() {
+    const listElement = this.noticias;
+    const idBD = listElement.map((item) => item.id);
     const idMod = this.formNoticia.get('id').value;
     let idAdd;
     let rastrearId = 0;
-    if (idNoticiaBD[0] != '1n') {
-      idAdd = '1n';
-      console.log('id a añadir', idAdd);
-      return idAdd;
-    } else {
-      if (idMod == '1n') {
-        idAdd = '1n';
-        console.log('id a añadir', idAdd);
-        return idAdd;
-      } else {
-        for (let item of idNoticiaBD) {
-          rastrearId++;
-          if (parseInt(item[0]) != rastrearId) {
-            console.log('no coincide', rastrearId);
-            idAdd = `${rastrearId}n`;
-            return idAdd;
-          }
-          if (item == idMod) {
-            idAdd = idMod;
-            this.toastr.info(
-              'La noticia fue modificada con éxito!',
-              'Noticia modificada',
-              {
-                positionClass: 'toast-bottom-right',
-              }
-            );
-            return idAdd;
-          }
-        }
-        idAdd = `${this.enumNoticias + 1}n`;
+    let rastrearIdBD;
+    for (let item of idBD) {
+      rastrearId++;
+      const idToAdd = `${rastrearId}n`;
+      rastrearIdBD = item.substring(0, item.length - 1);
+      if (idBD.indexOf(idToAdd) == -1) {
+        idAdd = idToAdd;
+        console.log('id que falta: ', idAdd);
         this.toastr.success(
           'La noticia fue registrada con exito!',
           'Noticia registrada',
@@ -124,10 +101,30 @@ export class NewsAdminComponent implements OnInit {
             positionClass: 'toast-bottom-right',
           }
         );
-        console.log('id a añadir', idAdd);
+        return idAdd;
+      }
+      if (item == idMod) {
+        idAdd = idMod;
+        this.toastr.info(
+          'La noticia fue modificada con éxito!',
+          'Noticia modificada',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
         return idAdd;
       }
     }
+    idAdd = `${this.enumNoticias + 1}n`;
+    this.toastr.success(
+      'La noticia fue registrada con exito!',
+      'Noticia registrada',
+      {
+        positionClass: 'toast-bottom-right',
+      }
+    );
+    console.log('id a añadir', idAdd);
+    return idAdd;
   }
 
   async deleteNoticiaById(id: any) {
@@ -139,6 +136,7 @@ export class NewsAdminComponent implements OnInit {
         positionClass: 'toast-bottom-right',
       }
     );
+    this.formNoticia.reset();
   }
 
   uploadNoticiaImage($event: any) {

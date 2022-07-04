@@ -1,4 +1,4 @@
-export const environment = {
+/*export const environment = {
   firebase: {
     apiKey: "AIzaSyCOl6q0rwro44q51gAuUEgU8TzmrYGxok0",
     authDomain: "titest-50d69.firebaseapp.com",
@@ -11,11 +11,12 @@ export const environment = {
   production: true
 };
 
+*/
 
 
 
 
-/*export const environment = {
+export const environment = {
   firebase: {
     projectId: 'trash-information-appweb',
     appId: '1:773015218175:web:f8f505c04bceb08a66e9ca',
@@ -27,4 +28,3 @@ export const environment = {
   production: true
 };
 
-*/

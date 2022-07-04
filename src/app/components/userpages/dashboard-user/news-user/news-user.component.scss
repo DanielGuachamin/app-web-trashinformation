@@ -2,12 +2,11 @@
     text-align: center;
     background-color: antiquewhite;
     margin: 0.5rem 10rem;
-
 }
 
 .individual-news{
     margin: 0 1rem;
-    max-width: 600px;
+    max-width: 900px;
     margin-bottom: 1rem;
 }
 
@@ -17,4 +16,21 @@
 
 mat-card-header{
     margin-bottom: 1rem;
+}
+
+.news-content {
+    display: flex;
+}
+
+.news-text{
+    width: 400px;
+}
+
+mat-card-content{
+    margin: 0 16px;
+}
+
+.news-image{
+    padding: 1rem;
+    width: 450px;
 }

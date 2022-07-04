@@ -5,6 +5,7 @@ import { Sugerencia } from 'src/app/modelos/sugerencia';
 import { UserService } from 'src/app/services/user.service';
 import {MatTableDataSource} from '@angular/material/table';
 import {DatePipe} from '@angular/common'
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-suggestions-user',
@@ -24,7 +25,8 @@ export class SuggestionsUserComponent implements OnInit {
 
   constructor(
     private dataControl: DataApiService,
-    private userService: UserService
+    private userService: UserService,
+    private toastr: ToastrService
   ) {
     this.formSuggest = new FormGroup({
       id: new FormControl(),
@@ -51,7 +53,7 @@ export class SuggestionsUserComponent implements OnInit {
   }
 
   async onSubmitAddSuggest() {
-    const idAdd = this.comprobarIdSuggest()
+    const idAdd = this.comprobarId()
     this.formSuggest.controls['id'].setValue(idAdd);
     const email = this.userService.seeEmailUserAuth();
     this.formSuggest.controls['email'].setValue(email);
@@ -87,26 +89,40 @@ export class SuggestionsUserComponent implements OnInit {
     return sugerenciaByUser
   }
 
-  comprobarIdSuggest() {
-    const listSugerencia = this.sugerencias;
-    const idSugerenciaBD = listSugerencia.map((item) => item.id);
+  comprobarId() {
+    const listElement = this.sugerencias;
+    const idBD = listElement.map((item) => item.id);
+    const idMod = this.formSuggest.get('id').value;
     let idAdd;
     let rastrearId = 0;
-    if (idSugerenciaBD[0]!= '1s'){
-      idAdd = '1s'
-      return idAdd;
-    }else{
-      for (let item of idSugerenciaBD) {
-        rastrearId++;
-          if (parseInt(item[0]) != rastrearId) {
-            idAdd = `${rastrearId}n`;
-            return idAdd;
+    let rastrearIdBD;
+    for (let item of idBD) {
+      rastrearId++;
+      const idToAdd = `${rastrearId}n`;
+      rastrearIdBD = item.substring(0, item.length - 1);
+      if (idBD.indexOf(idToAdd) == -1) {
+        idAdd = idToAdd;
+        console.log('id que falta: ', idAdd);
+        this.toastr.success(
+          'La noticia fue registrada con exito!',
+          'Noticia registrada',
+          {
+            positionClass: 'toast-bottom-right',
           }
+        );
+        return idAdd;
       }
-      idAdd = `${this.enumSuggest + 1}s`;
-      return idAdd;
     }
-
+    idAdd = `${this.enumSuggest + 1}n`;
+    this.toastr.success(
+      'La noticia fue registrada con exito!',
+      'Noticia registrada',
+      {
+        positionClass: 'toast-bottom-right',
+      }
+    );
+    console.log('id a añadir', idAdd);
+    return idAdd;
   }
   
   get section(){
