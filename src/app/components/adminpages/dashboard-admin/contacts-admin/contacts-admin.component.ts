@@ -102,26 +102,11 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     let rastrearId = 0;
     let rastrearIdBD;
     for (let item of idBD) {
-      rastrearId++;
-      const idToAdd = `${rastrearId}n`;
-      rastrearIdBD = item.substring(0, item.length - 1);
-      if (idBD.indexOf(idToAdd) == -1) {
-        idAdd = idToAdd;
-        console.log('id que falta: ', idAdd);
-        this.toastr.success(
-          'La noticia fue registrada con exito!',
-          'Noticia registrada',
-          {
-            positionClass: 'toast-bottom-right',
-          }
-        );
-        return idAdd;
-      }
       if (item == idMod) {
         idAdd = idMod;
         this.toastr.info(
-          'La noticia fue modificada con éxito!',
-          'Noticia modificada',
+          'El contacto fue modificado con éxito!',
+          'Contacto modificado',
           {
             positionClass: 'toast-bottom-right',
           }
@@ -129,10 +114,28 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
         return idAdd;
       }
     }
-    idAdd = `${this.enumContact + 1}n`;
+    for (let item of idBD) {
+      rastrearId++;
+      const idToAdd = `${rastrearId}c`;
+      rastrearIdBD = item.substring(0, item.length - 1);
+      if (idBD.indexOf(idToAdd) == -1) {
+        idAdd = idToAdd;
+        console.log('id que falta: ', idAdd);
+        this.toastr.success(
+          'El contacto fue registrado con exito!',
+          'Contacto registrado',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+        return idAdd;
+      }
+
+    }
+    idAdd = `${this.enumContact + 1}c`;
     this.toastr.success(
-      'La noticia fue registrada con exito!',
-      'Noticia registrada',
+      'El contacto fue registrado con éxito!',
+      'Contacto registrado',
       {
         positionClass: 'toast-bottom-right',
       }

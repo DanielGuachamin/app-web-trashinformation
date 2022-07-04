@@ -62,37 +62,43 @@ export class VideosAdminComponent implements OnInit {
     let rastrearId = 0;
     let rastrearIdBD;
     for (let item of idBD) {
+      if (item == idMod) {
+        idAdd = idMod;
+        this.toastr.info(
+          'El video fue modificado con éxito!',
+          'Video modificado',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+        return idAdd;
+      }
+
+    }
+
+    for (let item of idBD) {
       rastrearId++;
-      const idToAdd = `${rastrearId}n`;
+      const idToAdd = `${rastrearId}v`;
       rastrearIdBD = item.substring(0, item.length - 1);
+
       if (idBD.indexOf(idToAdd) == -1) {
         idAdd = idToAdd;
         console.log('id que falta: ', idAdd);
         this.toastr.success(
-          'La noticia fue registrada con exito!',
-          'Noticia registrada',
+          'El video fue registrado con exito!',
+          'Video registrado',
           {
             positionClass: 'toast-bottom-right',
           }
         );
         return idAdd;
       }
-      if (item == idMod) {
-        idAdd = idMod;
-        this.toastr.info(
-          'La noticia fue modificada con éxito!',
-          'Noticia modificada',
-          {
-            positionClass: 'toast-bottom-right',
-          }
-        );
-        return idAdd;
-      }
+
     }
-    idAdd = `${this.enumVideos + 1}n`;
+    idAdd = `${this.enumVideos + 1}v`;
     this.toastr.success(
-      'La noticia fue registrada con exito!',
-      'Noticia registrada',
+      'El video fue registrado con exito!',
+      'Video registrado',
       {
         positionClass: 'toast-bottom-right',
       }
