@@ -83,26 +83,11 @@ export class RecommendationsAdminComponent implements OnInit {
     let rastrearId = 0;
     let rastrearIdBD;
     for (let item of idBD) {
-      rastrearId++;
-      const idToAdd = `${rastrearId}r`;
-      rastrearIdBD = item.substring(0, item.length - 1);
-      if (idBD.indexOf(idToAdd) == -1) {
-        idAdd = idToAdd;
-        console.log('id que falta: ', idAdd);
-        this.toastr.success(
-          'La recomendacion fue registrada con exito!',
-          'Noticia registrada',
-          {
-            positionClass: 'toast-bottom-right',
-          }
-        );
-        return idAdd;
-      }
       if (item == idMod) {
         idAdd = idMod;
         this.toastr.info(
-          'La recomendacion fue modificada con éxito!',
-          'Noticia modificada',
+          'La recomendación fue modificada con éxito!',
+          'Recomendación modificada',
           {
             positionClass: 'toast-bottom-right',
           }
@@ -110,10 +95,28 @@ export class RecommendationsAdminComponent implements OnInit {
         return idAdd;
       }
     }
+    for (let item of idBD) {
+      rastrearId++;
+      const idToAdd = `${rastrearId}r`;
+      rastrearIdBD = item.substring(0, item.length - 1);
+      if (idBD.indexOf(idToAdd) == -1) {
+        idAdd = idToAdd;
+        console.log('id que falta: ', idAdd);
+        this.toastr.success(
+          'La recomendación fue registrada con exito!',
+          'Recomendación registrada',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+        return idAdd;
+      }
+
+    }
     idAdd = `${this.enumRecomen + 1}r`;
     this.toastr.success(
-      'La recomendacion fue registrada con exito!',
-      'Noticia registrada',
+      'La recomendación fue registrada con exito!',
+      'Recomendación registrada',
       {
         positionClass: 'toast-bottom-right',
       }
@@ -125,7 +128,7 @@ export class RecommendationsAdminComponent implements OnInit {
   async deleteRecomenById(id: any) {
     await this.dataControl.deleteElement(id, 'Recomendaciones');
 
-    this.toastr.error('La recomendacion fue eliminada con éxito!', 'Recomendación eliminada', {
+    this.toastr.error('La recomendación fue eliminada con éxito!', 'Recomendación eliminada', {
       positionClass: 'toast-bottom-right'
     });
     this.formRecomen.reset();

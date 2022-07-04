@@ -78,7 +78,7 @@ export class NewsAdminComponent implements OnInit {
     await this.dataControl.addNoticia(this.formNoticia.value, idAdd);
     console.log(this.formNoticia.value);
     this.formNoticia.reset();
-    
+    this.selectedFile=null
   }
 
   comprobarId() {
@@ -89,9 +89,23 @@ export class NewsAdminComponent implements OnInit {
     let rastrearId = 0;
     let rastrearIdBD;
     for (let item of idBD) {
+      if (item == idMod) {
+        idAdd = idMod;
+        this.toastr.info(
+          'La noticia fue modificada con éxito!',
+          'Noticia modificada',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+        return idAdd;
+      }
+    }
+    for (let item of idBD) {
       rastrearId++;
       const idToAdd = `${rastrearId}n`;
       rastrearIdBD = item.substring(0, item.length - 1);
+      
       if (idBD.indexOf(idToAdd) == -1) {
         idAdd = idToAdd;
         console.log('id que falta: ', idAdd);
@@ -104,17 +118,7 @@ export class NewsAdminComponent implements OnInit {
         );
         return idAdd;
       }
-      if (item == idMod) {
-        idAdd = idMod;
-        this.toastr.info(
-          'La noticia fue modificada con éxito!',
-          'Noticia modificada',
-          {
-            positionClass: 'toast-bottom-right',
-          }
-        );
-        return idAdd;
-      }
+
     }
     idAdd = `${this.enumNoticias + 1}n`;
     this.toastr.success(
