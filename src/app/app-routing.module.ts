@@ -98,7 +98,7 @@ const routes: Routes = [
   { 
     path: 'recover-password', 
     component: RecoverPasswordComponent,
-    canActivate: [PublicAuthenticationGuard]
+    //canActivate: [PublicAuthenticationGuard]
   },
   { 
     path: '', 

@@ -146,7 +146,14 @@ export class DataApiService {
     return deleteDoc(noticiaDocRef)
   }
 
-  
+  async identifiedIdElement(global: any) {
+    const globalRef = doc(this.firestore, 'Configuracion', global)
+    const respuesta = await getDoc(globalRef)
+    return respuesta.data()
+  }
 
+  addGlobalIdElement(global: any, id: any){
+    return setDoc(doc(this.firestore, 'Configuracion', global), id);
+  }
   
 }

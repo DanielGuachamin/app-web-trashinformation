@@ -17,21 +17,22 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewsAdminComponent implements OnInit {
   formNoticia: FormGroup;
-  selectedFile: any = null;
   enumNoticias: number = 0;
   noticias: Noticia[] = [];
   verifyNoticias: Noticia[] = [];
-  urlNoticia: string = '';
+
+  urlNoticia: any = null;
+  selectedFile: any = null;
 
   plantillaImage: any = {
     MedioAmbiente:
-      'https://firebasestorage.googleapis.com/v0/b/trash-information-appweb.appspot.com/o/plantillaImages%2Fmedioambiente.jpg?alt=media&token=cf74d9ba-7683-4d60-b742-5141625c4057',
+      'https://firebasestorage.googleapis.com/v0/b/testinsercionjson.appspot.com/o/plantillaImages%2Fmedioambiente.jpg?alt=media&token=e49add10-456c-40b0-81f5-e41af9c1a783',
     Orgánicos:
-      'https://firebasestorage.googleapis.com/v0/b/trash-information-appweb.appspot.com/o/plantillaImages%2Forganicos.jpg?alt=media&token=925c173b-8a51-4037-965d-b25062629c13',
+      'https://firebasestorage.googleapis.com/v0/b/testinsercionjson.appspot.com/o/plantillaImages%2Forganicos.jpg?alt=media&token=2f2467bd-5417-4175-89ad-706b8444a4d5',
     Reciclaje:
-      'https://firebasestorage.googleapis.com/v0/b/trash-information-appweb.appspot.com/o/plantillaImages%2Freciclaje.jpg?alt=media&token=7bd9d00e-0fae-4e30-aaff-71dbeca12b4f',
+      'https://firebasestorage.googleapis.com/v0/b/testinsercionjson.appspot.com/o/plantillaImages%2Freciclaje.jpg?alt=media&token=cb69ee6d-8974-4dcf-9a8b-663b54ef96c8',
     Covid19:
-      'https://firebasestorage.googleapis.com/v0/b/trash-information-appweb.appspot.com/o/plantillaImages%2Fcovid19.jpg?alt=media&token=9330e991-2f82-4ba5-a2fe-d0db316998dd',
+      'https://firebasestorage.googleapis.com/v0/b/testinsercionjson.appspot.com/o/plantillaImages%2Fcovid19.jpg?alt=media&token=3c3364e5-cc84-49e5-a0a7-0131f4a99ce1',
   };
 
   constructor(
@@ -46,7 +47,7 @@ export class NewsAdminComponent implements OnInit {
       author: new FormControl('', [Validators.required]),
       url: new FormControl('', [Validators.required]),
       id: new FormControl(),
-      noticiaPic: new FormControl(),
+      noticiaPic: new FormControl(''),
     });
   }
 
@@ -59,8 +60,11 @@ export class NewsAdminComponent implements OnInit {
   }
 
   async onSubmitAddNoticia() {
-    const nameNoticiaImage = this.selectedFile;
-    if (nameNoticiaImage == null) {
+    const noticiaPic = this.formNoticia.get('noticiaPic').value;
+    const urlNoticia = this.urlNoticia;
+    console.log('nombre noticias subida: ', urlNoticia)
+    console.log('url noticia desde la base: ', noticiaPic)
+    if ((urlNoticia == null) && (noticiaPic == null)) {
       const baseImages = this.plantillaImage;
       const category = this.formNoticia.get('category').value;
       for (let nameImage in baseImages) {
@@ -69,16 +73,43 @@ export class NewsAdminComponent implements OnInit {
           this.formNoticia.controls['noticiaPic'].setValue(responseUrlImage);
         }
       }
-    } else {
-      const urlNoticia = this.urlNoticia;
-      this.formNoticia.controls['noticiaPic'].setValue(urlNoticia);
+    } 
+    if(urlNoticia){
+        this.formNoticia.controls['noticiaPic'].setValue(urlNoticia);
     }
+
     const idAdd = this.comprobarId();
-    this.formNoticia.controls['id'].setValue(idAdd);
-    await this.dataControl.addNoticia(this.formNoticia.value, idAdd);
-    console.log(this.formNoticia.value);
-    this.formNoticia.reset();
-    this.selectedFile=null
+    if (idAdd != -1) {
+      this.formNoticia.controls['id'].setValue(idAdd);
+      await this.dataControl.addNoticia(this.formNoticia.value, idAdd);
+      console.log(this.formNoticia.value);
+      this.formNoticia.reset();
+      this.selectedFile = null;
+      this.urlNoticia = null;
+    } else {
+      this.dataControl
+        .identifiedIdElement('GlobalNews')
+        .then((response) => {
+          let idGlobal = response['lastitemNew'];
+          idGlobal++;
+          const idAdd = `${idGlobal}n`;
+          this.toastr.success(
+            'La noticia fue registrada con exito!',
+            'Noticia registrada',
+            {
+              positionClass: 'toast-bottom-right',
+            }
+          );
+          const idElement = { lastitemNew: idGlobal };
+          this.dataControl.addGlobalIdElement('GlobalNews', idElement);
+          this.formNoticia.controls['id'].setValue(idAdd);
+          this.dataControl.addNoticia(this.formNoticia.value, idAdd);
+          console.log('formulario a enviar: ', this.formNoticia.value);
+          this.formNoticia.reset();
+          this.selectedFile = null;
+          this.urlNoticia = null;
+        });
+    }
   }
 
   comprobarId() {
@@ -86,14 +117,12 @@ export class NewsAdminComponent implements OnInit {
     const idBD = listElement.map((item) => item.id);
     const idMod = this.formNoticia.get('id').value;
     let idAdd;
-    let rastrearId = 0;
-    let rastrearIdBD;
     for (let item of idBD) {
       if (item == idMod) {
         idAdd = idMod;
         this.toastr.info(
-          'La noticia fue modificada con éxito!',
-          'Noticia modificada',
+          'El contacto fue modificado con éxito!',
+          'Contacto modificado',
           {
             positionClass: 'toast-bottom-right',
           }
@@ -101,35 +130,7 @@ export class NewsAdminComponent implements OnInit {
         return idAdd;
       }
     }
-    for (let item of idBD) {
-      rastrearId++;
-      const idToAdd = `${rastrearId}n`;
-      rastrearIdBD = item.substring(0, item.length - 1);
-      
-      if (idBD.indexOf(idToAdd) == -1) {
-        idAdd = idToAdd;
-        console.log('id que falta: ', idAdd);
-        this.toastr.success(
-          'La noticia fue registrada con exito!',
-          'Noticia registrada',
-          {
-            positionClass: 'toast-bottom-right',
-          }
-        );
-        return idAdd;
-      }
-
-    }
-    idAdd = `${this.enumNoticias + 1}n`;
-    this.toastr.success(
-      'La noticia fue registrada con exito!',
-      'Noticia registrada',
-      {
-        positionClass: 'toast-bottom-right',
-      }
-    );
-    console.log('id a añadir', idAdd);
-    return idAdd;
+    return -1;
   }
 
   async deleteNoticiaById(id: any) {
