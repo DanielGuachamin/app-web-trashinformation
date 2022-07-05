@@ -12,8 +12,9 @@
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Contraseña</mat-label>
-                <input matInput type="password" class="form-control" formControlName="password">
+                <input matInput [type]="showPassword ? 'text' : 'password'" class="form-control" formControlName="password">
                 <mat-icon matPrefix>lock</mat-icon>
+                <mat-icon matSuffix (click)="seePassword()" color="primary">{{showPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
                 <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">{{getErrorMessagePassword()}}</mat-error>
             </mat-form-field>
             <button mat-raised-button color="primary" >Iniciar Sesión</button>

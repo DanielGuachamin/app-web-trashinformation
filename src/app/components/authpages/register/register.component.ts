@@ -14,11 +14,13 @@ export class RegisterComponent implements OnInit {
 
   emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  passwordPattern: any = /^(?=.*[a-z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{6,15}/;
+  passwordPattern: any = /^(?=.*[a-z])(?=.*\d)(?=.*[$@$!%_#<>*?&])[A-Za-z\d$@$!%_#<>*?&]{6,15}/;
 
-  alfabetWithOutSpacePattern: any = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
+  alfabetWithOutSpacePattern: any = /^(?!.*[0-9])[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
 
   formReg: FormGroup;
+
+  showPassword: boolean;
 
   constructor(
     private userService: UserService,
@@ -55,6 +57,7 @@ export class RegisterComponent implements OnInit {
       ]),
       profilePic: new FormControl('')
     })
+    this.showPassword = false;
   }
 
   ngOnInit(): void {}
@@ -123,7 +126,9 @@ export class RegisterComponent implements OnInit {
     return urlPick
   }
     
-  
+  seePassword(){
+    this.showPassword = !this.showPassword
+  }
 
   getErrorMessageEmail() {
     if (this.email.hasError('required')) {

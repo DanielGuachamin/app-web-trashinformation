@@ -13,7 +13,9 @@ export class LoginComponent implements OnInit {
 
   emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  passwordPattern: any = /^(?=.*[a-z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{6,15}/;
+  passwordPattern: any = /^(?=.*[a-z])(?=.*\d)(?=.*[$@$!%_#<>*?&])[A-Za-z\d$@$!%_#<>*?&]{6,15}/;
+
+  showPassword: boolean;
 
   createFormGroup(){
     return new FormGroup({
@@ -38,6 +40,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private userControl: DataApiService ) {
     this.formLogin = this.createFormGroup();
+    this.showPassword = false;
   }
 
   ngOnInit(): void {
@@ -77,6 +80,10 @@ export class LoginComponent implements OnInit {
       console.log('no esta autenticado')
       this.router.navigate(['/login']);
     }
+  }
+
+  seePassword(){
+    this.showPassword = !this.showPassword
   }
 
   openRegister(){

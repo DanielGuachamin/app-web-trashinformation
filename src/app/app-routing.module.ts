@@ -88,8 +88,8 @@ const routes: Routes = [
   },
   { 
     path: 'register', 
-    component: RegisterComponent,
-    canActivate: [PublicAuthenticationGuard]
+    component: RegisterComponent
+    //canActivate: [PublicAuthenticationGuard]
   },
   { 
     path: 'login', 
@@ -97,7 +97,7 @@ const routes: Routes = [
   },
   { 
     path: 'recover-password', 
-    component: RecoverPasswordComponent,
+    component: RecoverPasswordComponent
     //canActivate: [PublicAuthenticationGuard]
   },
   { 

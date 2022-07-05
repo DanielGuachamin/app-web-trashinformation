@@ -29,8 +29,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
   enumContact: number = 0;
   contactos: Contacto[] = [];
 
-  alfabetWithOutSpacePattern: any =
-    /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
+  alfabetWithOutSpacePattern: any = /^(?!.*[0-9])[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
   phoneNumberPattern: any = /^\d{10}$/;
 
   constructor(

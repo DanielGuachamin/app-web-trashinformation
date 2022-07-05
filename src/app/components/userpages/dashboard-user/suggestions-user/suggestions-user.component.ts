@@ -53,8 +53,6 @@ export class SuggestionsUserComponent implements OnInit {
   }
 
   async onSubmitAddSuggest() {
-    const idAdd = this.comprobarId()
-    this.formSuggest.controls['id'].setValue(idAdd);
     const email = this.userService.seeEmailUserAuth();
     this.formSuggest.controls['email'].setValue(email);
     const timeStamp = this.pipe.transform(Date.now(), 'dd/MM/yyyy');
@@ -66,12 +64,32 @@ export class SuggestionsUserComponent implements OnInit {
       lastName = response.lastName;
       this.formSuggest.controls['name'].setValue(name);
       this.formSuggest.controls['lastName'].setValue(lastName);
-      await this.dataControl.addSuggest(this.formSuggest.value, idAdd);
-      this.formSuggest.reset();
+      
+      this.dataControl.identifiedIdElement('GlobalSuggestions').then((response) => {
+        let idGlobal = response['lasitemSuggestion'];
+        idGlobal++;
+        const idAdd = `${idGlobal}s`;
+        this.toastr.success(
+          'La sugerencia fue registrada con éxito!',
+          'Sugerencia registrada',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+        const idElement = {lasitemSuggestion: idGlobal};
+        this.dataControl.addGlobalIdElement('GlobalSuggestions', idElement);
+        this.formSuggest.controls['id'].setValue(idAdd);
+        this.dataControl.addSuggest(this.formSuggest.value, idAdd);
+        this.formSuggest.reset();
+        //console.log('formulario a enviar: ', this.formSuggest.value);
+      })
     });
   }
 
   async deleteSuggestById(id: any) {
+    this.toastr.error('La sugerencia fue eliminada con éxito!', 'Sugerencia eliminada', {
+      positionClass: 'toast-bottom-right',
+    });
     await this.dataControl.deleteElement(id, 'Sugerencias');
   }
 
@@ -87,42 +105,6 @@ export class SuggestionsUserComponent implements OnInit {
     
     }
     return sugerenciaByUser
-  }
-
-  comprobarId() {
-    const listElement = this.sugerencias;
-    const idBD = listElement.map((item) => item.id);
-    const idMod = this.formSuggest.get('id').value;
-    let idAdd;
-    let rastrearId = 0;
-    let rastrearIdBD;
-    for (let item of idBD) {
-      rastrearId++;
-      const idToAdd = `${rastrearId}n`;
-      rastrearIdBD = item.substring(0, item.length - 1);
-      if (idBD.indexOf(idToAdd) == -1) {
-        idAdd = idToAdd;
-        console.log('id que falta: ', idAdd);
-        this.toastr.success(
-          'La noticia fue registrada con exito!',
-          'Noticia registrada',
-          {
-            positionClass: 'toast-bottom-right',
-          }
-        );
-        return idAdd;
-      }
-    }
-    idAdd = `${this.enumSuggest + 1}n`;
-    this.toastr.success(
-      'La noticia fue registrada con exito!',
-      'Noticia registrada',
-      {
-        positionClass: 'toast-bottom-right',
-      }
-    );
-    console.log('id a añadir', idAdd);
-    return idAdd;
   }
   
   get section(){

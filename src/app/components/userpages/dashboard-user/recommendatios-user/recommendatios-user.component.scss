@@ -1,20 +1,24 @@
-.header-tab{
+.header-tab {
     text-align: center;
     background-color: antiquewhite;
     margin: 0.5rem 10rem;
 
 }
 
-.individual-recomendacion{
+.individual-recomendacion {
     margin: 0 1rem;
     max-width: 50%;
     margin-bottom: 1rem;
 }
 
-.contenedor{
+.contenedor {
     margin: 1rem 0.9rem;
+}
+
+.centrado {
+    text-align: justify;
 }
 
 mat-grid-tile {
     background: lightblue;
-  }
+}

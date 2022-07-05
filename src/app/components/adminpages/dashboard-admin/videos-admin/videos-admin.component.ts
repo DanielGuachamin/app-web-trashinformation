@@ -38,15 +38,39 @@ export class VideosAdminComponent implements OnInit {
 
   async onSubmitAddVideo() {
     const videoID = this.getVideoId(this.formVideo.get('url').value);
-    const idAdd = this.comprobarId();
     const urlImage = `https://img.youtube.com/vi/${videoID}/maxresdefault.jpg`;
-
     this.formVideo.controls['prevImg'].setValue(urlImage);
     this.formVideo.controls['urlID'].setValue(videoID);
-    this.formVideo.controls['id'].setValue(idAdd);
-    await this.dataControl.addVideo(this.formVideo.value, idAdd);
-    console.log('formulario video: ', this.formVideo.value);
-    this.formVideo.reset();
+    const idAdd = this.comprobarId();
+    if (idAdd != -1) {
+      this.formVideo.controls['id'].setValue(idAdd);
+      await this.dataControl.addVideo(this.formVideo.value, idAdd);
+      console.log('formulario video: ', this.formVideo.value);
+      this.formVideo.reset();
+    } else {
+      this.dataControl
+        .identifiedIdElement('GlobalVideos')
+        .then((response) => {
+          let idGlobal = response['lastitemVideo'];
+          idGlobal++;
+          const idAdd = `${idGlobal}v`;
+          this.toastr.success(
+            'El video fue registrado con exito!',
+            'Video registrado',
+            {
+              positionClass: 'toast-bottom-right',
+            }
+          );
+          const idElement = { lastitemVideo: idGlobal };
+          this.dataControl.addGlobalIdElement('GlobalVideos', idElement);
+          this.formVideo.controls['id'].setValue(idAdd);
+          this.dataControl.addVideo(this.formVideo.value, idAdd);
+          console.log('formulario video: ', this.formVideo.value);
+          this.formVideo.reset();
+        });
+    }
+    
+   
   }
 
   getVideoId(url: string) {
@@ -59,8 +83,6 @@ export class VideosAdminComponent implements OnInit {
     const idBD = listElement.map((item) => item.id);
     const idMod = this.formVideo.get('id').value;
     let idAdd;
-    let rastrearId = 0;
-    let rastrearIdBD;
     for (let item of idBD) {
       if (item == idMod) {
         idAdd = idMod;
@@ -73,38 +95,8 @@ export class VideosAdminComponent implements OnInit {
         );
         return idAdd;
       }
-
     }
-
-    for (let item of idBD) {
-      rastrearId++;
-      const idToAdd = `${rastrearId}v`;
-      rastrearIdBD = item.substring(0, item.length - 1);
-
-      if (idBD.indexOf(idToAdd) == -1) {
-        idAdd = idToAdd;
-        console.log('id que falta: ', idAdd);
-        this.toastr.success(
-          'El video fue registrado con exito!',
-          'Video registrado',
-          {
-            positionClass: 'toast-bottom-right',
-          }
-        );
-        return idAdd;
-      }
-
-    }
-    idAdd = `${this.enumVideos + 1}v`;
-    this.toastr.success(
-      'El video fue registrado con exito!',
-      'Video registrado',
-      {
-        positionClass: 'toast-bottom-right',
-      }
-    );
-    console.log('id a añadir', idAdd);
-    return idAdd;
+    return -1;
   }
 
   async deleteVideoById(id: any) {
