@@ -96,11 +96,10 @@ export class SuggestionsUserComponent implements OnInit {
       cancelText: 'No'
     }).subscribe(async res => {
       if(res){
+        await this.dataControl.deleteElement(id, 'Sugerencias');
         this.toastr.error('La sugerencia fue eliminada con éxito!', 'Sugerencia eliminada', {
           positionClass: 'toast-bottom-right',
         });
-        await this.dataControl.deleteElement(id, 'Sugerencias');
-
       }else{
         console.log('No se ha confirmado la eliminación')
       }

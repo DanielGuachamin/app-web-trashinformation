@@ -59,10 +59,10 @@ export class ProfileUserComponent implements OnInit {
 
   async onModifiedProfile() {
     const email = this.userService.seeEmailUserAuth();
-    const nameNoticiaImage = this.selectedFile;
+    const nameProfileImage = this.selectedFile;
     const getDate = this.getDate()
     this.formProfile.controls['birthdate'].setValue(getDate)
-    if (nameNoticiaImage != null) {
+    if (nameProfileImage != null) {
       const urlImage = this.urlProfilePic;
       this.formProfile.controls['profilePic'].setValue(urlImage);
     }
@@ -96,7 +96,6 @@ export class ProfileUserComponent implements OnInit {
     const formName = this.formProfile.get('name').value
     const formLastname = this.formProfile.get('lastName').value
     const fileName = `${formName.toLowerCase()}_${formLastname.toLowerCase()}_22.jpg`
-    //console.log('nombre de imagen: ', fileName)
     const imgRef = ref(this.storage, `userImages/${fileName}`);
 
     uploadBytes(imgRef, file)

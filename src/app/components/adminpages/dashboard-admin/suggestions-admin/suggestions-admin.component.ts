@@ -76,7 +76,7 @@ export class SuggestionsAdminComponent implements OnInit {
         await this.dataControl.deleteElement(id, 'Sugerencias');
         this.toastr.error(
           'La sugerencia fue eliminada con éxito!',
-          'Noticia eliminada',
+          'Sugerencia eliminada',
           {
             positionClass: 'toast-bottom-right',
           }

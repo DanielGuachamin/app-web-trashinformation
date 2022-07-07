@@ -96,8 +96,8 @@ export class NewsAdminComponent implements OnInit {
           this.selectedFile = null;
           this.urlNoticia = null;
           this.toastr.info(
-            'El contacto fue modificado con éxito!',
-            'Contacto modificado',
+            'La noticia fue modificada con éxito!',
+            'Noticia modificado',
             {
               positionClass: 'toast-bottom-right',
             }
