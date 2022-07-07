@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataApiService } from 'src/app/services/data-api.service';
-import { User } from 'src/app/modelos/user';
 import { ToastrService } from 'ngx-toastr';
 import {
   Storage,
@@ -60,9 +59,9 @@ export class ProfileUserComponent implements OnInit {
 
   async onModifiedProfile() {
     const email = this.userService.seeEmailUserAuth();
-
     const nameNoticiaImage = this.selectedFile;
-
+    const getDate = this.getDate()
+    this.formProfile.controls['birthdate'].setValue(getDate)
     if (nameNoticiaImage != null) {
       const urlImage = this.urlProfilePic;
       this.formProfile.controls['profilePic'].setValue(urlImage);
@@ -84,7 +83,11 @@ export class ProfileUserComponent implements OnInit {
       this.profilePic = profilePic
       const email = this.formProfile.get('email').value
       this.email = email
-    });
+      let birthdateBD = this.formProfile.get('birthdate').value
+      let split = birthdateBD.split('/')
+      birthdateBD = split[2] + '/' + split[1] + '/' + split[0] 
+      this.formProfile.controls['birthdate'].setValue(new Date(birthdateBD))
+    })
   }
 
   uploadNoticiaImage($event: any) {
@@ -99,12 +102,12 @@ export class ProfileUserComponent implements OnInit {
     uploadBytes(imgRef, file)
       .then((response) => {
         console.log(response);
-        this.getNoticiaImageUrl(`userImages/${fileName}`);
+        this.getProfileImageUrl(`userImages/${fileName}`);
       })
       .catch((error) => console.log(error));
   }
 
-  getNoticiaImageUrl(path: string) {
+  getProfileImageUrl(path: string) {
     getDownloadURL(ref(this.storage, path)).then((url) => {
       this.urlProfilePic = url;
     });
@@ -122,6 +125,22 @@ export class ProfileUserComponent implements OnInit {
     return this.formProfile.get('direccionBase');
   }
 
+  
+  get birthdate(){
+    return this.formProfile.get('birthdate');
+  }
+  
+
+  getDate(){
+    let momentResponse = this.formProfile.value
+    momentResponse = JSON.parse(JSON.stringify(momentResponse))
+    momentResponse = momentResponse.birthdate
+    momentResponse = momentResponse.slice(0,-14)
+    let split = momentResponse.split('-')
+    momentResponse = split[2] + '/' + split[1] + '/' + split[0]
+    return momentResponse
+  }
+
   getErrorMessageNameLastname(){
     if (this.name.hasError('required')) {
       return 'Debe completar el campo'
@@ -133,6 +152,9 @@ export class ProfileUserComponent implements OnInit {
     return this.direccionBase.hasError('required') ? 'Debe seleccionar un sector de domicilio' : '';
   }
 
+  getErrorMessageBirthday(){
+    return this.birthdate.hasError('required') ? 'Debe seleccionar una fecha de nacimiento' : '';
+  }
 
   singOut(){
     this.userService.logout()

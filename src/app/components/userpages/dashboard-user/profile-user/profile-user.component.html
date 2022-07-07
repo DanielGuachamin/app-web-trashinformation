@@ -1,8 +1,5 @@
 <div class="pantalla-perfil">
   <div class="fondo-perfil">
-    <h2>
-      Perfil del usuario {{email}}
-    </h2>
     <div class="info-perfil">
       <div class="image-perfil">
         <img [src]="profilePic" alt="Foto perfil usuario" width="200px" height="200px">
@@ -13,6 +10,12 @@
         </div>
       </div>
       <form [formGroup]="formProfile" (ngSubmit)="onModifiedProfile()" class="formulario-perfil">
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Email</mat-label>
+          <input matInput disabled [value]="email">
+        </mat-form-field>
+
         <mat-form-field appearance="legacy">
           <mat-label>Nombre</mat-label>
           <input matInput type="text" class="form-control" formControlName="name">
@@ -23,6 +26,15 @@
           <mat-label>Apellido</mat-label>
           <input matInput type="text" class="form-control" formControlName="lastName">
           <mat-error *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">{{getErrorMessageNameLastname()}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Fecha de nacimiento</mat-label>
+          <input matInput formControlName="birthdate" [matDatepicker]="picker">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="birthdate.invalid && (birthdate.dirty || birthdate.touched)">{{getErrorMessageBirthday()}}
           </mat-error>
         </mat-form-field>
 
@@ -39,20 +51,19 @@
         <div class="button-save">
 
           <button mat-raised-button color="primary"
-            [disabled]="name.invalid || lastName.invalid || direccionBase.invalid">Guardar</button>
+            [disabled]="name.invalid || lastName.invalid || direccionBase.invalid || birthdate.invalid">Guardar</button>
+        </div>
+        <div class="footer">
+          <button mat-fab color="warn" (click)="singOut()">
+            <mat-icon>logout</mat-icon>
+          </button>
         </div>
       </form>
 
     </div>
+    
   </div>
+  
+    
 </div>
 
-
-<div class="footer">
-  <button mat-fab color="warn" (click)="singOut()">
-    <mat-icon>logout</mat-icon>
-  </button>
-  <h2>
-    Cerrar sesión
-  </h2>
-</div>

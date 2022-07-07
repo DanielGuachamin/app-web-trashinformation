@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ToastrService } from 'ngx-toastr';
+import { DialogService } from 'src/app/services/dialog.service';
 
 @Component({
   selector: 'app-contacts-admin',
@@ -34,7 +35,8 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
 
   constructor(
     private dataControl: DataApiService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialogService: DialogService
   ) {
     this.formContact = new FormGroup({
       id: new FormControl(),
@@ -78,10 +80,26 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
   async onSubmitAddContact() {
     const idAdd = this.comprobarId();
     if(idAdd != -1){
-      this.formContact.controls['id'].setValue(idAdd);
-      await this.dataControl.addContact(this.formContact.value, idAdd);
-      console.log('formulario a enviar: ', this.formContact.value);
-      this.formContact.reset();
+      this.dialogService.confirmDialog({
+        title: 'Modificar Contacto',
+        message: '¿Esta seguro de modificar este contacto?',
+        confirmText: 'Sí',
+        cancelText: 'No'
+      }).subscribe(async res => {
+        if(res){
+          this.formContact.controls['id'].setValue(idAdd);
+          await this.dataControl.addContact(this.formContact.value, idAdd);
+          this.toastr.info(
+            'El contacto fue modificado con éxito!',
+            'Contacto modificado',
+            {
+              positionClass: 'toast-bottom-right',
+            }
+          );
+        }else{
+          console.log('No se ha confirmado la modificación')
+        }
+      })
     }else{
       this.dataControl.identifiedIdElement('GlobalContactos').then((response) => {
         let idGlobal = response['lastitemContact'];
@@ -111,13 +129,6 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     for (let item of idBD) {
       if (item == idMod) {
         idAdd = idMod;
-        this.toastr.info(
-          'El contacto fue modificado con éxito!',
-          'Contacto modificado',
-          {
-            positionClass: 'toast-bottom-right',
-          }
-        );
         return idAdd
       }
     }
@@ -127,16 +138,26 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
   
 
   async deleteContactById(id: any) {
-    await this.dataControl.deleteElement(id, 'Contactos');
-
-    this.toastr.error(
-      'El contacto fue eliminado con éxito',
-      'Registro eliminado',
-      {
-        positionClass: 'toast-bottom-right',
+    this.dialogService.confirmDialog({
+      title: 'Eliminar contacto',
+      message: '¿Esta seguro de eliminar este contacto?',
+      confirmText: 'Sí',
+      cancelText: 'No'
+    }).subscribe(async res => {
+      if(res){
+        await this.dataControl.deleteElement(id, 'Contactos');
+        this.toastr.error(
+          'El contacto fue eliminado con éxito',
+          'Registro eliminado',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+        this.formContact.reset();
+      }else{
+        console.log('No se ha confirmado la eliminación')
       }
-    );
-    this.formContact.reset();
+    })
   }
 
   fillFormContacto(id: any) {

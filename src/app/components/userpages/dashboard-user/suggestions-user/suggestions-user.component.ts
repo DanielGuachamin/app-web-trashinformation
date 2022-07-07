@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user.service';
 import {MatTableDataSource} from '@angular/material/table';
 import {DatePipe} from '@angular/common'
 import { ToastrService } from 'ngx-toastr';
+import { DialogService } from 'src/app/services/dialog.service';
 
 @Component({
   selector: 'app-suggestions-user',
@@ -26,7 +27,8 @@ export class SuggestionsUserComponent implements OnInit {
   constructor(
     private dataControl: DataApiService,
     private userService: UserService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialogService: DialogService
   ) {
     this.formSuggest = new FormGroup({
       id: new FormControl(),
@@ -87,10 +89,22 @@ export class SuggestionsUserComponent implements OnInit {
   }
 
   async deleteSuggestById(id: any) {
-    this.toastr.error('La sugerencia fue eliminada con éxito!', 'Sugerencia eliminada', {
-      positionClass: 'toast-bottom-right',
-    });
-    await this.dataControl.deleteElement(id, 'Sugerencias');
+    this.dialogService.confirmDialog({
+      title: 'Eliminar sugerencia',
+      message: '¿Esta seguro de eliminar esta sugerencia?',
+      confirmText: 'Sí',
+      cancelText: 'No'
+    }).subscribe(async res => {
+      if(res){
+        this.toastr.error('La sugerencia fue eliminada con éxito!', 'Sugerencia eliminada', {
+          positionClass: 'toast-bottom-right',
+        });
+        await this.dataControl.deleteElement(id, 'Sugerencias');
+
+      }else{
+        console.log('No se ha confirmado la eliminación')
+      }
+    })
   }
 
   getSuggestByUser(){

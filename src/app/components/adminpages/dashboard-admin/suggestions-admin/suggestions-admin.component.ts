@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { Sugerencia } from 'src/app/modelos/sugerencia';
 import { UserService } from 'src/app/services/user.service';
+import { DialogService } from 'src/app/services/dialog.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-suggestions-admin',
@@ -17,7 +19,9 @@ export class SuggestionsAdminComponent implements OnInit {
 
   constructor(
     private dataControl: DataApiService,
-    private userService: UserService
+    private userService: UserService,
+    private toastr: ToastrService,
+    private dialogService: DialogService
   ) {
     this.formSuggest = new FormGroup({
       id: new FormControl(),
@@ -62,7 +66,26 @@ export class SuggestionsAdminComponent implements OnInit {
   }
 
   async deleteSuggestById(id: any) {
-    await this.dataControl.deleteElement(id, 'Sugerencias');
+    this.dialogService.confirmDialog({
+      title: 'Eliminar sugerencia',
+      message: '¿Esta seguro de eliminar esta sugerencia?',
+      confirmText: 'Sí',
+      cancelText: 'No'
+    }).subscribe(async res => {
+      if(res){
+        await this.dataControl.deleteElement(id, 'Sugerencias');
+        this.toastr.error(
+          'La sugerencia fue eliminada con éxito!',
+          'Noticia eliminada',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+      }else{
+        console.log('No se ha confirmado la eliminación')
+      }
+    })
+    
   }
 
   getSuggestByUser(){

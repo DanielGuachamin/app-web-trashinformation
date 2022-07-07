@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { Video } from 'src/app/modelos/video';
 import { ToastrService } from 'ngx-toastr';
+import { DialogService } from 'src/app/services/dialog.service';
 
 @Component({
   selector: 'app-videos-admin',
@@ -16,7 +17,8 @@ export class VideosAdminComponent implements OnInit {
 
   constructor(
     private dataControl: DataApiService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialogService: DialogService
   ) {
     this.formVideo = new FormGroup({
       title: new FormControl('', [Validators.required]),
@@ -43,10 +45,26 @@ export class VideosAdminComponent implements OnInit {
     this.formVideo.controls['urlID'].setValue(videoID);
     const idAdd = this.comprobarId();
     if (idAdd != -1) {
-      this.formVideo.controls['id'].setValue(idAdd);
-      await this.dataControl.addVideo(this.formVideo.value, idAdd);
-      console.log('formulario video: ', this.formVideo.value);
-      this.formVideo.reset();
+      this.dialogService.confirmDialog({
+        title: 'Modificar Video',
+        message: '¿Esta seguro de modificar este video?',
+        confirmText: 'Sí',
+        cancelText: 'No'
+      }).subscribe(async res => {
+        if(res){
+          this.formVideo.controls['id'].setValue(idAdd);
+          await this.dataControl.addVideo(this.formVideo.value, idAdd);
+        this.toastr.info(
+          'El video fue modificado con éxito!',
+          'Video modificado',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+        }else{
+          console.log('No se ha confirmado la modificación')
+        }
+      })
     } else {
       this.dataControl
         .identifiedIdElement('GlobalVideos')
@@ -66,7 +84,6 @@ export class VideosAdminComponent implements OnInit {
           this.formVideo.controls['id'].setValue(idAdd);
           this.dataControl.addVideo(this.formVideo.value, idAdd);
           console.log('formulario video: ', this.formVideo.value);
-          this.formVideo.reset();
         });
     }
     
@@ -86,13 +103,6 @@ export class VideosAdminComponent implements OnInit {
     for (let item of idBD) {
       if (item == idMod) {
         idAdd = idMod;
-        this.toastr.info(
-          'El video fue modificado con éxito!',
-          'Video modificado',
-          {
-            positionClass: 'toast-bottom-right',
-          }
-        );
         return idAdd;
       }
     }
@@ -100,12 +110,24 @@ export class VideosAdminComponent implements OnInit {
   }
 
   async deleteVideoById(id: any) {
-    await this.dataControl.deleteElement(id, 'Videos');
+    this.dialogService.confirmDialog({
+      title: 'Eliminar video',
+      message: '¿Esta seguro de eliminar este video?',
+      confirmText: 'Sí',
+      cancelText: 'No'
+    }).subscribe(async res =>{
+      if(res){
+        await this.dataControl.deleteElement(id, 'Videos');
+    
+        this.toastr.error('El video fue eliminado con éxito!', 'Video eliminado', {
+          positionClass: 'toast-bottom-right',
+        });
+        this.formVideo.reset();
 
-    this.toastr.error('El video fue eliminado con éxito!', 'Video eliminado', {
-      positionClass: 'toast-bottom-right',
-    });
-    this.formVideo.reset();
+      }else{
+        console.log('No se ha confirmado la eliminación')
+      }
+    })
   }
 
   fillFormVideo(id: any) {

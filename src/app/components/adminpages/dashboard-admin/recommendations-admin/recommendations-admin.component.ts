@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { Recomendacion } from 'src/app/modelos/recomendacion';
 import { ToastrService } from 'ngx-toastr';
+import { DialogService } from 'src/app/services/dialog.service';
 
 @Component({
   selector: 'app-recommendations-admin',
@@ -29,7 +30,8 @@ export class RecommendationsAdminComponent implements OnInit {
 
   constructor(
     private dataControl: DataApiService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialogService: DialogService
   ) {
     this.formRecomen = new FormGroup({
       title: new FormControl('', [Validators.required]),
@@ -65,10 +67,26 @@ export class RecommendationsAdminComponent implements OnInit {
     
     const idAdd = this.comprobarId();
     if (idAdd != -1) {
-      this.formRecomen.controls['id'].setValue(idAdd);
-      await this.dataControl.addRecommendation(this.formRecomen.value, idAdd);
-      console.log('formulario a enviar: ', this.formRecomen.value);
-      this.formRecomen.reset();
+      this.dialogService.confirmDialog({
+        title: 'Modificar Recomendación',
+        message: '¿Esta seguro de modificar esta recomendación?',
+        confirmText: 'Sí',
+        cancelText: 'No'
+      }).subscribe(async res => {
+        if(res){
+          this.formRecomen.controls['id'].setValue(idAdd);
+          await this.dataControl.addRecommendation(this.formRecomen.value, idAdd);
+          this.toastr.info(
+            'La recomendación fue modificada con éxito!',
+            'Recomendación modificada',
+            {
+              positionClass: 'toast-bottom-right',
+            }
+          );
+        }else{
+          console.log('No se ha confirmado la modificación')
+        }
+      })
     } else {
       this.dataControl
         .identifiedIdElement('GlobalRecomendation')
@@ -88,7 +106,6 @@ export class RecommendationsAdminComponent implements OnInit {
           this.formRecomen.controls['id'].setValue(idAdd);
           this.dataControl.addRecommendation(this.formRecomen.value, idAdd);
           console.log('formulario a enviar: ', this.formRecomen.value);
-          this.formRecomen.reset();
         });
     }
   }
@@ -101,13 +118,6 @@ export class RecommendationsAdminComponent implements OnInit {
     for (let item of idBD) {
       if (item == idMod) {
         idAdd = idMod;
-        this.toastr.info(
-          'La recomendación fue modificada con éxito!',
-          'Recomendación modificada',
-          {
-            positionClass: 'toast-bottom-right',
-          }
-        );
         return idAdd;
       }
     }
@@ -115,16 +125,27 @@ export class RecommendationsAdminComponent implements OnInit {
   }
 
   async deleteRecomenById(id: any) {
-    await this.dataControl.deleteElement(id, 'Recomendaciones');
-
-    this.toastr.error(
-      'La recomendación fue eliminada con éxito!',
-      'Recomendación eliminada',
-      {
-        positionClass: 'toast-bottom-right',
+    this.dialogService.confirmDialog({
+      title: 'Eliminar recomendación',
+      message: '¿Esta seguro de eliminar esta recomendación?',
+      confirmText: 'Sí',
+      cancelText: 'No'
+    }).subscribe(async res =>{
+      if(res){
+        await this.dataControl.deleteElement(id, 'Recomendaciones');
+        this.toastr.error(
+          'La recomendación fue eliminada con éxito!',
+          'Recomendación eliminada',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+        this.formRecomen.reset();
+      }else{
+        console.log('No se ha confirmado la eliminación')
       }
-    );
-    this.formRecomen.reset();
+    })
+   
   }
 
   fillFormRecomen(id: any) {

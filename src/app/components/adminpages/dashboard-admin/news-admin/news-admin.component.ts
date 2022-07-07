@@ -9,6 +9,7 @@ import {
 } from '@angular/fire/storage';
 import { Noticia } from 'src/app/modelos/noticia';
 import { ToastrService } from 'ngx-toastr';
+import { DialogService } from 'src/app/services/dialog.service';
 
 @Component({
   selector: 'app-news-admin',
@@ -38,7 +39,8 @@ export class NewsAdminComponent implements OnInit {
   constructor(
     private dataControl: DataApiService,
     private storage: Storage,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialogService: DialogService
   ) {
     this.formNoticia = new FormGroup({
       title: new FormControl('', [Validators.required]),
@@ -79,13 +81,32 @@ export class NewsAdminComponent implements OnInit {
     }
 
     const idAdd = this.comprobarId();
+    
     if (idAdd != -1) {
-      this.formNoticia.controls['id'].setValue(idAdd);
-      await this.dataControl.addNoticia(this.formNoticia.value, idAdd);
-      console.log(this.formNoticia.value);
-      this.formNoticia.reset();
-      this.selectedFile = null;
-      this.urlNoticia = null;
+      this.dialogService.confirmDialog({
+        title: 'Modificar Noticia',
+        message: '¿Esta seguro de modificar esta noticia?',
+        confirmText: 'Sí',
+        cancelText: 'No'
+      }).subscribe(async res => {
+        if(res){
+          this.formNoticia.controls['id'].setValue(idAdd);
+          await this.dataControl.addNoticia(this.formNoticia.value, idAdd);
+          console.log(this.formNoticia.value);
+          this.selectedFile = null;
+          this.urlNoticia = null;
+          this.toastr.info(
+            'El contacto fue modificado con éxito!',
+            'Contacto modificado',
+            {
+              positionClass: 'toast-bottom-right',
+            }
+          );
+        } else{
+          console.log('No se ha confirmado la modificación')
+        }   
+      })
+      
     } else {
       this.dataControl
         .identifiedIdElement('GlobalNews')
@@ -105,7 +126,6 @@ export class NewsAdminComponent implements OnInit {
           this.formNoticia.controls['id'].setValue(idAdd);
           this.dataControl.addNoticia(this.formNoticia.value, idAdd);
           console.log('formulario a enviar: ', this.formNoticia.value);
-          this.formNoticia.reset();
           this.selectedFile = null;
           this.urlNoticia = null;
         });
@@ -120,13 +140,6 @@ export class NewsAdminComponent implements OnInit {
     for (let item of idBD) {
       if (item == idMod) {
         idAdd = idMod;
-        this.toastr.info(
-          'El contacto fue modificado con éxito!',
-          'Contacto modificado',
-          {
-            positionClass: 'toast-bottom-right',
-          }
-        );
         return idAdd;
       }
     }
@@ -134,15 +147,27 @@ export class NewsAdminComponent implements OnInit {
   }
 
   async deleteNoticiaById(id: any) {
-    await this.dataControl.deleteElement(id, 'Noticias');
-    this.toastr.error(
-      'La noticia fue eliminada con éxito!',
-      'Noticia eliminada',
-      {
-        positionClass: 'toast-bottom-right',
+    this.dialogService.confirmDialog({
+      title: 'Eliminar noticia',
+      message: '¿Esta seguro de eliminar esta noticia?',
+      confirmText: 'Sí',
+      cancelText: 'No'
+    }).subscribe(async res => {
+      if(res){
+        await this.dataControl.deleteElement(id, 'Noticias');
+      this.toastr.error(
+        'La noticia fue eliminada con éxito!',
+        'Noticia eliminada',
+        {
+          positionClass: 'toast-bottom-right',
+        }
+      );
+      this.formNoticia.reset();
+      } else{
+        console.log('No se ha confirmado la eliminación')
       }
-    );
-    this.formNoticia.reset();
+    })
+    
   }
 
   uploadNoticiaImage($event: any) {

@@ -10,15 +10,22 @@
  @include mat.button-color($special-theme);
 }
 
-.user-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.4rem 1rem 0;
+.mat-toolbar-multiple-rows{
+    display: contents;
 }
 
 .perfil-button{
-    margin-right: -40rem;
+    margin-right: 0;
+}
+
+.user-header{
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+    padding-top: 2rem;
+}
+
+.name-header{
+    margin-right: 55%;
 }
 
 .user-menu {

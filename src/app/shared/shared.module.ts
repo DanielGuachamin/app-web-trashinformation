@@ -3,16 +3,20 @@ import { CommonModule } from '@angular/common';
 import { NewsfilterPipe } from 'src/app/pipes/newsfilter.pipe';
 import { VideosfilterPipe } from 'src/app/pipes/videosfilter.pipe';
 import { RecomensfilterPipe } from 'src/app/pipes/recomensfilter.pipe';
+import { ConfirmComponent } from '../components/dialogs/confirm/confirm.component';
+import { MaterialModule } from '../material.module';
 
 
 @NgModule({
   declarations: [
     NewsfilterPipe,
     VideosfilterPipe,
-    RecomensfilterPipe
+    RecomensfilterPipe,
+    ConfirmComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialModule
   ],
   exports: [
     NewsfilterPipe,
