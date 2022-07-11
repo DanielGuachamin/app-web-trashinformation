@@ -62,73 +62,76 @@ export class NewsAdminComponent implements OnInit {
   }
 
   async onSubmitAddNoticia() {
-    const noticiaPic = this.formNoticia.get('noticiaPic').value;
     const urlNoticia = this.urlNoticia;
-    console.log('nombre noticias subida: ', urlNoticia)
-    console.log('url noticia desde la base: ', noticiaPic)
-    if ((urlNoticia == null) && (noticiaPic == null)) {
-      const baseImages = this.plantillaImage;
-      const category = this.formNoticia.get('category').value;
-      for (let nameImage in baseImages) {
-        if (nameImage == category) {
-          const responseUrlImage = baseImages[nameImage];
-          this.formNoticia.controls['noticiaPic'].setValue(responseUrlImage);
-        }
-      }
-    } 
-    if(urlNoticia){
-        this.formNoticia.controls['noticiaPic'].setValue(urlNoticia);
-    }
-
     const idAdd = this.comprobarId();
-    
+
     if (idAdd != -1) {
-      this.dialogService.confirmDialog({
-        title: 'Modificar Noticia',
-        message: '¿Esta seguro de modificar esta noticia?',
-        confirmText: 'Sí',
-        cancelText: 'No'
-      }).subscribe(async res => {
-        if(res){
-          this.formNoticia.controls['id'].setValue(idAdd);
-          await this.dataControl.addNoticia(this.formNoticia.value, idAdd);
-          console.log(this.formNoticia.value);
-          this.selectedFile = null;
-          this.urlNoticia = null;
-          this.toastr.info(
-            'La noticia fue modificada con éxito!',
-            'Noticia modificado',
-            {
-              positionClass: 'toast-bottom-right',
+      this.dialogService
+        .confirmDialog({
+          title: 'Modificar Noticia',
+          message: '¿Esta seguro de modificar esta noticia?',
+          confirmText: 'Sí',
+          cancelText: 'No',
+        })
+        .subscribe(async (res) => {
+          if (res) {
+            if (urlNoticia) {
+              this.formNoticia.controls['noticiaPic'].setValue(urlNoticia);
             }
-          );
-        } else{
-          console.log('No se ha confirmado la modificación')
-        }   
-      })
-      
-    } else {
-      this.dataControl
-        .identifiedIdElement('GlobalNews')
-        .then((response) => {
-          let idGlobal = response['lastitemNew'];
-          idGlobal++;
-          const idAdd = `${idGlobal}n`;
-          this.toastr.success(
-            'La noticia fue registrada con exito!',
-            'Noticia registrada',
-            {
-              positionClass: 'toast-bottom-right',
-            }
-          );
-          const idElement = { lastitemNew: idGlobal };
-          this.dataControl.addGlobalIdElement('GlobalNews', idElement);
-          this.formNoticia.controls['id'].setValue(idAdd);
-          this.dataControl.addNoticia(this.formNoticia.value, idAdd);
-          console.log('formulario a enviar: ', this.formNoticia.value);
-          this.selectedFile = null;
-          this.urlNoticia = null;
+            this.formNoticia.controls['id'].setValue(idAdd);
+            await this.dataControl.addNoticia(this.formNoticia.value, idAdd);
+            console.log(this.formNoticia.value);
+            this.formNoticia.reset();
+            this.selectedFile = null;
+            this.urlNoticia = '';
+            this.toastr.info(
+              'La noticia fue modificada con éxito!',
+              'Noticia modificado',
+              {
+                positionClass: 'toast-bottom-right',
+              }
+            );
+          } else {
+            console.log('No se ha confirmado la modificación');
+          }
         });
+    } else {
+      this.dataControl.identifiedIdElement('GlobalNews').then((response) => {
+        console.log('url de la noticia subida', urlNoticia);
+        if (urlNoticia) {
+          this.formNoticia.controls['noticiaPic'].setValue(urlNoticia);
+        } else {
+          const baseImages = this.plantillaImage;
+          const category = this.formNoticia.get('category').value;
+          for (let nameImage in baseImages) {
+            if (nameImage == category) {
+              const responseUrlImage = baseImages[nameImage];
+              this.formNoticia.controls['noticiaPic'].setValue(
+                responseUrlImage
+              );
+            }
+          }
+          
+        }
+        let idGlobal = response['lastitemNew'];
+        idGlobal++;
+        const idAdd = `${idGlobal}n`;
+        const idElement = { lastitemNew: idGlobal };
+        this.dataControl.addGlobalIdElement('GlobalNews', idElement);
+        this.formNoticia.controls['id'].setValue(idAdd);
+        this.dataControl.addNoticia(this.formNoticia.value, idAdd);
+        console.log('formulario a enviar: ', this.formNoticia.value);
+        this.formNoticia.reset();
+        this.selectedFile = null;
+        this.urlNoticia = '';
+        this.toastr.success(
+          'La noticia fue registrada con exito!',
+          'Noticia registrada',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+      });
     }
   }
 
@@ -147,27 +150,28 @@ export class NewsAdminComponent implements OnInit {
   }
 
   async deleteNoticiaById(id: any) {
-    this.dialogService.confirmDialog({
-      title: 'Eliminar noticia',
-      message: '¿Esta seguro de eliminar esta noticia?',
-      confirmText: 'Sí',
-      cancelText: 'No'
-    }).subscribe(async res => {
-      if(res){
-        await this.dataControl.deleteElement(id, 'Noticias');
-      this.toastr.error(
-        'La noticia fue eliminada con éxito!',
-        'Noticia eliminada',
-        {
-          positionClass: 'toast-bottom-right',
+    this.dialogService
+      .confirmDialog({
+        title: 'Eliminar noticia',
+        message: '¿Esta seguro de eliminar esta noticia?',
+        confirmText: 'Sí',
+        cancelText: 'No',
+      })
+      .subscribe(async (res) => {
+        if (res) {
+          await this.dataControl.deleteElement(id, 'Noticias');
+          this.toastr.error(
+            'La noticia fue eliminada con éxito!',
+            'Noticia eliminada',
+            {
+              positionClass: 'toast-bottom-right',
+            }
+          );
+          this.formNoticia.reset();
+        } else {
+          console.log('No se ha confirmado la eliminación');
         }
-      );
-      this.formNoticia.reset();
-      } else{
-        console.log('No se ha confirmado la eliminación')
-      }
-    })
-    
+      });
   }
 
   uploadNoticiaImage($event: any) {
