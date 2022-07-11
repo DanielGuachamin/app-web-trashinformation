@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   Firestore,
@@ -28,10 +29,6 @@ export class DataApiService {
     return setDoc(doc(this.firestore, 'Personas', email), user);
   }
 
-  addUserRol(user: User, email: any) {
-    return setDoc(doc(this.firestore, 'Roles', email), user);
-  }
-
   getUser(): Observable<User[]> {
     const userRef = collection(this.firestore, 'Personas');
     return collectionData(userRef, { idField: 'email' }) as Observable<User[]>;
@@ -40,11 +37,12 @@ export class DataApiService {
   async getProfile(email: any) {
     const userRef = doc(this.firestore, 'Personas', email)
     const respuesta = await getDoc(userRef)
+    console.log('Obteniendo perfil desde servicio: ', respuesta.data())
     return respuesta.data()
   }
 
   async searchUserRol(email:any) {
-    const docRef = doc(this.firestore, 'Roles', email);
+    const docRef = doc(this.firestore, 'Personas', email);
     const docSnap = await getDoc(docRef);
     const responseUser:any = docSnap.data()
     const rol = responseUser['rol']
@@ -52,7 +50,7 @@ export class DataApiService {
   }
 
   async searchUserData(email:any) {
-    const docRef = doc(this.firestore, 'Roles', email);
+    const docRef = doc(this.firestore, 'Personas', email);
     const docSnap = await getDoc(docRef);
     const responseUser:any = docSnap.data()
     return responseUser
@@ -136,8 +134,6 @@ export class DataApiService {
     const sugestRef = collection(this.firestore, 'Sugerencias')
     return collectionData(sugestRef, {idField: 'id'}) as Observable<Sugerencia[]>
   }
-
-
 
   //Funciones generales de control de elementos
 

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { Ubication } from 'src/app/modelos/ubication';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { UserService } from 'src/app/services/user.service';
 //import { AngularFireStorage } from '@angular/fire/compat/storage';
@@ -22,10 +24,22 @@ export class RegisterComponent implements OnInit {
 
   showPassword: boolean;
 
+  directionsMap: Ubication[] = [
+    {
+      key: 'alt',
+      value: 'ALTAMIRA'
+    },
+    {
+      key: 'lg',
+      value: 'LA GRANJA'
+    }
+  ]
+
   constructor(
     private userService: UserService,
     private router: Router,
-    private userControl: DataApiService
+    private dataControl: DataApiService,
+    private toastr: ToastrService,
     ) {
     this.formReg = new FormGroup({
       email: new FormControl('', [
@@ -55,7 +69,9 @@ export class RegisterComponent implements OnInit {
       birthdate: new FormControl('', [
         Validators.required
       ]),
-      profilePic: new FormControl('')
+      profilePic: new FormControl(''),
+      direccion: new FormControl(''),
+      rol: new FormControl('cliente')
     })
     this.showPassword = false;
   }
@@ -65,24 +81,50 @@ export class RegisterComponent implements OnInit {
   onSubmit(){
     this.userService.register(this.formReg.get('email').value, this.formReg.get('password').value)
       .then(async response => {
+        this.toastr.success(
+          'Se ha registro con éxito',
+          'Registro exitoso',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
         this.formReg.removeControl('password');
         const getDate = this.getDate()
         const getPick = this.getPickAPI()
+        const keyDirection = this.formReg.get('direccionBase').value
+        const valueDirection = this.getValueDirection(keyDirection)
         this.formReg.controls['birthdate'].setValue(getDate)
         this.formReg.controls['profilePic'].setValue(getPick)
+        this.formReg.controls['direccion'].setValue(valueDirection)
         let email = this.formReg.get('email').value
         email = email.toLowerCase()
         this.formReg.controls['email'].setValue(email)
-        await this.userControl.addUser(this.formReg.value, email)
-        this.formReg.addControl('rol', new FormControl(''))
-        const rol = 'cliente'
-        this.formReg.controls['rol'].setValue(rol)
-        this.formReg.removeControl('direccionBase');
-        await this.userControl.addUserRol(this.formReg.value, email)
+        await this.dataControl.addUser(this.formReg.value, email)
+        console.log('formulario a enviar', this.formReg.value)
         this.router.navigate(['/login']);
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error(error)
+        this.toastr.error(
+          'Ya existe una persona registrada con este correo',
+          'Registro fallido',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
+      });
       
+  }
+
+  getValueDirection(key: string): String{
+    let value
+    for(let item of this.directionsMap){
+      if(item.key === key){
+        value = item.value
+        return value;
+      }
+    }
+    return value;
   }
 
   get email(){

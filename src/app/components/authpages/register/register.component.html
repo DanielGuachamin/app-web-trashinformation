@@ -54,8 +54,7 @@
         <mat-form-field appearance="legacy">
           <mat-label>Dirección de domicilio</mat-label>
           <mat-select class="form-control" formControlName="direccionBase">
-            <mat-option value="alt"> ALTAMIRA </mat-option>
-            <mat-option value="lg"> LA GRANJA </mat-option>
+            <mat-option *ngFor="let direction of directionsMap" [value]="direction.key"> {{direction.value}}</mat-option>
           </mat-select>
           <mat-error *ngIf="direccionBase.invalid && (direccionBase.dirty || direccionBase.touched)">
             {{getErrorMessageDirection()}}</mat-error>

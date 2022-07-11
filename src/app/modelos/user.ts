@@ -6,4 +6,7 @@ export interface User {
     direccionBase: String;
     image: String;
     profilePic: String;
+    birthdate: String;
+    direccion: String;
+    rol: String;
 }

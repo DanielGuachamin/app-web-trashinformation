@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -38,6 +39,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private userService: UserService, 
     private router: Router,
+    private toastr: ToastrService,
     private userControl: DataApiService ) {
     this.formLogin = this.createFormGroup();
     this.showPassword = false;
@@ -55,10 +57,26 @@ export class LoginComponent implements OnInit {
       this.userService.login(this.formLogin.value)
         .then((response: any) => {
           console.log(response)
+          this.toastr.success(
+            'Ha iniciado sesión exitosamente',
+            'Inicio de sesión exitoso',
+            {
+              positionClass: 'toast-bottom-right',
+            }
+          );
           this.redirectAdminOrUser()
           
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          console.log(error)
+          this.toastr.error(
+            'Usted no se ha registrado debidamente',
+            'Inicio de sesión fallido',
+            {
+              positionClass: 'toast-bottom-right',
+            }
+          );
+        });
     } else {
       console.log('No funciona');
     }

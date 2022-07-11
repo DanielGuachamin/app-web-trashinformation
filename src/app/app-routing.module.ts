@@ -8,7 +8,6 @@ import { RecoverPasswordComponent} from './components/authpages/recover-password
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { AdminVerificationGuard } from './guards/admin-verification.guard';
 import { ClientVerificationGuard } from './guards/client-verification.guard';
-import { PublicAuthenticationGuard } from './guards/public-authentication.guard';
 
 import { DashboardAdminComponent } from './components/adminpages/dashboard-admin/dashboard-admin.component';
 import { NewsAdminComponent } from './components/adminpages/dashboard-admin/news-admin/news-admin.component';
@@ -89,7 +88,6 @@ const routes: Routes = [
   { 
     path: 'register', 
     component: RegisterComponent
-    //canActivate: [PublicAuthenticationGuard]
   },
   { 
     path: 'login', 
@@ -98,7 +96,6 @@ const routes: Routes = [
   { 
     path: 'recover-password', 
     component: RecoverPasswordComponent
-    //canActivate: [PublicAuthenticationGuard]
   },
   { 
     path: '', 
