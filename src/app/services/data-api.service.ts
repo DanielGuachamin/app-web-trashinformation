@@ -9,7 +9,7 @@ import {
   setDoc,
   getDoc,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Contacto } from '../modelos/contacto';
 import { Noticia } from '../modelos/noticia';
 import { Recomendacion } from '../modelos/recomendacion';
@@ -21,6 +21,7 @@ import { Video } from '../modelos/video';
   providedIn: 'root',
 })
 export class DataApiService {
+  private urlUserImage$ = new BehaviorSubject<String>('')
  
   constructor(private firestore: Firestore) {}
 
@@ -54,6 +55,14 @@ export class DataApiService {
     const docSnap = await getDoc(docRef);
     const responseUser:any = docSnap.data()
     return responseUser
+  }
+
+  get selectedImage$(): Observable<String>{
+    return this.urlUserImage$.asObservable();
+  }
+
+  setImage(url: String){
+    this.urlUserImage$.next(url);
   }
 
   //Funciones para manejar noticias

@@ -7,7 +7,7 @@
   <div class="perfil-button">
     <button mat-flat-button color="primary" routerLink="/dashboard-user/profile-user">Mi Perfil</button>
   </div>
-  <img src="../../../../assets/Logo-trashinformation.png" alt="Logo trashinformation" width="100px" height="80px">
+  <img [src]="(urlProfilePic$ | async) ? (urlProfilePic$ | async) : '../../../../assets/Logo-trashinformation.png'" alt="Logo trashinformation" width="100px" height="80px">
   </mat-toolbar-row>
   <mat-toolbar-row class="user-menu">
     <button mat-flat-button color="primary" routerLink="/dashboard-user">Inicio</button>

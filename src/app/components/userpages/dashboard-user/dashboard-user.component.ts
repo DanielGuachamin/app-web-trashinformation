@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
+import { DataApiService } from 'src/app/services/data-api.service';
 
 
 @Component({
@@ -6,13 +7,10 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './dashboard-user.component.html',
   styleUrls: ['./dashboard-user.component.scss']
 })
-export class DashboardUserComponent implements OnInit {
+export class DashboardUserComponent{
 
-  constructor() { }
+  urlProfilePic$ = this.dataControl.selectedImage$;
 
-  ngOnInit(): void {
-    
-  }
+  constructor(private dataControl: DataApiService) { }
 
-  
 }
