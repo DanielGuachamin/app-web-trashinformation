@@ -15,13 +15,18 @@ export class VideosAdminComponent implements OnInit {
   enumVideos: number = 0;
   videos: Video[] = [];
 
+  contentLimitPattern: any = /^[\s\S]{0,140}$/;
+
   constructor(
     private dataControl: DataApiService,
     private toastr: ToastrService,
     private dialogService: DialogService
   ) {
     this.formVideo = new FormGroup({
-      title: new FormControl('', [Validators.required]),
+      title: new FormControl('', [
+        Validators.required,
+        Validators.pattern(this.contentLimitPattern),
+      ]),
       category: new FormControl('', [Validators.required]),
       prevImg: new FormControl(),
       author: new FormControl('', [Validators.required]),
@@ -157,8 +162,11 @@ export class VideosAdminComponent implements OnInit {
   }
 
   getErrorMessageTitle() {
-    return this.title.hasError('required')
-      ? 'Debe escribir un título para el video'
+    if (this.title.hasError('required')) {
+      return 'Debe escribir un título para el video';
+    }
+    return this.title.hasError('pattern')
+      ? 'Límite máximo de caracteres es 140'
       : '';
   }
 

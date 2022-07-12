@@ -6,35 +6,18 @@
 
 .individual-news{
     margin: 0 1rem;
-    max-width: 900px;
     margin-bottom: 1rem;
 }
 
-.news-image{
-    margin: 1rem;
-}
-
-mat-card-header{
-    margin-bottom: 1rem;
-}
-
-.news-content {
-    display: flex;
-}
-
-.news-text{
-    width: 400px;
-}
-
-mat-card-content{
-    margin: 0 16px;
-}
-
-.news-image{
-    padding: 1rem;
-    width: 450px;
+.example-card{
+    margin: 0 20px;
+    height: 360px;
 }
 
 p{
     text-align: justify;
+}
+
+mat-card-content{
+    margin-top: 0.5rem;
 }

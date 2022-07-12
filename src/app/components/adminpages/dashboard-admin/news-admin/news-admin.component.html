@@ -188,14 +188,16 @@
                     <mat-error *ngIf="author.invalid && (author.dirty || author.touched)">{{getErrorMessageAuthor()}}
                     </mat-error>
                 </mat-form-field>
+
                 <mat-form-field appearance="standard">
                     <mat-label>Descripción</mat-label>
-                    <textarea type="text" matInput matInput placeholder="Ingrese una descripción" class="form-control"
+                    <textarea type="text" matInput #input maxlength="380" placeholder="Ingrese una descripción" class="form-control"
                         formControlName="description"></textarea>
+                        <mat-hint align="end">{{input.value?.length || 0}}/380</mat-hint>
                     <mat-error *ngIf="description.invalid && (description.dirty || description.touched)">
                         {{getErrorMessageDescription()}}</mat-error>
-
                 </mat-form-field>
+
                 <mat-form-field class="mt-3" appearance="standard">
                     <mat-label>Fuente bibliográfica</mat-label>
                     <input type="text" matInput placeholder="Ingrese una referencia" class="form-control"

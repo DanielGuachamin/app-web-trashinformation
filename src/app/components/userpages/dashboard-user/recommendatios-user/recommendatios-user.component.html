@@ -9,23 +9,24 @@
                             Aprende la forma CORRECTA de manejar y clasificar tus residuos
                         </h2>
                     </div>
-                    <div class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'MedioAmbiente')">
-                       
-                        <mat-card class="recomen-card">
-                            <mat-card-header>
-                                <mat-card-title>{{recomen.title}}</mat-card-title>
-                            </mat-card-header>
-                            <div class="contenedor">
-                                <img mat-card-image [src]="recomen.urlImage" alt={{recomen.title}} width="300" height="190">
-            
-                                <div class="centrado">
-                                    <p>
-                                        {{recomen.content}}
-                                    </p>
+                    <mat-grid-list cols="2" rowHeight="380px">
+                        <mat-grid-tile *ngFor="let recomen of (recomendaciones | recomensfilter:'MedioAmbiente')">
+                            <mat-card class="example-card">
+                                <mat-card-header>
+                                    <mat-card-title>{{recomen.title}}</mat-card-title>
+                                </mat-card-header>
+                                <div class="contenedor">
+                                    <img [src]="recomen.urlImage" alt={{recomen.title}} width="380" height="200">
+                
+                                    <div class="centrado">
+                                        <p>
+                                            {{recomen.content}}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </mat-card>
-                    </div>
+                            </mat-card>
+                        </mat-grid-tile>
+                    </mat-grid-list>
                 </mat-tab>
                 <mat-tab label="Residuos Reciclables">
                     <div class="header-tab">
@@ -33,23 +34,24 @@
                             Aprende la forma CORRECTA de manejar y clasificar tus residuos
                         </h2>
                     </div>
-                    <div class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'Reciclaje')">
-                       
-                        <mat-card class="recomen-card">
-                            <mat-card-header>
-                                <mat-card-title>{{recomen.title}}</mat-card-title>
-                            </mat-card-header>
-                            <div class="contenedor">
-                                <img mat-card-image [src]="recomen.urlImage" alt={{recomen.title}} width="300" height="190">
-            
-                                <div class="centrado">
-                                    <p>
-                                        {{recomen.content}}
-                                    </p>
+                    <mat-grid-list cols="2" rowHeight="380px">
+                        <mat-grid-tile *ngFor="let recomen of (recomendaciones | recomensfilter:'Reciclaje')">
+                            <mat-card class="example-card">
+                                <mat-card-header>
+                                    <mat-card-title>{{recomen.title}}</mat-card-title>
+                                </mat-card-header>
+                                <div class="contenedor">
+                                    <img [src]="recomen.urlImage" alt={{recomen.title}} width="380" height="200">
+                
+                                    <div class="centrado">
+                                        <p>
+                                            {{recomen.content}}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </mat-card>
-                    </div>
+                            </mat-card>
+                        </mat-grid-tile>
+                    </mat-grid-list>
                 </mat-tab>
                 <mat-tab label="Residuos Orgánicos">
                     <div class="header-tab">
@@ -57,23 +59,23 @@
                             Aprende la forma CORRECTA de manejar y clasificar tus residuos
                         </h2>
                     </div>
-                    <mat-grid-list cols="2" rowHeight="2:1" class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'Orgánicos')">
-                      
-                        <mat-card class="recomen-card">
-                            <mat-card-header>
-                                <mat-card-title>{{recomen.title}}</mat-card-title>
-                                <mat-card-subtitle>{{recomen.category}}</mat-card-subtitle>
-                            </mat-card-header>
-                            <div class="contenedor">
-                                <img mat-card-image [src]="recomen.urlImage" alt={{recomen.title}} width="300" height="190">
-            
-                                <div class="centrado">
-                                    <p>
-                                        {{recomen.content}}
-                                    </p>
+                    <mat-grid-list cols="2" rowHeight="380px">
+                        <mat-grid-tile *ngFor="let recomen of (recomendaciones | recomensfilter:'Orgánicos')">
+                            <mat-card class="example-card">
+                                <mat-card-header>
+                                    <mat-card-title>{{recomen.title}}</mat-card-title>
+                                </mat-card-header>
+                                <div class="contenedor">
+                                    <img [src]="recomen.urlImage" alt={{recomen.title}} width="380" height="200">
+                
+                                    <div class="centrado">
+                                        <p>
+                                            {{recomen.content}}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </mat-card>
+                            </mat-card>
+                        </mat-grid-tile>
                     </mat-grid-list>
                 </mat-tab>
                 <mat-tab label="Residuos Coronavirus">
@@ -82,23 +84,24 @@
                             Aprende la forma CORRECTA de manejar y clasificar tus residuos
                         </h2>
                     </div>
-                    <div class="individual-recomendacion" *ngFor="let recomen of (recomendaciones | recomensfilter:'Covid19')">
-                        <mat-card class="recomen-card">
-                            <mat-card-header>
-                                <mat-card-title>{{recomen.title}}</mat-card-title>
-                                <mat-card-subtitle>{{recomen.category}}</mat-card-subtitle>
-                            </mat-card-header>
-                            <div class="contenedor">
-                                <img mat-card-image [src]="recomen.urlImage" alt={{recomen.title}} width="300" height="190">
-            
-                                <div class="centrado">
-                                    <p>
-                                        {{recomen.content}}
-                                    </p>
+                    <mat-grid-list cols="2" rowHeight="380px">
+                        <mat-grid-tile *ngFor="let recomen of (recomendaciones | recomensfilter:'Covid19')">
+                            <mat-card class="example-card">
+                                <mat-card-header>
+                                    <mat-card-title>{{recomen.title}}</mat-card-title>
+                                </mat-card-header>
+                                <div class="contenedor">
+                                    <img [src]="recomen.urlImage" alt={{recomen.title}} width="380" height="200">
+                
+                                    <div class="centrado">
+                                        <p>
+                                            {{recomen.content}}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </mat-card>
-                    </div>
+                            </mat-card>
+                        </mat-grid-tile>
+                    </mat-grid-list>
                 </mat-tab>
               </mat-tab-group>
     </div>

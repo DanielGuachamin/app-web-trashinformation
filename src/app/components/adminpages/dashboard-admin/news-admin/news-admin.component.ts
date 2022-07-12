@@ -25,6 +25,8 @@ export class NewsAdminComponent implements OnInit {
   urlNoticia: any = null;
   selectedFile: any = null;
 
+  contentLimitPattern: any = /^[\s\S]{0,380}$/;
+
   plantillaImage: any = {
     MedioAmbiente:
       'https://firebasestorage.googleapis.com/v0/b/testinsercionjson.appspot.com/o/plantillaImages%2Fmedioambiente.jpg?alt=media&token=e49add10-456c-40b0-81f5-e41af9c1a783',
@@ -45,7 +47,10 @@ export class NewsAdminComponent implements OnInit {
     this.formNoticia = new FormGroup({
       title: new FormControl('', [Validators.required]),
       category: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.required]),
+      description: new FormControl('', [
+        Validators.required,
+        Validators.pattern(this.contentLimitPattern)
+      ]),
       author: new FormControl('', [Validators.required]),
       url: new FormControl('', [Validators.required]),
       id: new FormControl(),
@@ -235,8 +240,11 @@ export class NewsAdminComponent implements OnInit {
   }
 
   getErrorMessageDescription() {
-    return this.description.hasError('required')
-      ? 'Debe escribir una descripción para la noticia'
+    if (this.description.hasError('required')) {
+      return 'Debe escribir la recomendación de la noticia';
+    }
+    return this.description.hasError('pattern')
+      ? 'Límite máximo de caracteres es 380'
       : '';
   }
 

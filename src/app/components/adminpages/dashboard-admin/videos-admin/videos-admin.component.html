@@ -153,11 +153,14 @@
         </div>
         <div class="formulario-videos">
             <form [formGroup]="formVideo" (ngSubmit)="onSubmitAddVideo()" class="formulario-videos">
+
                 <mat-form-field appearance="standard">
                     <mat-label>Título</mat-label>
-                    <input type="text" matInput placeholder="Ingrese un título" class="form-control" formControlName="title">
+                    <input type="text" matInput #input maxlength="140" placeholder="Ingrese un título" class="form-control" formControlName="title">
+                    <mat-hint align="end">{{input.value?.length || 0}}/140</mat-hint>
                     <mat-error *ngIf="title.invalid && (title.dirty || title.touched)">{{getErrorMessageTitle()}}</mat-error>
                 </mat-form-field>
+
                 <mat-form-field appearance="standard">
                     <mat-label>Categoría</mat-label>
                     <mat-select class="form-control" formControlName="category">

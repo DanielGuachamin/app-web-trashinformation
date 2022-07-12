@@ -7,18 +7,20 @@
 
 .individual-recomendacion {
     margin: 0 1rem;
-    max-width: 50%;
     margin-bottom: 1rem;
 }
 
 .contenedor {
     margin: 1rem 0.9rem;
+    text-align: center;
 }
 
 .centrado {
     text-align: justify;
+    margin-top: 0.5rem;
 }
 
-mat-grid-tile {
-    background: lightblue;
+.example-card{
+    margin: 0 20px;
+    height: 360px;
 }
