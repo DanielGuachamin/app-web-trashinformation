@@ -1,8 +1,22 @@
-.header-tab {
+.grupo-labels{
+    margin-top: -15px;
+}
+
+.header-tab{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.header-title {
     text-align: center;
     background-color: antiquewhite;
-    margin: 0.5rem 10rem;
+    padding: 0.1rem 3rem;
+}
 
+.header-buttons{
+    position: absolute;
+    right: 0;
 }
 
 .individual-recomendacion {
@@ -23,4 +37,8 @@
 .example-card{
     margin: 0 20px;
     height: 360px;
+}
+
+button{
+    margin: 0.1rem 1.5rem;
 }

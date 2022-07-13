@@ -3,6 +3,7 @@ import { DataApiService } from 'src/app/services/data-api.service';
 import { Contacto } from 'src/app/modelos/contacto'
 import { MatDialog} from '@angular/material/dialog'
 import { MapComponent} from '../../../dialogs/map/map.component'
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-contacts-user',
@@ -12,8 +13,10 @@ import { MapComponent} from '../../../dialogs/map/map.component'
 export class ContactsUserComponent implements OnInit {
 
   contactos: Contacto[] = [];
+  urlProfilePicExternally: String;
 
   constructor(
+    private userService: UserService,
     private dataControl: DataApiService,
     public dialog: MatDialog
     ) { }
@@ -21,6 +24,15 @@ export class ContactsUserComponent implements OnInit {
   ngOnInit(): void {
     this.dataControl.getContacts().subscribe((contactos) => {
       this.contactos = contactos;
+    });
+    this.getProfileUser()
+  }
+
+  getProfileUser() {
+    const email = this.userService.seeEmailUserAuth();
+    this.dataControl.getProfile(email).then((response: any) => {
+      const profilePic = response.profilePic
+      this.dataControl.setImage(profilePic)
     });
   }
 

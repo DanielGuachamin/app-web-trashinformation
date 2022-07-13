@@ -67,7 +67,9 @@ export class ProfileUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataControl.selectedImage$.subscribe(result => this.urlProfilePicExternally = result)
+    this.dataControl.selectedImage$.subscribe(
+      (result) => (this.urlProfilePicExternally = result)
+    );
     this.getProfileUser();
   }
 
@@ -83,14 +85,12 @@ export class ProfileUserComponent implements OnInit {
       const urlImage = this.urlProfilePic;
       this.formProfile.controls['profilePic'].setValue(urlImage);
     }
-    
     await this.dataControl.addUser(this.formProfile.value, email);
     this.selectedFile = null;
     this.urlProfilePic = '';
     this.toastr.success('Perfil modificado con éxito!', 'Perfil modificado', {
       positionClass: 'toast-bottom-right',
     });
-    console.log('formulario perfil: ', this.formProfile.value, email);
     this.getProfileUser();
   }
 
@@ -111,7 +111,7 @@ export class ProfileUserComponent implements OnInit {
       this.formProfile.setValue(response);
       const profilePic = this.formProfile.get('profilePic').value;
       this.profilePic = profilePic;
-      this.dataControl.setImage(profilePic)
+      this.dataControl.setImage(profilePic);
       const email = this.formProfile.get('email').value;
       this.email = email;
       let birthdateBD = this.formProfile.get('birthdate').value;
@@ -194,9 +194,13 @@ export class ProfileUserComponent implements OnInit {
     this.userService
       .logout()
       .then(() => {
-        this.toastr.success('Usted ha cerrado sesión exitosamente', 'Cierre de Sesión', {
-          positionClass: 'toast-bottom-right',
-        });
+        this.toastr.success(
+          'Usted ha cerrado sesión exitosamente',
+          'Cierre de Sesión',
+          {
+            positionClass: 'toast-bottom-right',
+          }
+        );
         this.router.navigate(['/login']);
       })
       .catch((error) => console.log(error));
