@@ -25,6 +25,9 @@ export class ProfileUserComponent implements OnInit {
   urlProfilePic: string = '';
   urlProfilePicExternally: String = '';
 
+  maxDate: Date = new Date('01/01/2005');
+  minDate: Date = new Date('01/01/1920');
+
   alfabetWithOutSpacePattern: any =
     /^(?!.*[0-9])[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
 
@@ -85,7 +88,7 @@ export class ProfileUserComponent implements OnInit {
       const urlImage = this.urlProfilePic;
       this.formProfile.controls['profilePic'].setValue(urlImage);
     }
-    await this.dataControl.addUser(this.formProfile.value, email);
+    await this.dataControl.addUser(this.formProfile.value, email)
     this.selectedFile = null;
     this.urlProfilePic = '';
     this.toastr.success('Perfil modificado con éxito!', 'Perfil modificado', {
@@ -140,6 +143,9 @@ export class ProfileUserComponent implements OnInit {
   getProfileImageUrl(path: string) {
     getDownloadURL(ref(this.storage, path)).then((url) => {
       this.urlProfilePic = url;
+      this.toastr.success('Ahora ya puedes guardar tu Perfil', 'Imagen cargada', {
+        positionClass: 'toast-bottom-right',
+      });
     });
   }
 

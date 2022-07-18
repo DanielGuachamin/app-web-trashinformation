@@ -2,7 +2,7 @@
   <div class="fondo-perfil">
     <div class="info-perfil">
       <div class="image-perfil">
-        <img [src]="profilePic" alt="Foto perfil usuario" width="200px" height="200px">
+        <img [src]="(profilePic == '') ? '../../../../assets/NoImage.png' : profilePic" alt="Foto perfil usuario" width="200px" height="200px">
         <div class="button-image">
           <button type="button" mat-raised-button (click)="fileInput.click()">Actualizar</button>
           <input hidden (change)="uploadNoticiaImage($event)" #fileInput type="file">
@@ -31,7 +31,7 @@
 
         <mat-form-field appearance="legacy">
           <mat-label>Fecha de nacimiento</mat-label>
-          <input matInput formControlName="birthdate" [matDatepicker]="picker">
+          <input matInput formControlName="birthdate" [matDatepicker]="picker" [max]="maxDate" [min]="minDate">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
           <mat-error *ngIf="birthdate.invalid && (birthdate.dirty || birthdate.touched)">{{getErrorMessageBirthday()}}

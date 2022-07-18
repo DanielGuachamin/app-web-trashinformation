@@ -44,9 +44,9 @@
 
         <mat-form-field appearance="legacy">
           <mat-label>Fecha de nacimiento</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="birthdate">
+          <input matInput [matDatepicker]="picker" formControlName="birthdate" [max]="maxDate" [min]="minDate">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker #picker ></mat-datepicker>
           <mat-error *ngIf="birthdate.invalid && (birthdate.dirty || birthdate.touched)">{{getErrorMessageBirthday()}}
           </mat-error>
         </mat-form-field>

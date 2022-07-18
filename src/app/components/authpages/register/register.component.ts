@@ -22,6 +22,9 @@ export class RegisterComponent implements OnInit {
 
   formReg: FormGroup;
 
+  maxDate: Date = new Date('01/01/2005');
+  minDate: Date = new Date('01/01/1920');
+
   showPassword: boolean;
 
   directionsMap: Ubication[] = [
