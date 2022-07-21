@@ -5,7 +5,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Ubication } from 'src/app/modelos/ubication';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { UserService } from 'src/app/services/user.service';
-//import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +17,7 @@ export class RegisterComponent implements OnInit {
 
   passwordPattern: any = /^(?=.*[a-z])(?=.*\d)(?=.*[$@$!%_#<>*?&])[A-Za-z\d$@$!%_#<>*?&]{6,15}/;
 
-  alfabetWithOutSpacePattern: any = /^(?!.*[0-9])[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
+  alfabetWithOutSpacePattern: any = /^(?!.*[0-9])[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]{2,}$/;
 
   formReg: FormGroup;
 
@@ -193,7 +192,7 @@ export class RegisterComponent implements OnInit {
     if (this.name.hasError('required')) {
       return 'Debe completar el campo'
     }
-    return this.name.hasError('pattern') ? 'Mínimo 6 caracteres, sin numeros y sin espacios' : '';
+    return this.name.hasError('pattern') ? 'Mínimo 3 caracteres, sin numeros y sin espacios' : '';
   }
 
   getErrorMessageDirection(){

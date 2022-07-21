@@ -142,10 +142,10 @@ export class ProfileUserComponent implements OnInit {
 
   getProfileImageUrl(path: string) {
     getDownloadURL(ref(this.storage, path)).then((url) => {
-      this.urlProfilePic = url;
       this.toastr.success('Ahora ya puedes guardar tu Perfil', 'Imagen cargada', {
         positionClass: 'toast-bottom-right',
       });
+      this.urlProfilePic = url;
     });
   }
 

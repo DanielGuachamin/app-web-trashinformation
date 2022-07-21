@@ -68,17 +68,36 @@ export class LoginComponent implements OnInit {
           
         })
         .catch(error => {
-          console.log(error)
-          this.toastr.error(
-            'Usted no se ha registrado debidamente',
-            'Inicio de sesión fallido',
-            {
-              positionClass: 'toast-bottom-right',
-            }
-          );
+          const typeError = error.message
+          console.log(typeError)
+          if(typeError.includes('wrong-password')){
+            this.toastr.error(
+              'Verifique su contraseña',
+              'Contraseña incorrecta',
+              {
+                positionClass: 'toast-bottom-right',
+              }
+            );
+          } else{
+            this.toastr.error(
+              'Usted no se ha registrado debidamente',
+              'Inicio de sesión fallido',
+              {
+                positionClass: 'toast-bottom-right',
+              }
+            );
+
+          }
         });
     } else {
       console.log('No funciona');
+      this.toastr.error(
+        'Complete los campos correctamente',
+        'Inicio de sesión fallido',
+        {
+          positionClass: 'toast-bottom-right',
+        }
+      );
     }
   }
 

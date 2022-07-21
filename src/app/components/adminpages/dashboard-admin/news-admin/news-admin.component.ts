@@ -193,6 +193,9 @@ export class NewsAdminComponent implements OnInit {
 
   getNoticiaImageUrl(path: string) {
     getDownloadURL(ref(this.storage, path)).then((url) => {
+      this.toastr.success('Ahora ya puedes agregar una noticia', 'Imagen cargada', {
+        positionClass: 'toast-bottom-right',
+      });
       this.urlNoticia = url;
     });
   }
@@ -204,6 +207,8 @@ export class NewsAdminComponent implements OnInit {
   }
 
   clearForm() {
+    this.selectedFile = null;
+    this.urlNoticia = '';
     this.formNoticia.reset();
   }
 

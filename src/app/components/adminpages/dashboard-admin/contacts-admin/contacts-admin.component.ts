@@ -30,7 +30,8 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
   enumContact: number = 0;
   contactos: Contacto[] = [];
 
-  alfabetWithOutSpacePattern: any = /^(?!.*[0-9])[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
+  alfabetWithOutSpacePattern: any = /^(?!.*[0-9])[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]{2,}$/;
+
   phoneNumberPattern: any = /^\d{10}$/;
 
   constructor(
@@ -195,7 +196,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
       return 'Debe completar el campo';
     }
     return this.name.hasError('pattern')
-      ? 'Mínimo 6 caracteres y sin numeros'
+      ? 'Mínimo 3 caracteres y sin numeros'
       : '';
   }
 
