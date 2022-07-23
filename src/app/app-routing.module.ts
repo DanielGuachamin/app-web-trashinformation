@@ -52,7 +52,7 @@ const routes: Routes = [
         component: SuggestionsAdminComponent
       }
     ],
-    //canActivate: [AuthenticationGuard, AdminVerificationGuard]
+    canActivate: [AuthenticationGuard, AdminVerificationGuard]
   },
   { 
     path: 'dashboard-user',
@@ -83,7 +83,7 @@ const routes: Routes = [
         component: ProfileUserComponent
       }
     ],
-    //canActivate: [AuthenticationGuard, ClientVerificationGuard]
+    canActivate: [AuthenticationGuard, ClientVerificationGuard]
   },
   { 
     path: 'register', 
