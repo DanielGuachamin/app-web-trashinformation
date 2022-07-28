@@ -17,7 +17,7 @@ export class SuggestionsUserComponent implements OnInit {
 
   today: Date = new Date();
   pipe = new DatePipe('en-US');
-  displayedColumns: string[] = ['nombre', 'seccion', 'comentario', 'acciones'];
+  displayedColumns: string[] = ['seccion', 'comentario', 'acciones'];
   dataSource = new MatTableDataSource();
   formSuggest: FormGroup;
   enumSuggest: number = 0;
