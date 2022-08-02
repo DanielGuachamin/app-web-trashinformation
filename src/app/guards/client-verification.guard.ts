@@ -9,7 +9,7 @@ import { UserService } from '../services/user.service';
 })
 export class ClientVerificationGuard implements CanActivate {
 
-  constructor(private userService: UserService, private userControl: DataApiService) {}
+  constructor(private userService: UserService, private userControl: DataApiService, private router: Router) {}
 
 
   canActivate(
@@ -25,6 +25,7 @@ export class ClientVerificationGuard implements CanActivate {
     if(rol === 'cliente'){
       return true
     }else{
+      this.router.navigate(['/error-404/NoClient'])
       return false
     }
   }

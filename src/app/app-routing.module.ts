@@ -5,9 +5,6 @@ import { LoginComponent } from './components/authpages/login/login.component';
 import { RegisterComponent } from './components/authpages/register/register.component';
 import { RecoverPasswordComponent} from './components/authpages/recover-password/recover-password.component'
 
-import { AuthenticationGuard } from './guards/authentication.guard';
-import { AdminVerificationGuard } from './guards/admin-verification.guard';
-import { ClientVerificationGuard } from './guards/client-verification.guard';
 
 import { DashboardAdminComponent } from './components/adminpages/dashboard-admin/dashboard-admin.component';
 import { NewsAdminComponent } from './components/adminpages/dashboard-admin/news-admin/news-admin.component';
@@ -24,7 +21,10 @@ import { ContactsUserComponent } from './components/userpages/dashboard-user/con
 import { SuggestionsUserComponent } from './components/userpages/dashboard-user/suggestions-user/suggestions-user.component';
 import { ProfileUserComponent } from './components/userpages/dashboard-user/profile-user/profile-user.component';
 
-
+import { AuthenticationGuard } from './guards/authentication.guard';
+import { AdminVerificationGuard } from './guards/admin-verification.guard';
+import { ClientVerificationGuard } from './guards/client-verification.guard';
+import { Error404Component } from './components/error404/error404.component';
 
 const routes: Routes = [
   {
@@ -96,6 +96,10 @@ const routes: Routes = [
   { 
     path: 'recover-password', 
     component: RecoverPasswordComponent
+  },
+  {
+    path: 'error-404/:type',
+    component: Error404Component
   },
   { 
     path: '', 

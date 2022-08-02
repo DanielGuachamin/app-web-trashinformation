@@ -27,6 +27,7 @@ import { DashboardUserModule } from './components/userpages/dashboard-user/dashb
 
 import { ToastrModule } from 'ngx-toastr';
 import { SharedModule } from './shared/shared.module';
+import { Error404Component } from './components/error404/error404.component';
 
 //import { MapComponent } from './components/dialogs/map/map.component';
 
@@ -39,6 +40,7 @@ import { SharedModule } from './shared/shared.module';
     DashboardAdminComponent,
     DashboardUserComponent,
     RecoverPasswordComponent,
+    Error404Component,
     //MapComponent
   ],
   imports: [

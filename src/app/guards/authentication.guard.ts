@@ -25,16 +25,8 @@ export class AuthenticationGuard implements CanActivate {
     if(isAuth){
       return true
     }
+    this.router.navigate(['/error-404/NoAuth'])
     return false
-    /*
-    const rol = await this.userControl.searchUserRol(isAuth.email)
-    console.log('Desde guardian', rol)
-    if(rol === 'admin'){
-      this.router.navigate(['/dashboard-admin'])
-    }else{
-      this.router.navigate(['/dashboard-user'])
-    }
-    */
   }
 
   

@@ -9,7 +9,7 @@ import { UserService } from '../services/user.service';
 })
 export class AdminVerificationGuard implements CanActivate {
 
-  constructor(private userService: UserService, private userControl: DataApiService) {}
+  constructor(private userService: UserService, private userControl: DataApiService, private router: Router) {}
 
 
   canActivate(
@@ -25,6 +25,7 @@ export class AdminVerificationGuard implements CanActivate {
     if(rol === 'admin'){
       return true
     }else{
+      this.router.navigate(['/error-404/NoAdmin'])
       return false
     }
   }

@@ -7,6 +7,7 @@ import { ConfirmDialogData } from '../modelos/confirm-dialog-data';
 @Injectable({
   providedIn: 'root'
 })
+
 export class DialogService {
 
   constructor(private dialog: MatDialog) { }
