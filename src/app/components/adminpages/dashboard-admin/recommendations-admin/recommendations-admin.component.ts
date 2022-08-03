@@ -19,13 +19,13 @@ export class RecommendationsAdminComponent implements OnInit {
 
   plantillaImage: any = {
     MedioAmbiente:
-      'https://firebasestorage.googleapis.com/v0/b/testinsercionjson.appspot.com/o/plantillaImages%2Fmedioambiente.jpg?alt=media&token=e49add10-456c-40b0-81f5-e41af9c1a783',
+      'https://user-images.githubusercontent.com/66534512/182672307-7fc94945-b9e8-46a2-8dfe-f122e577decc.jpg',
     Orgánicos:
-      'https://firebasestorage.googleapis.com/v0/b/testinsercionjson.appspot.com/o/plantillaImages%2Forganicos.jpg?alt=media&token=2f2467bd-5417-4175-89ad-706b8444a4d5',
+      'https://user-images.githubusercontent.com/66534512/182672297-12434858-6467-478d-87bb-ade29790a1a4.jpg',
     Reciclaje:
-      'https://firebasestorage.googleapis.com/v0/b/testinsercionjson.appspot.com/o/plantillaImages%2Freciclaje.jpg?alt=media&token=cb69ee6d-8974-4dcf-9a8b-663b54ef96c8',
+      'https://user-images.githubusercontent.com/66534512/182672301-11e18541-4a07-404c-a747-a55d27401b8a.jpg',
     Covid19:
-      'https://firebasestorage.googleapis.com/v0/b/testinsercionjson.appspot.com/o/plantillaImages%2Fcovid19.jpg?alt=media&token=3c3364e5-cc84-49e5-a0a7-0131f4a99ce1',
+      'https://user-images.githubusercontent.com/66534512/182672305-b004430f-48b6-4cc8-963c-61f23ae76289.jpg',
   };
 
   constructor(
