@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -9,7 +10,6 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./recover-password.component.scss'],
 })
 export class RecoverPasswordComponent {
-
   //Módulo para recuperar contraseña
 
   //Expresión regular que admite dirección de correo válido:
@@ -20,7 +20,11 @@ export class RecoverPasswordComponent {
   //Variable para manejo de formulario
   formRecover: FormGroup;
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {
     //Instancia de formulario con sus validaciones
     this.formRecover = new FormGroup({
       email: new FormControl('', [
@@ -39,10 +43,15 @@ export class RecoverPasswordComponent {
     email = email.toLowerCase();
     this.formRecover.controls['email'].setValue(email);
     this.userService
-      .recoverPassword(this.formRecover.get('email').value)
+      .recoverPassword(email)
       .then((response) => {
+        this.toastr.info('Verifique su bandeja de correos', 'Correo enviado', {
+          positionClass: 'toast-bottom-right',
+        });
+        console.log('respuesta recuperar: ', response)
         this.router.navigate(['/login']);
-      });
+      })
+      .catch(error => console.log(error))
   }
 
   closeRecoverPassword() {

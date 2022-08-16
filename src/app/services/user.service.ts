@@ -76,9 +76,8 @@ export class UserService {
   //Recupera contraseña y pasa como argumento el correo
   recoverPassword(email: string) {
     return sendPasswordResetEmail(this.auth, email)
-      .then(() => {
-        // Password reset email sent!
-        // ..
+      .then((success) => {
+        console.log(success)
       })
       .catch((error) => {
         console.log(error);
