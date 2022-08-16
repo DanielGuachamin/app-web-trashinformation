@@ -12,6 +12,7 @@ export class DialogService {
 
   constructor(private dialog: MatDialog) { }
 
+  //Dialogo que funciona como observable de confirmación y se detiene al elegir una opción
   confirmDialog(data: ConfirmDialogData): Observable<boolean> {
     return this.dialog.open(ConfirmComponent, {
       data,

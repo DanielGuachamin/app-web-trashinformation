@@ -9,6 +9,7 @@ import { ConfirmDialogData } from 'src/app/modelos/confirm-dialog-data';
 })
 export class ConfirmComponent implements OnInit {
 
+  //Inyecta la dependecia del conjunto de datos para un diálogo a modo de interfaz
   constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData) { }
 
   ngOnInit(): void {

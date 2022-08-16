@@ -18,6 +18,10 @@ import { Ubication } from 'src/app/modelos/ubication';
   styleUrls: ['./profile-user.component.scss'],
 })
 export class ProfileUserComponent implements OnInit {
+
+  //Módulo para perfil
+
+  //Variables para manejo de datos: formulario, urls de perfil, correo y archivo de imagen
   formProfile: FormGroup;
   profilePic: String = '';
   email: String = '';
@@ -25,22 +29,85 @@ export class ProfileUserComponent implements OnInit {
   urlProfilePic: string = '';
   urlProfilePicExternally: String = '';
 
+  //Instancia de fechas límites de datepicker
   maxDate: Date = new Date('01/01/2005');
   minDate: Date = new Date('01/01/1920');
 
+  //Expresión regular que permite acentos, 'ñ', 'Ñ' y no admite números
   alfabetWithOutSpacePattern: any =
     /^(?!.*[0-9])[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
 
+  //Direcciones disponibles en base de datos
   directionsMap: Ubication[] = [
     {
       key: 'alt',
-      value: 'ALTAMIRA',
+      value: 'ALTAMIRA'
+    },
+    {
+      key: 'batal',
+      value: 'BATAN ALTO'
+    },
+    {
+      key: 'bat',
+      value: 'BATAN'
+    },
+    {
+      key: 'bel',
+      value: 'BELISARIO'
+    },
+    {
+      key: 'chori',
+      value: 'CENTRO HISTORICO ORIENTAL'
+    },
+    {
+      key: 'eggo',
+      value: 'EL GIRON - GUAPULO'
+    },
+    {
+      key: 'frta',
+      value: 'FLORESTA'
+    },
+    {
+      key: 'jpjp',
+      value: 'JIPIJAPA'
+    },
+    {
+      key: 'lcom',
+      value: 'LA COMUNA'
+    },
+    {
+      key: 'lgsa',
+      value: 'LA GASCA'
     },
     {
       key: 'lg',
-      value: 'LA GRANJA',
+      value: 'LA GRANJA'
     },
-  ];
+    {
+      key: 'lmac',
+      value: 'LA MARISCAL'
+    },
+    {
+      key: 'mlsc',
+      value: 'MANUEL LARREA - SANTA CLARA'
+    },
+    {
+      key: 'pnclo',
+      value: 'PANECILLO'
+    },
+    {
+      key: 'prds',
+      value: 'PERIODISTAS'
+    },
+    {
+      key: 'pdra',
+      value: 'PRADERA'
+    },
+    {
+      key: 'tmyo',
+      value: 'TAMAYO'
+    }
+  ]
 
   constructor(
     private userService: UserService,
@@ -49,6 +116,7 @@ export class ProfileUserComponent implements OnInit {
     private toastr: ToastrService,
     private storage: Storage
   ) {
+    //Instancia de formulario con sus validaciones
     this.formProfile = new FormGroup({
       email: new FormControl(''),
       name: new FormControl('', [
@@ -70,12 +138,15 @@ export class ProfileUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Al iniciar se suscribe a la url de perfil desde un servicio
     this.dataControl.selectedImage$.subscribe(
       (result) => (this.urlProfilePicExternally = result)
     );
+    //Al iniciar obtiene información del usuario actual
     this.getProfileUser();
   }
 
+  //Modificar datos de perfil
   async onModifiedProfile() {
     const email = this.userService.seeEmailUserAuth();
     const nameProfileImage = this.selectedFile;
@@ -85,6 +156,7 @@ export class ProfileUserComponent implements OnInit {
     const valueDirection = this.getValueDirection(keyDirection);
     this.formProfile.controls['direccion'].setValue(valueDirection);
     if (nameProfileImage != null) {
+      //Si se ha cargado una imagen guarda la url en el formulario
       const urlImage = this.urlProfilePic;
       this.formProfile.controls['profilePic'].setValue(urlImage);
     }
@@ -94,9 +166,11 @@ export class ProfileUserComponent implements OnInit {
     this.toastr.success('Perfil modificado con éxito!', 'Perfil modificado', {
       positionClass: 'toast-bottom-right',
     });
+    //Actualiza la información del perfil
     this.getProfileUser();
   }
 
+  //Hace consulta del objeto de direcciones y retorna nombre de dirección
   getValueDirection(key: string): String {
     let value;
     for (let item of this.directionsMap) {
@@ -108,6 +182,7 @@ export class ProfileUserComponent implements OnInit {
     return value;
   }
 
+  //Trae información del usuario desde la base de datos
   getProfileUser() {
     const email = this.userService.seeEmailUserAuth();
     this.dataControl.getProfile(email).then((response: any) => {
@@ -117,6 +192,7 @@ export class ProfileUserComponent implements OnInit {
       this.dataControl.setImage(profilePic);
       const email = this.formProfile.get('email').value;
       this.email = email;
+      //Transforma fecha para presentar en el campo de datepicker
       let birthdateBD = this.formProfile.get('birthdate').value;
       let split = birthdateBD.split('/');
       birthdateBD = split[2] + '/' + split[1] + '/' + split[0];
@@ -124,7 +200,8 @@ export class ProfileUserComponent implements OnInit {
     });
   }
 
-  uploadNoticiaImage($event: any) {
+  //Carga una imagen mediante Firebase Storage
+  uploadProfileImage($event: any) {
     this.selectedFile = $event.target.files[0] ?? null;
     const file = $event.target.files[0];
     const formName = this.formProfile.get('name').value;
@@ -135,11 +212,13 @@ export class ProfileUserComponent implements OnInit {
     uploadBytes(imgRef, file)
       .then((response) => {
         console.log(response);
+        //Llama a la función y pasa el nombre de ruta de la imagen
         this.getProfileImageUrl(`userImages/${fileName}`);
       })
       .catch((error) => console.log(error));
   }
 
+  //Obtiene la url de la imagen y la guarda en la propiedad urlProfilePic
   getProfileImageUrl(path: string) {
     getDownloadURL(ref(this.storage, path)).then((url) => {
       this.toastr.success('Ahora ya puedes guardar tu Perfil', 'Imagen cargada', {
@@ -149,6 +228,7 @@ export class ProfileUserComponent implements OnInit {
     });
   }
 
+  //Funciones getters para elementos de formulario
   get name() {
     return this.formProfile.get('name');
   }
@@ -165,6 +245,7 @@ export class ProfileUserComponent implements OnInit {
     return this.formProfile.get('birthdate');
   }
 
+  //Transforma fecha a formato requerido AAAA/MM/DD
   getDate() {
     let momentResponse = this.formProfile.value;
     momentResponse = JSON.parse(JSON.stringify(momentResponse));
@@ -175,6 +256,8 @@ export class ProfileUserComponent implements OnInit {
     return momentResponse;
   }
 
+  //Funciones de retroalimentación cuando se comete errores al completar formulario
+  //Se toma en cuenta el campo que sea obligatorio y aplica patrones Regex
   getErrorMessageNameLastname() {
     if (this.name.hasError('required')) {
       return 'Debe completar el campo';

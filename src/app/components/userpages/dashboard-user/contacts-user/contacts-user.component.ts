@@ -12,6 +12,8 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ContactsUserComponent implements OnInit {
 
+  //Módulo para mostrar información en inicio
+  //Variable para manejo de datos: lista de contactos y url de perfil de usuario
   contactos: Contacto[] = [];
   urlProfilePicExternally: String;
 
@@ -22,12 +24,16 @@ export class ContactsUserComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    //Al iniciar obtiene una lista de contactos desde la base de datos
     this.dataControl.getContacts().subscribe((contactos) => {
       this.contactos = contactos;
     });
+    //Obtiene información del usuario que ha iniciado sesión
     this.getProfileUser()
   }
 
+  //Obtiene la imagen del usuario,
+  //Si la ha modificado cambiará también el logo del header,
   getProfileUser() {
     const email = this.userService.seeEmailUserAuth();
     this.dataControl.getProfile(email).then((response: any) => {
@@ -36,16 +42,13 @@ export class ContactsUserComponent implements OnInit {
     });
   }
 
+  //Controla el díalogo que se ha establecido para el mapa en el directorio de dialogs
   openDialog(){
     const dialogRef = this.dialog.open(MapComponent, {
       width: '350px',
-      data: 'Esto es el modal de explicacion'
     });
     dialogRef.afterClosed().subscribe(res => {
       console.log(res);
-      if(res){
-        console.log('Borrar')
-      }
     });
   }
 

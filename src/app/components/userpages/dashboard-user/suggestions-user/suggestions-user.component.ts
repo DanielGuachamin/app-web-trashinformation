@@ -15,14 +15,18 @@ import { DialogService } from 'src/app/services/dialog.service';
 })
 export class SuggestionsUserComponent implements OnInit {
 
-  today: Date = new Date();
-  pipe = new DatePipe('en-US');
-  displayedColumns: string[] = ['seccion', 'comentario', 'acciones'];
-  dataSource = new MatTableDataSource();
+  //Módulo para gestionar sugerencias
+
+  //Variables para manejo de datos: formulario, enumerar, fecha actual, encabezado de columnas
+
   formSuggest: FormGroup;
   enumSuggest: number = 0;
   sugerencias: Sugerencia[] = [];
   sugerenciaByUser: Sugerencia[] = [];
+  today: Date = new Date();
+  pipe = new DatePipe('en-US');
+  displayedColumns: string[] = ['seccion', 'comentario', 'acciones'];
+  dataSource = new MatTableDataSource();
 
   constructor(
     private dataControl: DataApiService,
@@ -30,6 +34,7 @@ export class SuggestionsUserComponent implements OnInit {
     private toastr: ToastrService,
     private dialogService: DialogService
   ) {
+    //Instancia de formulario con sus validaciones
     this.formSuggest = new FormGroup({
       id: new FormControl(),
       name: new FormControl(),
@@ -46,6 +51,7 @@ export class SuggestionsUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Al iniciar obtiene una lista de sugerencias hechas por el usuario desde la base de datos
     this.dataControl.getSuggestions().subscribe((sugerencias) => {
       this.enumSuggest = sugerencias.length;
       this.sugerencias = sugerencias;
@@ -54,6 +60,7 @@ export class SuggestionsUserComponent implements OnInit {
     });
   }
 
+  //Agrega una nueva sugerencia
   async onSubmitAddSuggest() {
     const email = this.userService.seeEmailUserAuth();
     this.formSuggest.controls['email'].setValue(email);
@@ -62,11 +69,12 @@ export class SuggestionsUserComponent implements OnInit {
     let name,
       lastName = '';
     this.dataControl.searchUserData(email).then(async (response) => {
+      //Guarda nombre y apellido del usuario en la sugerencia
       name = response.name;
       lastName = response.lastName;
       this.formSuggest.controls['name'].setValue(name);
       this.formSuggest.controls['lastName'].setValue(lastName);
-      
+      //Enumera las sugerencias, actualiza valor global y agrega una sugerencia
       this.dataControl.identifiedIdElement('GlobalSuggestions').then((response) => {
         let idGlobal = response['lasitemSuggestion'];
         idGlobal++;
@@ -83,11 +91,11 @@ export class SuggestionsUserComponent implements OnInit {
         this.formSuggest.controls['id'].setValue(idAdd);
         this.dataControl.addSuggest(this.formSuggest.value, idAdd);
         this.formSuggest.reset();
-        //console.log('formulario a enviar: ', this.formSuggest.value);
       })
     });
   }
 
+  //Elimina una sugerencia y muestra un modal de confirmación
   async deleteSuggestById(id: any) {
     this.dialogService.confirmDialog({
       title: 'Eliminar sugerencia',
@@ -106,6 +114,7 @@ export class SuggestionsUserComponent implements OnInit {
     })
   }
 
+  //Trae la lista de sugerencias realizadas por el usuario
   getSuggestByUser(){
     const listSugerencia = this.sugerencias;
     const email = this.userService.seeEmailUserAuth();
@@ -120,6 +129,7 @@ export class SuggestionsUserComponent implements OnInit {
     return sugerenciaByUser
   }
   
+  //Funciones getters para elementos de formulario
   get section(){
     return this.formSuggest.get('section');
   }
@@ -128,6 +138,8 @@ export class SuggestionsUserComponent implements OnInit {
     return this.formSuggest.get('comment');
   }
 
+  //Funciones de retroalimentación cuando se comete errores al completar formulario
+  //Se toma en cuenta el campo que sea obligatorio
   getErrorMessageSection(){
     return this.section.hasError('required') ? 'Debe escribir acerca de que es su opinión' : '';
   }

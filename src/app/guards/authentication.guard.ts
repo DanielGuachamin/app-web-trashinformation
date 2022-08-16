@@ -11,11 +11,10 @@ export class AuthenticationGuard implements CanActivate {
 
   constructor(private userService: UserService, private router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      
-      return this.getUserAuth() as unknown as Observable<boolean | UrlTree>
+  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    //Si está loggeado muestra la ruta
+    //Caso contrario lo redijire a una página 404
+    return this.getUserAuth() as unknown as Observable<boolean | UrlTree>
       
   }
 

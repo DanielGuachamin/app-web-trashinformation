@@ -11,10 +11,15 @@ import { DialogService } from 'src/app/services/dialog.service';
   styleUrls: ['./videos-admin.component.scss'],
 })
 export class VideosAdminComponent implements OnInit {
+
+  //Módulo para administrador videos
+
+  //Variable para manejo de datos: formulario, enumerar y lista de videos
   formVideo: FormGroup;
   enumVideos: number = 0;
   videos: Video[] = [];
 
+  //Expresion regular que admite hasta 140 caracteres
   contentLimitPattern: any = /^[\s\S]{0,140}$/;
 
   constructor(
@@ -22,6 +27,7 @@ export class VideosAdminComponent implements OnInit {
     private toastr: ToastrService,
     private dialogService: DialogService
   ) {
+    //Instancia de formulario con sus validaciones
     this.formVideo = new FormGroup({
       title: new FormControl('', [
         Validators.required,
@@ -36,6 +42,7 @@ export class VideosAdminComponent implements OnInit {
     });
   }
 
+  //Al iniciar obtiene una lista de videos desde la base de datos
   ngOnInit(): void {
     this.dataControl.getVideos().subscribe((videos) => {
       this.videos = videos;
@@ -43,11 +50,19 @@ export class VideosAdminComponent implements OnInit {
     });
   }
 
+  //Agrega o modifica un contacto dependiendo del id
   async onSubmitAddVideo() {
+
+    //Variable que obtiene ID del video
     const videoID = this.getVideoId(this.formVideo.get('url').value);
+
+    //Variable que guarda url de imagen de previsualización
     const urlImage = `https://img.youtube.com/vi/${videoID}/maxresdefault.jpg`;
+
     this.formVideo.controls['prevImg'].setValue(urlImage);
     this.formVideo.controls['urlID'].setValue(videoID);
+
+    //Variable que toma id del contacto para modificar si es -1 lo agrega
     const idAdd = this.comprobarId();
     if (idAdd != -1) {
       this.dialogService.confirmDialog({
@@ -56,6 +71,7 @@ export class VideosAdminComponent implements OnInit {
         confirmText: 'Sí',
         cancelText: 'No'
       }).subscribe(async res => {
+        //Antes de moficiar muestra un modal, si confirma lo modifica
         if(res){
           this.formVideo.controls['id'].setValue(idAdd);
           await this.dataControl.addVideo(this.formVideo.value, idAdd);
@@ -71,6 +87,7 @@ export class VideosAdminComponent implements OnInit {
         }
       })
     } else {
+      //Enumera los videos, actualiza valor global y agrega un video
       this.dataControl
         .identifiedIdElement('GlobalVideos')
         .then((response) => {
@@ -91,15 +108,15 @@ export class VideosAdminComponent implements OnInit {
           console.log('formulario video: ', this.formVideo.value);
         });
     }
-    
-   
   }
 
+  //Recibe url de youtube y obtiene ID del video
   getVideoId(url: string) {
     const urlEdited = url.slice(32, 43);
     return urlEdited;
   }
 
+  //Comprueba si un video va a ser modificado comparando id de formulario con la base de datos
   comprobarId() {
     const listElement = this.videos;
     const idBD = listElement.map((item) => item.id);
@@ -114,6 +131,7 @@ export class VideosAdminComponent implements OnInit {
     return -1;
   }
 
+  //Elimina video y muestra un modal de confirmación
   async deleteVideoById(id: any) {
     this.dialogService.confirmDialog({
       title: 'Eliminar video',
@@ -135,6 +153,7 @@ export class VideosAdminComponent implements OnInit {
     })
   }
 
+  //Rellena el formulario con información del video usando la base de datos y el id
   fillFormVideo(id: any) {
     this.dataControl.modifiedVideo(id).then((response: any) => {
       this.formVideo.setValue(response);
@@ -145,6 +164,7 @@ export class VideosAdminComponent implements OnInit {
     this.formVideo.reset();
   }
 
+  //Funciones getters para elementos de formulario
   get title() {
     return this.formVideo.get('title');
   }
@@ -161,6 +181,8 @@ export class VideosAdminComponent implements OnInit {
     return this.formVideo.get('url');
   }
 
+  //Funciones de retroalimentación cuando se comete errores al completar formulario
+  //Se toma en cuenta el campo que sea obligatorio y aplica patrones Regex
   getErrorMessageTitle() {
     if (this.title.hasError('required')) {
       return 'Debe escribir un título para el video';

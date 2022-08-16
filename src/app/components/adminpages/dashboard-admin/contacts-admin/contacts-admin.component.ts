@@ -14,6 +14,10 @@ import { DialogService } from 'src/app/services/dialog.service';
   styleUrls: ['./contacts-admin.component.scss'],
 })
 export class ContactsAdminComponent implements OnInit, AfterViewInit {
+
+  //Módulo para administrador contactos
+
+  //Arreglo para manejar columnas de tabla
   displayedColumns: string[] = [
     'name',
     'address',
@@ -21,17 +25,25 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     'activity',
     'actions',
   ];
+
+  //Instancia de datos para tabla
   dataSource = new MatTableDataSource();
+
   @ViewChild(MatPaginator, { static: true }) paginator:
     | MatPaginator
     | undefined;
+
   @ViewChild(MatSort, { static: true }) sort: MatSort | undefined;
+
+  //Variable para manejo de datos: formulario, enumerar y lista de contactos
   formContact: FormGroup;
   enumContact: number = 0;
   contactos: Contacto[] = [];
 
+  //Expresión regular que permite acentos 'ñ', 'Ñ' y no admite números
   alfabetWithOutSpacePattern: any = /^(?!.*[0-9])[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]{2,}$/;
 
+  //Expresón regular que permite números hasta 10 dígitos
   phoneNumberPattern: any = /^\d{10}$/;
 
   constructor(
@@ -39,6 +51,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     private toastr: ToastrService,
     private dialogService: DialogService
   ) {
+    //Instancia de formulario con sus validaciones
     this.formContact = new FormGroup({
       id: new FormControl(),
       name: new FormControl('', [
@@ -60,6 +73,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     });
   }
 
+  //Al iniciar obtiene una lista de contactos desde la base de datos
   ngOnInit(): void {
     this.dataControl.getContacts().subscribe((contactos) => {
       this.dataSource.data = contactos;
@@ -68,17 +82,21 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     });
   }
 
+  //Despues de renderizar el componente se instanacia las propiedad del módulo
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
+  //Filtro se activa al detectar cambios y busca en la lista de contactos
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  //Agrega o modifica un contacto dependiendo del id
   async onSubmitAddContact() {
+    //Variable que toma id del contacto para modificar si es -1 lo agrega
     const idAdd = this.comprobarId();
     if(idAdd != -1){
       this.dialogService.confirmDialog({
@@ -87,6 +105,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
         confirmText: 'Sí',
         cancelText: 'No'
       }).subscribe(async res => {
+        //Antes de moficiar muestra un modal, si confirma lo modifica
         if(res){
           this.formContact.controls['id'].setValue(idAdd);
           await this.dataControl.addContact(this.formContact.value, idAdd);
@@ -102,6 +121,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
         }
       })
     }else{
+      //Enumera los contactos, actualiza valor global y agrega un contacto
       this.dataControl.identifiedIdElement('GlobalContactos').then((response) => {
         let idGlobal = response['lastitemContact'];
         idGlobal++;
@@ -117,11 +137,11 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
         this.dataControl.addGlobalIdElement('GlobalContactos', idElement);
         this.formContact.controls['id'].setValue(idAdd);
         this.dataControl.addContact(this.formContact.value, idAdd);
-        //console.log('formulario a enviar: ', this.formContact.value);
       })
       }
     }
 
+  //Comprueba si un contacto va a ser modificado comparando id de formulario la base dedatos
   comprobarId() {
     const listElement = this.contactos;
     const idBD = listElement.map((item) => item.id);
@@ -136,8 +156,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     return -1;
   }
     
-  
-
+  //Elimina contacto y muestra un modal de confirmación
   async deleteContactById(id: any) {
     this.dialogService.confirmDialog({
       title: 'Eliminar contacto',
@@ -161,6 +180,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     })
   }
 
+  //Rellena el formulario con información del contacto usando la base de datos y el id
   fillFormContacto(id: any) {
     this.dataControl.modifiedContact(id).then((response: any) => {
       this.formContact.setValue(response);
@@ -171,6 +191,7 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     this.formContact.reset();
   }
 
+  //Funciones getters para elementos de formulario
   get name() {
     return this.formContact.get('name');
   }
@@ -191,6 +212,8 @@ export class ContactsAdminComponent implements OnInit, AfterViewInit {
     return this.formContact.get('activity');
   }
 
+  //Funciones de retroalimentación cuando se comete errores al completar formulario
+  //Se toma en cuenta el campo que sea obligatorio y aplica patrones Regex
   getErrorMessageName() {
     if (this.name.hasError('required')) {
       return 'Debe completar el campo';

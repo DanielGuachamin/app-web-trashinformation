@@ -16,6 +16,7 @@ export class Error404Component implements OnInit {
     this.comprobarError(type);
   }
 
+  //De acuerdo al tipo de error de ruta cambia el mensaje a presentar en página 404
   comprobarError(type: String){
     console.log(type);
     if (type == 'NoAuth'){

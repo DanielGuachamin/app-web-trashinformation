@@ -25,7 +25,7 @@ export class DataApiService {
  
   constructor(private firestore: Firestore) {}
 
-  //Funciones para manejar usuarios
+  //-----Funciones para manejar usuarios------
   addUser(user: User, email: any) {
     return setDoc(doc(this.firestore, 'Personas', email), user);
   }
@@ -57,15 +57,17 @@ export class DataApiService {
     return responseUser
   }
 
+  //Observador para detectar cambios en imagen de perfil
   get selectedImage$(): Observable<String>{
     return this.urlUserImage$.asObservable();
   }
 
+  //Función para obtener cambiar url de imagen de perfil
   setImage(url: String){
     this.urlUserImage$.next(url);
   }
 
-  //Funciones para manejar noticias
+  //------Funciones para manejar noticias----------
 
   addNoticia(noticia: Noticia, id: string){
     return setDoc(doc(this.firestore, 'Noticias', id), noticia);
@@ -82,7 +84,7 @@ export class DataApiService {
     return respuesta.data()
   }
 
-  //Funciones para manejar videos
+  //--------Funciones para manejar videos------------
 
   addVideo(video: Video, id: string){
     return setDoc(doc(this.firestore, 'Videos', id), video);
@@ -99,7 +101,7 @@ export class DataApiService {
     return respuesta.data()
   }
 
-  //Funciones para manejar recomendaciones
+  //---------Funciones para manejar recomendaciones---------------
 
   addRecommendation(recomen: Recomendacion, id: string){
     return setDoc(doc(this.firestore, 'Recomendaciones', id), recomen);
@@ -116,7 +118,7 @@ export class DataApiService {
     return respuesta.data()
   }
 
-  //Funciones para manejar contactos
+  //----------Funciones para manejar contactos-----------
 
    addContact(contacto: Contacto, id: string){
     return setDoc(doc(this.firestore, 'Contactos', id), contacto);
@@ -133,7 +135,7 @@ export class DataApiService {
     return respuesta.data()
   }
 
-  //Funciones para manejar sugerencias
+  //--------Funciones para manejar sugerencias------------
 
   addSuggest(sugerencia: Sugerencia, id: string){
     return setDoc(doc(this.firestore, 'Sugerencias', id), sugerencia);
@@ -144,7 +146,7 @@ export class DataApiService {
     return collectionData(sugestRef, {idField: 'id'}) as Observable<Sugerencia[]>
   }
 
-  //Funciones generales de control de elementos
+  //--------Funciones generales de control de elementos------------
 
   deleteElement(id: String, path: String){
     const noticiaDocRef = doc(this.firestore, `${path}/${id}`);
@@ -157,8 +159,8 @@ export class DataApiService {
     return respuesta.data()
   }
 
+  //Variable global que se actualiza al agregar elementos
   addGlobalIdElement(global: any, id: any){
     return setDoc(doc(this.firestore, 'Configuracion', global), id);
   }
-  
 }

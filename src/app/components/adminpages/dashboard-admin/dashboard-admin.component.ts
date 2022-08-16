@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/services/user.service';
@@ -9,9 +9,9 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './dashboard-admin.component.html',
   styleUrls: ['./dashboard-admin.component.scss']
 })
-export class DashboardAdminComponent implements OnInit {
+export class DashboardAdminComponent {
 
-  
+  //Módulo para administrador header de administrador
 
   constructor(
     private userService: UserService,
@@ -19,11 +19,7 @@ export class DashboardAdminComponent implements OnInit {
     private toastr: ToastrService
     ) { }
 
-  ngOnInit(): void {
-    
-   
-  }
-
+  //Permite cerrar sesión redirigiendo a la pantalla de login e indica alerta de dicha acción
   singOut(){
     this.userService.logout()
       .then(() => {

@@ -18,16 +18,20 @@ import { DialogService } from 'src/app/services/dialog.service';
   styleUrls: ['./news-admin.component.scss'],
 })
 export class NewsAdminComponent implements OnInit {
+
+  //Módulo para administrador noticias
+
+  //Variable para manejo de datos: formulario, enumerar, lista de noticias, url de imagen y detectar imagen
   formNoticia: FormGroup;
   enumNoticias: number = 0;
   noticias: Noticia[] = [];
-  verifyNoticias: Noticia[] = [];
-
   urlNoticia: any = null;
   selectedFile: any = null;
 
+  //Expresón regular que permite hasta 380 caracteres
   contentLimitPattern: any = /^[\s\S]{0,380}$/;
 
+  //Imagenes de plantilla para cargar cuando un administrador no sube una imagen personalizada
   plantillaImage: any = {
     MedioAmbiente:
       'https://user-images.githubusercontent.com/66534512/182672307-7fc94945-b9e8-46a2-8dfe-f122e577decc.jpg',
@@ -45,6 +49,7 @@ export class NewsAdminComponent implements OnInit {
     private toastr: ToastrService,
     private dialogService: DialogService
   ) {
+    //Instancia de formulario con sus validaciones
     this.formNoticia = new FormGroup({
       title: new FormControl('', [Validators.required]),
       category: new FormControl('', [Validators.required]),
@@ -60,17 +65,18 @@ export class NewsAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Al iniciar obtiene una lista de noticias desde la base de datos
     this.dataControl.getNoticias().subscribe((noticias) => {
       this.noticias = noticias;
-      this.verifyNoticias = noticias;
       this.enumNoticias = noticias.length;
     });
   }
 
+  //Agrega o modifica un contacto dependiendo del id
   async onSubmitAddNoticia() {
     const urlNoticia = this.urlNoticia;
+    //Variable que toma id del contacto para modificar si es -1 lo agrega
     const idAdd = this.comprobarId();
-
     if (idAdd != -1) {
       this.dialogService
         .confirmDialog({
@@ -80,7 +86,9 @@ export class NewsAdminComponent implements OnInit {
           cancelText: 'No',
         })
         .subscribe(async (res) => {
+          //Antes de moficiar muestra un modal, si confirma lo modifica
           if (res) {
+            //Si una imagen ha sido cargada inserta la url en el formulario
             if (urlNoticia) {
               this.formNoticia.controls['noticiaPic'].setValue(urlNoticia);
             }
@@ -103,7 +111,8 @@ export class NewsAdminComponent implements OnInit {
         });
     } else {
       this.dataControl.identifiedIdElement('GlobalNews').then((response) => {
-        console.log('url de la noticia subida', urlNoticia);
+        //Si una imagen ha sido carga inserta la url en el formulario
+        //Caso contrario inserta una imagen de plantilla de acuerdo a la categoría
         if (urlNoticia) {
           this.formNoticia.controls['noticiaPic'].setValue(urlNoticia);
         } else {
@@ -119,6 +128,7 @@ export class NewsAdminComponent implements OnInit {
           }
           
         }
+        //Enumera las noticias, actualiza valor global y agrega una noticia
         let idGlobal = response['lastitemNew'];
         idGlobal++;
         const idAdd = `${idGlobal}n`;
@@ -142,6 +152,7 @@ export class NewsAdminComponent implements OnInit {
   }
 
   comprobarId() {
+    //Comprueba si una noticia va a ser modificado comparando id de formulario con la base de datos
     const listElement = this.noticias;
     const idBD = listElement.map((item) => item.id);
     const idMod = this.formNoticia.get('id').value;
@@ -155,6 +166,7 @@ export class NewsAdminComponent implements OnInit {
     return -1;
   }
 
+  //Elimina noticia y muestra un modal de confirmación
   async deleteNoticiaById(id: any) {
     this.dialogService
       .confirmDialog({
@@ -180,6 +192,7 @@ export class NewsAdminComponent implements OnInit {
       });
   }
 
+  //Carga una imagen mediante Firebase Storage
   uploadNoticiaImage($event: any) {
     this.selectedFile = $event.target.files[0] ?? null;
     const file = $event.target.files[0];
@@ -187,11 +200,13 @@ export class NewsAdminComponent implements OnInit {
     uploadBytes(imgRef, file)
       .then((response) => {
         console.log(response);
+        //Llama a la función y pasa el nombre de ruta de la imagen
         this.getNoticiaImageUrl(`noticiasImages/${file.name}`);
       })
       .catch((error) => console.log(error));
   }
 
+  //Obtiene la url de la imagen y la guarda en la propiedad urlNoticia
   getNoticiaImageUrl(path: string) {
     getDownloadURL(ref(this.storage, path)).then((url) => {
       this.toastr.success('Ahora ya puedes agregar una noticia', 'Imagen cargada', {
@@ -201,6 +216,7 @@ export class NewsAdminComponent implements OnInit {
     });
   }
 
+  //Rellena el formulario con información de la noticia usando la base de datos y el id
   fillFormNoticia(id: any) {
     this.dataControl.modifiedNoticia(id).then((response: any) => {
       this.formNoticia.setValue(response);
@@ -213,6 +229,7 @@ export class NewsAdminComponent implements OnInit {
     this.formNoticia.reset();
   }
 
+  //Funciones getters para elementos de formulario
   get title() {
     return this.formNoticia.get('title');
   }
@@ -233,6 +250,9 @@ export class NewsAdminComponent implements OnInit {
     return this.formNoticia.get('url');
   }
 
+  //Funciones de retroalimentación cuando se comete errores al completar formulario
+  //Se toma en cuenta el campo que sea obligatorio y aplica patrones Regex
+  
   getErrorMessageTitle() {
     return this.title.hasError('required')
       ? 'Debe escribir un título para la noticia'

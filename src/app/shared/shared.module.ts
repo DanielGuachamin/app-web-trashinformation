@@ -6,6 +6,7 @@ import { RecomensfilterPipe } from 'src/app/pipes/recomensfilter.pipe';
 import { ConfirmComponent } from '../components/dialogs/confirm/confirm.component';
 import { MaterialModule } from '../material.module';
 
+//Modulo para generalizar modulos en toda la aplicación
 
 @NgModule({
   declarations: [

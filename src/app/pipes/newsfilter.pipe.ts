@@ -6,6 +6,7 @@ import { Noticia } from '../modelos/noticia';
 })
 export class NewsfilterPipe implements PipeTransform {
 
+  //Filtra las noticias por categoría
   transform(values: Noticia[], arg: String): Noticia[] {
     let noticias: Noticia[] = [];
     for(const value of values){

@@ -6,6 +6,7 @@ import { Video } from '../modelos/video';
 })
 export class VideosfilterPipe implements PipeTransform {
 
+  //Filtra los videos por categoría
   transform(values: Video[], arg: String): Video[] {
     let videos: Video[] = [];
     for(const value of values){

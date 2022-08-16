@@ -10,6 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewsUserComponent implements OnInit {
 
+  //Módulo para mostrar información en noticias
+  //Variable para manejo de datos: lista de noticias, tamaño de fuente y altura de contenedor
   noticias: Noticia[] = [];
   fontSize = 14;
   height = 360;
@@ -20,11 +22,13 @@ export class NewsUserComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    //Al iniciar obtiene una lista de noticias desde la base de datos
     this.dataControl.getNoticias().subscribe((noticias) => {
       this.noticias = noticias;
     });
   }
 
+  //Función para aumenar tamaño de fuente como máximo hasta 19px
   aumentarTexto(){
     if(this.fontSize > 18){
       this.toastr.error(
@@ -42,6 +46,7 @@ export class NewsUserComponent implements OnInit {
     }
   }
 
+  //Función para disminuir tamaño de fuente como mínimo hasta 14px
   reducirTexto(){
     if(this.fontSize < 15){
       this.toastr.error(

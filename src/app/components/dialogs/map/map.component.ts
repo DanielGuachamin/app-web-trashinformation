@@ -8,6 +8,8 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 })
 export class MapComponent implements OnInit {
 
+  //Inyecta la dependecia del conjunto de datos para un diálogo a modo de interfaz
+  //Diálogo específico para indicaciones sobre mapa
   constructor(
     public dialogRef: MatDialogRef<MapComponent>,
     @Inject(MAT_DIALOG_DATA) public message: String

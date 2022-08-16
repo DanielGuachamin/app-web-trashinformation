@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+//Ambiente de pruebas para funciones de forma independiente
 @Injectable()
 export class UtilitiesService {
   static addRecommendation(idRec: string){

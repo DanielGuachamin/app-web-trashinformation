@@ -12,9 +12,9 @@ export class AdminVerificationGuard implements CanActivate {
   constructor(private userService: UserService, private userControl: DataApiService, private router: Router) {}
 
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    //Si es admin muestra la ruta
+    //Caso contrario lo redijire a una página 404
     return this.verifiedUserRol() as unknown as Observable<boolean | UrlTree>;
   }
 

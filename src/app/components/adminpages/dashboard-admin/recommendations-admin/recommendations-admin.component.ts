@@ -11,12 +11,18 @@ import { DialogService } from 'src/app/services/dialog.service';
   styleUrls: ['./recommendations-admin.component.scss'],
 })
 export class RecommendationsAdminComponent implements OnInit {
+
+  //Módulo para administrador recomendaciones
+
+  //Variable para manejo de datos: formulario, enumerar y lista de recomendaciones
   formRecomen: FormGroup;
   enumRecomen: number = 0;
   recomendaciones: Recomendacion[] = [];
 
+  //Expresión regular que admite hasta 150 caracteres
   contentLimitPattern: any = /^[\s\S]{0,150}$/;
 
+  //Imagenes de plantilla para cargar cuando un administrador no sube una url personalizada
   plantillaImage: any = {
     MedioAmbiente:
       'https://user-images.githubusercontent.com/66534512/182672307-7fc94945-b9e8-46a2-8dfe-f122e577decc.jpg',
@@ -33,6 +39,7 @@ export class RecommendationsAdminComponent implements OnInit {
     private toastr: ToastrService,
     private dialogService: DialogService
   ) {
+    //Instancia de formulario con sus validaciones
     this.formRecomen = new FormGroup({
       title: new FormControl('', [Validators.required]),
       category: new FormControl('', [Validators.required]),
@@ -45,6 +52,7 @@ export class RecommendationsAdminComponent implements OnInit {
     });
   }
 
+  //Al iniciar obtiene una lista de recomendaciones desde la base de datos
   ngOnInit(): void {
     this.dataControl.getRecommendations().subscribe((recomendaciones) => {
       this.recomendaciones = recomendaciones;
@@ -52,7 +60,10 @@ export class RecommendationsAdminComponent implements OnInit {
     });
   }
 
+  //Agrega o modifica una recomendación dependiendo del id
   async onSubmitAddRecomen() {
+
+    //Si el campo de url es nulo, asigna una imagen de plantilla al campo de formulario respectivo
     const urlImage = this.formRecomen.get('urlImage').value;
     if (!urlImage) {
       const baseImages = this.plantillaImage;
@@ -64,7 +75,8 @@ export class RecommendationsAdminComponent implements OnInit {
         }
       }
     }
-    
+
+    //Variable que toma id del contacto para modificar si es -1 lo agrega
     const idAdd = this.comprobarId();
     if (idAdd != -1) {
       this.dialogService.confirmDialog({
@@ -73,6 +85,7 @@ export class RecommendationsAdminComponent implements OnInit {
         confirmText: 'Sí',
         cancelText: 'No'
       }).subscribe(async res => {
+        //Antes de moficiar muestra un modal, si confirma lo modifica
         if(res){
           this.formRecomen.controls['id'].setValue(idAdd);
           await this.dataControl.addRecommendation(this.formRecomen.value, idAdd);
@@ -88,6 +101,7 @@ export class RecommendationsAdminComponent implements OnInit {
         }
       })
     } else {
+      //Enumera las recomendaciones, actualiza valor global y agrega una recomendación
       this.dataControl
         .identifiedIdElement('GlobalRecomendation')
         .then((response) => {
@@ -110,6 +124,7 @@ export class RecommendationsAdminComponent implements OnInit {
     }
   }
 
+  //Comprueba si una recomendación va a ser modificado comparando id de formulario con la base de datos
   comprobarId() {
     const listElement = this.recomendaciones;
     const idBD = listElement.map((item) => item.id);
@@ -124,6 +139,7 @@ export class RecommendationsAdminComponent implements OnInit {
     return -1;
   }
 
+  //Elimina una recomendcación y muestra un modal de confirmación
   async deleteRecomenById(id: any) {
     this.dialogService.confirmDialog({
       title: 'Eliminar recomendación',
@@ -148,6 +164,7 @@ export class RecommendationsAdminComponent implements OnInit {
    
   }
 
+  //Rellena el formulario con información de la recomendación usando la base de datos y el id
   fillFormRecomen(id: any) {
     this.dataControl.modifiedRecommendation(id).then((response: any) => {
       this.formRecomen.setValue(response);
@@ -158,6 +175,7 @@ export class RecommendationsAdminComponent implements OnInit {
     this.formRecomen.reset();
   }
 
+  //Funciones getters para elementos de formulario
   get title() {
     return this.formRecomen.get('title');
   }
@@ -170,6 +188,8 @@ export class RecommendationsAdminComponent implements OnInit {
     return this.formRecomen.get('content');
   }
 
+  //Funciones de retroalimentación cuando se comete errores al completar formulario
+  //Se toma en cuenta el campo que sea obligatorio y aplica patrones Regex
   getErrorMessageTitle() {
     return this.title.hasError('required')
       ? 'Debe escribir un título para la recomendación'

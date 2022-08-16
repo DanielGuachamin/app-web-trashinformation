@@ -11,29 +11,99 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
 
+  //Módulo para registro
+
+  //Expresión regular que admite dirección de correo válido:
+  //letras, números, que contenga una @, un . y termine en algo
   emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+  //Expresión regular para validar contraseña que no admita espacias, use al menos un número,
+  //una letras y un caracter especial, minimo 6 caracteres
   passwordPattern: any = /^(?=.*[a-z])(?=.*\d)(?=.*[$@$!%_#<>*?&])[A-Za-z\d$@$!%_#<>*?&]{6,15}/;
 
+  //Expresión regular que permite acentos, 'ñ', 'Ñ' y no admite números
   alfabetWithOutSpacePattern: any = /^(?!.*[0-9])[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]{2,}$/;
 
+  //Variable para manejo de datos: formulario
   formReg: FormGroup;
 
+  //Instancia de fechas límites de datepicker
   maxDate: Date = new Date('01/01/2005');
   minDate: Date = new Date('01/01/1920');
 
   showPassword: boolean;
 
+  //Direcciones disponibles en base de datos
   directionsMap: Ubication[] = [
     {
       key: 'alt',
       value: 'ALTAMIRA'
     },
     {
+      key: 'batal',
+      value: 'BATAN ALTO'
+    },
+    {
+      key: 'bat',
+      value: 'BATAN'
+    },
+    {
+      key: 'bel',
+      value: 'BELISARIO'
+    },
+    {
+      key: 'chori',
+      value: 'CENTRO HISTORICO ORIENTAL'
+    },
+    {
+      key: 'eggo',
+      value: 'EL GIRON - GUAPULO'
+    },
+    {
+      key: 'frta',
+      value: 'FLORESTA'
+    },
+    {
+      key: 'jpjp',
+      value: 'JIPIJAPA'
+    },
+    {
+      key: 'lcom',
+      value: 'LA COMUNA'
+    },
+    {
+      key: 'lgsa',
+      value: 'LA GASCA'
+    },
+    {
       key: 'lg',
       value: 'LA GRANJA'
+    },
+    {
+      key: 'lmac',
+      value: 'LA MARISCAL'
+    },
+    {
+      key: 'mlsc',
+      value: 'MANUEL LARREA - SANTA CLARA'
+    },
+    {
+      key: 'pnclo',
+      value: 'PANECILLO'
+    },
+    {
+      key: 'prds',
+      value: 'PERIODISTAS'
+    },
+    {
+      key: 'pdra',
+      value: 'PRADERA'
+    },
+    {
+      key: 'tmyo',
+      value: 'TAMAYO'
     }
   ]
 
@@ -43,6 +113,7 @@ export class RegisterComponent implements OnInit {
     private dataControl: DataApiService,
     private toastr: ToastrService,
     ) {
+    //Instancia de formulario con sus validaciones
     this.formReg = new FormGroup({
       email: new FormControl('', [
         Validators.required,
@@ -78,8 +149,7 @@ export class RegisterComponent implements OnInit {
     this.showPassword = false;
   }
 
-  ngOnInit(): void {}
-
+  //Registro de usuario y redirecciona usuario a login
   onSubmit(){
     this.userService.register(this.formReg.get('email').value, this.formReg.get('password').value)
       .then(async response => {
@@ -90,22 +160,33 @@ export class RegisterComponent implements OnInit {
             positionClass: 'toast-bottom-right',
           }
         );
+        //Elimina contraseña del formulario
         this.formReg.removeControl('password');
+
+        //Inserta fecha con formato en específico
         const getDate = this.getDate()
+
+        //Obtiene imagen generada con url mediante una API
         const getPick = this.getPickAPI()
+
+        //Busca en el objeto de direcciones y relaciona clave-valor
         const keyDirection = this.formReg.get('direccionBase').value
         const valueDirection = this.getValueDirection(keyDirection)
+
+        //Almacena todos los datos procesados en el formulario
         this.formReg.controls['birthdate'].setValue(getDate)
         this.formReg.controls['profilePic'].setValue(getPick)
         this.formReg.controls['direccion'].setValue(valueDirection)
         let email = this.formReg.get('email').value
         email = email.toLowerCase()
         this.formReg.controls['email'].setValue(email)
+
+        //Guarda en la base de datos de Firebase
         await this.dataControl.addUser(this.formReg.value, email)
-        console.log('formulario a enviar', this.formReg.value)
         this.router.navigate(['/login']);
       })
       .catch(error => {
+        //El error ocurre cuando se quiere registrar un correo previamente guardado
         console.error(error)
         this.toastr.error(
           'Ya existe una persona registrada con este correo',
@@ -118,6 +199,7 @@ export class RegisterComponent implements OnInit {
       
   }
 
+  //Hace consulta del objeto de direcciones y retorna nombre de dirección
   getValueDirection(key: string): String{
     let value
     for(let item of this.directionsMap){
@@ -129,6 +211,34 @@ export class RegisterComponent implements OnInit {
     return value;
   }
 
+  //Transforma fecha a formato requerido AAAA/MM/DD
+  getDate(){
+    let momentResponse = this.formReg.value
+    momentResponse = JSON.parse(JSON.stringify(momentResponse))
+    momentResponse = momentResponse.birthdate
+    momentResponse = momentResponse.slice(0,-14)
+    let split = momentResponse.split('-')
+    momentResponse = split[2] + '/' + split[1] + '/' + split[0]
+    return momentResponse
+  }
+
+  //Retorna URL generada para consumir API de imagenes con nombre y apellido
+  getPickAPI(){
+    const formName = this.formReg.get('name').value;
+    const formLastName = this.formReg.get('lastName').value
+    let urlPick = `https://ui-avatars.com/api/?background=0B2460&color=fff&size=600&font-size=0.4&name=${formName}+${formLastName}`
+    return urlPick
+  }
+    
+  seePassword(){
+    this.showPassword = !this.showPassword
+  }
+
+  closeRegister() {
+    this.router.navigate(['/login']);
+  }
+
+  //Funciones getters para elementos de formulario
   get email(){
     return this.formReg.get('email');
   }
@@ -153,27 +263,8 @@ export class RegisterComponent implements OnInit {
     return this.formReg.get('birthdate');
   }
 
-  getDate(){
-    let momentResponse = this.formReg.value
-    momentResponse = JSON.parse(JSON.stringify(momentResponse))
-    momentResponse = momentResponse.birthdate
-    momentResponse = momentResponse.slice(0,-14)
-    let split = momentResponse.split('-')
-    momentResponse = split[2] + '/' + split[1] + '/' + split[0]
-    return momentResponse
-  }
-     
-  getPickAPI(){
-    const formName = this.formReg.get('name').value;
-    const formLastName = this.formReg.get('lastName').value
-    let urlPick = `https://ui-avatars.com/api/?background=0B2460&color=fff&size=600&font-size=0.4&name=${formName}+${formLastName}`
-    return urlPick
-  }
-    
-  seePassword(){
-    this.showPassword = !this.showPassword
-  }
-
+  //Funciones de retroalimentación cuando se comete errores al completar formulario
+  //Se toma en cuenta el campo que sea obligatorio y aplica patrones Regex
   getErrorMessageEmail() {
     if (this.email.hasError('required')) {
       return 'Debe ingresar un dirección de correo';
@@ -203,7 +294,4 @@ export class RegisterComponent implements OnInit {
     return this.birthdate.hasError('required') ? 'Debe seleccionar una fecha de nacimiento' : '';
   }
 
-  closeRegister() {
-    this.router.navigate(['/login']);
-  }
 }

@@ -5,7 +5,7 @@
         <img [src]="(profilePic == '') ? '../../../../assets/NoImage.png' : profilePic" alt="Foto perfil usuario" width="200px" height="200px">
         <div class="button-image">
           <button type="button" mat-raised-button (click)="fileInput.click()">Actualizar</button>
-          <input hidden (change)="uploadNoticiaImage($event)" #fileInput type="file">
+          <input hidden (change)="uploadProfileImage($event)" #fileInput type="file">
           <span class="file-name">{{selectedFile?.name}}</span>
         </div>
       </div>

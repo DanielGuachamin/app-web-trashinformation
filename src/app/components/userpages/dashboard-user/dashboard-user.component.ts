@@ -9,6 +9,7 @@ import { DataApiService } from 'src/app/services/data-api.service';
 })
 export class DashboardUserComponent{
 
+  //Establece conexión con servidor para obtener url de imagen de perfil
   urlProfilePic$ = this.dataControl.selectedImage$;
 
   constructor(private dataControl: DataApiService) { }

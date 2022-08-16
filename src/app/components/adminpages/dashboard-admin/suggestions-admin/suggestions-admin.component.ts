@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { Sugerencia } from 'src/app/modelos/sugerencia';
-import { UserService } from 'src/app/services/user.service';
 import { DialogService } from 'src/app/services/dialog.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -12,17 +11,19 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./suggestions-admin.component.scss'],
 })
 export class SuggestionsAdminComponent implements OnInit {
+
+  //Módulo para administrador sugerencias
+
+  //Variable para manejo de datos: formulario, enumerar y lista de sugerencias
   formSuggest: FormGroup;
-  enumSuggest: number = 0;
   sugerencias: Sugerencia[] = [];
-  sugerenciaByUser: Sugerencia[] = [];
 
   constructor(
     private dataControl: DataApiService,
-    private userService: UserService,
     private toastr: ToastrService,
     private dialogService: DialogService
   ) {
+    //Instancia de formulario con sus validaciones
     this.formSuggest = new FormGroup({
       id: new FormControl(),
       name: new FormControl(),
@@ -38,33 +39,13 @@ export class SuggestionsAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //Al iniciar obtiene una lista de sugerencias desde la base de datos
     this.dataControl.getSuggestions().subscribe((sugerencias) => {
       this.sugerencias = sugerencias;
-      this.enumSuggest = sugerencias.length;
-      this.sugerenciaByUser = this.getSuggestByUser()
     });
   }
 
-  
-
-  async onSubmitAddSuggest() {
-    const idAdd = this.comprobarIdSuggest()
-    this.formSuggest.controls['id'].setValue(idAdd);
-    const email = this.userService.seeEmailUserAuth();
-    this.formSuggest.controls['email'].setValue(email);
-    let name,
-      lastName = '';
-    this.dataControl.searchUserData(email).then(async (response) => {
-      name = response.name;
-      lastName = response.lastName;
-      this.formSuggest.controls['name'].setValue(name);
-      this.formSuggest.controls['lastName'].setValue(lastName);
-      console.log('formulario a enviar: ', this.formSuggest.value);
-      await this.dataControl.addSuggest(this.formSuggest.value, idAdd);
-      this.formSuggest.reset();
-    });
-  }
-
+  //Elimina sugerencia y muestra un modal de confirmación
   async deleteSuggestById(id: any) {
     this.dialogService.confirmDialog({
       title: 'Eliminar sugerencia',
@@ -85,45 +66,9 @@ export class SuggestionsAdminComponent implements OnInit {
         console.log('No se ha confirmado la eliminación')
       }
     })
-    
   }
 
-  getSuggestByUser(){
-    const listSugerencia = this.sugerencias;
-    const email = this.userService.seeEmailUserAuth();
-    let sugerenciaByUser: Sugerencia[] =[];
-    for(let sugerencia of listSugerencia){
-      if(sugerencia.email == email){
-        console.log(sugerencia)
-        sugerenciaByUser.push(sugerencia)
-      }
-    
-    }
-    console.log(sugerenciaByUser)
-    return sugerenciaByUser
-  }
-
-  comprobarIdSuggest() {
-    const listSugerencia = this.sugerencias;
-    const idSugerenciaBD = listSugerencia.map((item) => item.id);
-    const idMod = this.formSuggest.get('id').value;
-    let idAdd;
-    if (idSugerenciaBD[0]!= '1s'){
-      idAdd = '1s'
-      return idAdd;
-    }else{
-      for (let item of idSugerenciaBD) {
-        if (item == idMod) {
-          idAdd = idMod;
-          return idAdd;
-        }
-      }
-      idAdd = `${this.enumSuggest + 1}s`;
-      return idAdd;
-    }
-
-  }
-
+  //Funciones getters para elementos de formulario
   get section(){
     return this.formSuggest.get('section');
   }
@@ -132,14 +77,7 @@ export class SuggestionsAdminComponent implements OnInit {
     return this.formSuggest.get('comment');
   }
 
-  getErrorMessageSection(){
-    return this.section.hasError('required') ? 'Debe escribir acerca de que es su opinión' : '';
-  }
-
-  getErrorMessageComment(){
-    return this.comment.hasError('required') ? 'Debe escribir el contenido de su opinión' : '';
-  }
-
+  //Crea una url usando nombre y apellido del usuario para generar imagen con API
   recuperarUrlImage(name: String, lastName: String){
     return `https://ui-avatars.com/api/?background=0B2460&color=fff&size=600&font-size=0.4&name=${name}+${lastName}`
   }

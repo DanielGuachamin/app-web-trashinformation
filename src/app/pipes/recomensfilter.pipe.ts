@@ -6,6 +6,7 @@ import { Recomendacion } from '../modelos/recomendacion';
 })
 export class RecomensfilterPipe implements PipeTransform {
 
+  //Filtra las recomendaciones por categoría
   transform(values: Recomendacion[], arg: String): Recomendacion[] {
     let recomendaciones: Recomendacion[] = [];
     for(const value of values){
